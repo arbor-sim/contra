@@ -19,18 +19,13 @@
 # limitations under the License.
 #------------------------------------------------------------------------------
 
-cmake_minimum_required(VERSION 3.8.2)
+from conans import ConanFile, CMake
 
-project(contra)
+class contra(ConanFile):
+    name = "contra"
+    license = "Apache License, Version 2.0"
+    description = """Contra, a lightweigth transport library for conduit data"""
+    settings = "os", "compiler", "build_type", "arch"
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-set(CMAKE_CXX_STANDARD 14)
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/lib)
-
-include(ConanHelpers)
-include(GenerateExportHeader)
-include(WarningLevels)
-
-conan_or_find_package(catch REQUIRED)
-
-add_subdirectory(contra)
+    requires = (("catch/1.12.0@RWTH-VR/thirdparty"))
+    generators = "cmake"
