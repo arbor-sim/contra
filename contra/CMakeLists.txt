@@ -25,9 +25,10 @@ file(GLOB CONTRA_HEADERS include/contra/*.hpp)
 add_library(contra ${CONTRA_SOURCES}
  ${CONTRA_HEADERS}
 )
+target_include_directories(contra PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 GENERATE_EXPORT_HEADER(contra EXPORT_FILE_NAME "${CMAKE_CURRENT_SOURCE_DIR}/include/contra/export.hpp")
 
-SetWarningLevelRWTH(contra)
+SET_WARNING_LEVELS_RWTH(contra)
 
 add_subdirectory(tests)
