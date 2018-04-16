@@ -19,15 +19,23 @@
 # limitations under the License.
 #------------------------------------------------------------------------------
 
-file(GLOB CONTRA_SOURCES src/*.cpp)
-file(GLOB CONTRA_HEADERS include/contra/*.hpp)
+file(GLOB CONTRA_TEST_SOURCES src/*.cpp)
+file(GLOB CONTRA_TEST_HEADERS src/*.hpp)
 
-add_library(contra ${CONTRA_SOURCES}
- ${CONTRA_HEADERS}
-)
+add_executable(contra_tests
+  ${CONTRA_TEST_SOURCES} 
+  ${CONTRA_TEST_SOURCES}
+  )
+set(CONTRA_TEST_ARGUMENTS ""
+  CACHE STRING
+  "Arguments, e.g., tags, that are passed to contra_tests executable.")
+add_test(NAME contra_tests COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS})
 
-GENERATE_EXPORT_HEADER(contra EXPORT_FILE_NAME "${CMAKE_CURRENT_SOURCE_DIR}/include/contra/export.hpp")
+# --- settings ---
+SetWarningLevelRWTH(contra_tests)
 
-SetWarningLevelRWTH(contra)
 
-add_subdirectory(tests)
+# --- dependencies ---
+# qosp
+target_include_directories(contra_tests PRIVATE contra)
+target_link_libraries(contra_tests contra)
