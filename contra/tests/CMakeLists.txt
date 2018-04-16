@@ -19,8 +19,8 @@
 # limitations under the License.
 #------------------------------------------------------------------------------
 
-file(GLOB CONTRA_TEST_SOURCES src/*.cpp)
-file(GLOB CONTRA_TEST_HEADERS src/*.hpp)
+file(GLOB CONTRA_TEST_SOURCES *.cpp)
+file(GLOB CONTRA_TEST_HEADERS *.hpp)
 
 add_executable(contra_tests
   ${CONTRA_TEST_SOURCES} 
@@ -32,10 +32,14 @@ set(CONTRA_TEST_ARGUMENTS ""
 add_test(NAME contra_tests COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS})
 
 # --- settings ---
-SetWarningLevelRWTH(contra_tests)
+SET_WARNING_LEVELS_RWTH(contra_tests)
 
 
 # --- dependencies ---
-# qosp
+# contra
 target_include_directories(contra_tests PRIVATE contra)
 target_link_libraries(contra_tests contra)
+
+#catch
+target_include_directories(contra_tests PUBLIC ${CONAN_OR_CMAKE_catch})
+target_link_libraries(contra_tests ${CONAN_OR_CMAKE_catch})
