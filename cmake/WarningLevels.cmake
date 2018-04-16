@@ -1,17 +1,16 @@
 #------------------------------------------------------------------------------
-# Project Phoenix
+# contra
 #
-# Copyright (c) 2017-2018 RWTH Aachen University, Germany,
+# Copyright (c) 2018 RWTH Aachen University, Germany,
 # Virtual Reality & Immersive Visualization Group.
 #------------------------------------------------------------------------------
 #                                 License
 #
-# Licensed under the 3-Clause BSD License (the "License");
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
-# See the file LICENSE for the full text.
 # You may obtain a copy of the License at
 #
-#     https://opensource.org/licenses/BSD-3-Clause
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
