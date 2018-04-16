@@ -1,0 +1,76 @@
+// ------------------------------------------------------------------------------
+// contra
+//
+// Copyright (c) 2018 RWTH Aachen University, Germany,
+// Virtual Reality & Immersive Visualization Group.
+// ------------------------------------------------------------------------------
+//                                  License
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ------------------------------------------------------------------------------
+
+#ifndef PROJECT_PHOENIX_SUPPRESS_WARNINGS_
+#define PROJECT_PHOENIX_SUPPRESS_WARNINGS_
+
+// clang-format off
+
+#if defined __clang__
+#define SUPPRESS_WARNINGS_BEGIN                                           \
+  _Pragma("clang diagnostic push")                                        \
+  _Pragma("clang diagnostic ignored \"-Wall\"")                           \
+  _Pragma("clang diagnostic ignored \"-Wextra\"")                         \
+  _Pragma("clang diagnostic ignored \"-Wreserved-id-macro\"")             \
+  _Pragma("clang diagnostic ignored \"-Wimplicit-fallthrough\"")          \
+  _Pragma("clang diagnostic ignored \"-Wdocumentation\"")                 \
+  _Pragma("clang diagnostic ignored \"-Wdocumentation-unknown-command\"") \
+  _Pragma("clang diagnostic ignored \"-Wpadded\"")                        \
+  _Pragma("clang diagnostic ignored \"-Wpessimizing-move\"")              \
+  _Pragma("clang diagnostic ignored \"-Wunused-parameter\"")              \
+  _Pragma("clang diagnostic ignored \"-Wold-style-cast\"")                \
+  _Pragma("clang diagnostic ignored \"-Wsign-conversion\"")               \
+  _Pragma("clang diagnostic ignored \"-Wnewline-eof\"")                   \
+  _Pragma("clang diagnostic ignored \"-Wnon-virtual-dtor\"")              \
+    _Pragma("clang diagnostic ignored \"-Wextra-semi\"")
+#define SUPPRESS_WARNINGS_BEGIN_PADDED \
+  _Pragma("clang diagnostic push")                                        \
+  _Pragma("clang diagnostic ignored \"-Wpadded\"")
+#define SUPPRESS_WARNINGS_END _Pragma("clang diagnostic pop")
+
+#elif defined _MSC_VER
+#define SUPPRESS_WARNINGS_BEGIN __pragma(warning(push, 0));
+#define SUPPRESS_WARNINGS_BEGIN_PADDED  __pragma(warning(push));
+#define SUPPRESS_WARNINGS_END __pragma(warning(pop));
+
+#elif defined __GNUC__
+#if __GNUC__ >= 7
+  #define SUPPRESS_WARNINGS_GCC7_AND_ABOVE \
+    _Pragma("GCC diagnostic ignored \"-Wimplicit-fallthrough\"")
+#else
+  #define SUPPRESS_WARNINGS_GCC7_AND_ABOVE
+#endif
+#define SUPPRESS_WARNINGS_BEGIN                                           \
+  _Pragma("GCC diagnostic push")                                          \
+  SUPPRESS_WARNINGS_GCC7_AND_ABOVE                                        \
+  _Pragma("GCC diagnostic ignored \"-Wall\"")                             \
+  _Pragma("GCC diagnostic ignored \"-Wextra\"")                           \
+  _Pragma("GCC diagnostic ignored \"-Wpadded\"")
+#define SUPPRESS_WARNINGS_BEGIN_PADDED                                    \
+  _Pragma("GCC diagnostic push")                                          \
+  _Pragma("GCC diagnostic ignored \"-Wpadded\"")
+#define SUPPRESS_WARNINGS_END _Pragma("GCC diagnostic pop")
+
+#endif
+
+// clang-format on
+
+#endif  // PROJECT_PHOENIX_SUPPRESS_WARNINGS_
