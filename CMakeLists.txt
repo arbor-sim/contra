@@ -30,6 +30,8 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR}/lib)
 include(ConanHelpers)
 include(GenerateExportHeader)
 include(WarningLevels)
+include(CTest)
+enable_testing()
 
 conan_or_find_package(catch REQUIRED)
 
