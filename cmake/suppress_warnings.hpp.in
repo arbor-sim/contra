@@ -1,5 +1,5 @@
 // ------------------------------------------------------------------------------
-// contra
+// contra -- a lightweigth transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
 // Virtual Reality & Immersive Visualization Group.
@@ -73,4 +73,4 @@
 
 // clang-format on
 
-#endif  // PROJECT_PHOENIX_SUPPRESS_WARNINGS_
+#endif // PROJECT_PHOENIX_SUPPRESS_WARNINGS_

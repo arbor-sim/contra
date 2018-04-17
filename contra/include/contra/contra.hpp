@@ -1,5 +1,5 @@
 // ------------------------------------------------------------------------------
-// contra
+// contra -- a lightweigth transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
 // Virtual Reality & Immersive Visualization Group.
@@ -27,4 +27,4 @@ namespace contra {
 void Greet();
 }
 
-#endif  // CONTRA_CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
+#endif // CONTRA_CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
