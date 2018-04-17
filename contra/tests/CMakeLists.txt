@@ -22,9 +22,10 @@
 file(GLOB CONTRA_TEST_SOURCES *.cpp)
 file(GLOB CONTRA_TEST_HEADERS *.hpp)
 
-add_executable(contra_tests
-  ${CONTRA_TEST_SOURCES} 
-  ${CONTRA_TEST_SOURCES}
+rwthvr_add_executable(
+  NAME contra_tests
+  SOURCES ${CONTRA_TEST_SOURCES} 
+  HEADERS ${CONTRA_TEST_HEADERS}
   )
 set(CONTRA_TEST_ARGUMENTS ""
   CACHE STRING
@@ -33,8 +34,6 @@ set(CONTRA_TEST_ARGUMENTS ""
 add_test(NAME contra_tests
   COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS}
   )
-
-set_warning_levels_rwth(contra_tests)
 
 target_include_directories(contra_tests
   PRIVATE ${CMAKE_CURRENT_BINARY_DIR}

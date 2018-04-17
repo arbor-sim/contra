@@ -29,7 +29,7 @@ set(CMAKE_CXX_STANDARD 17)
 include(ConanHelpers)
 include(CTest)
 include(GenerateExportHeader)
-include(WarningLevels)
+include(rwthvr)
 
 enable_testing()
 

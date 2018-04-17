@@ -19,21 +19,31 @@
 # limitations under the License.
 #------------------------------------------------------------------------------
 
-file(GLOB CONTRA_SOURCES src/*.cpp)
-file(GLOB CONTRA_HEADERS include/contra/*.hpp)
+include(WarningLevels)
 
-rwthvr_add_library(NAME contra
-  SOURCES ${CONTRA_SOURCES}
-  HEADERS ${CONTRA_HEADERS}
-  )
-generate_export_header(contra
-    EXPORT_FILE_NAME
-    "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp"
-    )
+macro(RWTHVR_ADD_LIBRARY)
+  set(options)
+  set(oneValueArgs NAME)
+  set(multiValueArgs SOURCES HEADERS)
+  cmake_parse_arguments(RWTHVR_ADD_LIBRARY_
+    "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
   
-target_include_directories(contra
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-  PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
-  )
+  add_library(${RWTHVR_ADD_LIBRARY__NAME}
+    ${RWTHVR_ADD_LIBRARY__SOURCES}
+    ${RWTHVR_ADD_LIBRARY__HEADERS})
 
-add_subdirectory(tests)
+  set_warning_levels_rwth(${RWTHVR_ADD_LIBRARY__NAME})
+endmacro()
+
+macro(RWTHVR_ADD_EXECUTABLE)
+  set(options)
+  set(oneValueArgs NAME)
+  set(multiValueArgs SOURCES HEADERS)
+  cmake_parse_arguments(RWTHVR_ADD_EXECUTABLE_
+    "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+  add_executable(${RWTHVR_ADD_EXECUTABLE__NAME}
+    ${RWTHVR_ADD_EXECUTABLE__SOURCES}
+    ${RWTHVR_ADD_EXECUTABLE__HEADERS})
+  set_warning_levels_rwth(${RWTHVR_ADD_EXECUTABLE__NAME})
+endmacro()
