@@ -1,9 +1,9 @@
-// ------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 // contra -- a lightweigth transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
 // Virtual Reality & Immersive Visualization Group.
-// ------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //                                  License
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// ------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 #ifndef CONTRA_TESTS_UTILITIES_COUT_CAPTURE_HPP_
 #define CONTRA_TESTS_UTILITIES_COUT_CAPTURE_HPP_
@@ -31,7 +31,7 @@
 namespace test_utilities {
 
 class CoutCapture {
-public:
+ public:
   CoutCapture() { original_rdbuf_ = std::cout.rdbuf(cout_stream_.rdbuf()); }
   ~CoutCapture() { std::cout.rdbuf(original_rdbuf_); }
 
@@ -41,21 +41,22 @@ public:
 
   std::string ToString() const { return "\"" + cout_stream_.str() + "\""; }
 
-private:
+ private:
   std::streambuf *original_rdbuf_;
   std::stringstream cout_stream_;
 };
 
-} // namespace test_utilities
+}  // namespace test_utilities
 
 namespace Catch {
 
-template <> struct StringMaker<test_utilities::CoutCapture> {
+template <>
+struct StringMaker<test_utilities::CoutCapture> {
   static std::string convert(const test_utilities::CoutCapture &cout_capture) {
     return cout_capture.ToString();
   }
 };
 
-} // namespace Catch
+}  // namespace Catch
 
-#endif // CONTRA_TESTS_UTILITIES_COUT_CAPTURE_HPP_
+#endif  // CONTRA_TESTS_UTILITIES_COUT_CAPTURE_HPP_
