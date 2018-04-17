@@ -31,15 +31,9 @@ set(CONTRA_TEST_ARGUMENTS ""
   "Arguments, e.g., tags, that are passed to contra_tests executable.")
 add_test(NAME contra_tests COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS})
 
-# --- settings ---
 SET_WARNING_LEVELS_RWTH(contra_tests)
 
 
-# --- dependencies ---
-# contra
-target_include_directories(contra_tests PRIVATE contra)
 target_link_libraries(contra_tests contra)
 
-#catch
-target_include_directories(contra_tests PUBLIC ${CONAN_OR_CMAKE_catch})
 target_link_libraries(contra_tests ${CONAN_OR_CMAKE_catch})

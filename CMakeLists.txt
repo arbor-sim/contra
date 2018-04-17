@@ -24,7 +24,6 @@ cmake_minimum_required(VERSION 3.8.2)
 project(contra)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/lib)
 set(CMAKE_CXX_STANDARD 17)
 
 include(ConanHelpers)
