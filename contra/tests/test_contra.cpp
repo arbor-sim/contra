@@ -19,7 +19,10 @@
 // limitations under the License.
 // ------------------------------------------------------------------------------
 
+#include "suppress_warnings.hpp"
+SUPPRESS_WARNINGS_BEGIN
 #include "catch/catch.hpp"
+SUPPRESS_WARNINGS_END
 #include "contra/contra.hpp"
 #include "utilities/cout_capture.hpp"
 

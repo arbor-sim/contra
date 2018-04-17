@@ -36,6 +36,10 @@ add_test(NAME contra_tests
 
 set_warning_levels_rwth(contra_tests)
 
+target_include_directories(contra_tests
+  PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+  )
+
 target_link_libraries(contra_tests
   PRIVATE contra
   PRIVATE ${CONAN_OR_CMAKE_catch}
