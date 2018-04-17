@@ -86,3 +86,125 @@ test:windows:msvc++14.1:
   script:
     - cd build
     - ctest -C Release
+
+#-------------------------------------------------------------------------------
+#  Linux
+#-------------------------------------------------------------------------------
+
+conan:linux:gcc5.3.1:
+  stage: conan
+  tags:
+    - gcc5.3.1
+    - opengl
+  script:
+    - mkdir build
+    - cd build
+    - export CC=gcc
+    - export CXX=g++
+    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++17" -s build_type=Release
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+    
+conan:linux:gcc6.3.1:
+  stage: conan
+  tags:
+    - gcc6.3.1
+    - opengl
+  script:
+    - mkdir build
+    - cd build
+    - export CC=gcc
+    - export CXX=g++
+    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++17" -s build_type=Release
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
+cmake:linux:gcc5.3.1:
+  stage: cmake
+  tags:
+    - gcc5.3.1
+    - opengl
+  dependencies:
+    - conan:linux:gcc5.3.1
+  script:
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=Release
+  artifacts:
+    untracked: true
+    paths:
+    - build
+    expire_in: 1 week
+
+cmake:linux:gcc6.3.1:
+  stage: cmake
+  tags:
+    - gcc6.3.1
+    - opengl
+  dependencies:
+    - conan:linux:gcc6.3.1
+  script:
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=Release
+  artifacts:
+    untracked: true
+    paths:
+    - build
+    expire_in: 1 week
+
+build:linux:gcc5.3.1:
+  stage: build
+  tags:
+    - gcc5.3.1
+    - opengl
+  dependencies:
+    - cmake:linux:gcc5.3.1
+  script:
+    - cd build
+    - make -j8
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+  allow_failure: true
+
+build:linux:gcc6.3.1:
+  stage: build
+  tags:
+    - gcc6.3.1
+    - opengl
+  dependencies:
+    - cmake:linux:gcc6.3.1
+  script:
+    - cd build
+    - make -j8
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+  allow_failure: true
+
+test:linux:gcc5.3.1:
+  stage: test
+  tags:
+    - gcc5.3.1
+    - opengl
+  dependencies:
+    - build:linux:gcc5.3.1
+  script:
+    - cd build
+    - ctest -C Release
+
+test:linux:gcc6.3.1:
+  stage: test
+  tags:
+    - gcc6.3.1
+    - opengl
+  dependencies:
+    - build:linux:gcc6.3.1
+  script:
+    - cd build
+    - ctest -C Release
