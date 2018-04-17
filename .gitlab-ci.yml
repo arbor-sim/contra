@@ -101,7 +101,7 @@ conan:linux:gcc5.3.1:
     - cd build
     - export CC=gcc
     - export CXX=g++
-    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++17" -s build_type=Release
+    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
   artifacts:
     paths:
     - build
@@ -117,7 +117,7 @@ conan:linux:gcc6.3.1:
     - cd build
     - export CC=gcc
     - export CXX=g++
-    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++17" -s build_type=Release
+    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
   artifacts:
     paths:
     - build
