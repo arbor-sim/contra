@@ -19,7 +19,7 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#include "suppress_warnings.hpp"
+#include "contra_tests/suppress_warnings.hpp"
 SUPPRESS_WARNINGS_BEGIN
 #define CATCH_CONFIG_MAIN
 #include "catch/catch.hpp"

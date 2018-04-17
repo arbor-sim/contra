@@ -25,11 +25,12 @@ file(GLOB CONTRA_HEADERS include/contra/*.hpp)
 rwthvr_add_library(NAME contra
   SOURCES ${CONTRA_SOURCES}
   HEADERS ${CONTRA_HEADERS}
+  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra/suppress_warnings.hpp"
   )
 generate_export_header(contra
-    EXPORT_FILE_NAME
-    "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp"
-    )
+  EXPORT_FILE_NAME
+  "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp"
+  )
   
 target_include_directories(contra
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include

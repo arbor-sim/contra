@@ -23,7 +23,7 @@ include(WarningLevels)
 
 macro(RWTHVR_ADD_LIBRARY)
   set(options)
-  set(oneValueArgs NAME)
+  set(oneValueArgs NAME SUPPRESS_WARNINGS_HEADER)
   set(multiValueArgs SOURCES HEADERS)
   cmake_parse_arguments(RWTHVR_ADD_LIBRARY_
     "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -32,12 +32,14 @@ macro(RWTHVR_ADD_LIBRARY)
     ${RWTHVR_ADD_LIBRARY__SOURCES}
     ${RWTHVR_ADD_LIBRARY__HEADERS})
 
-  set_warning_levels_rwth(${RWTHVR_ADD_LIBRARY__NAME})
+  set_warning_levels_rwth(${RWTHVR_ADD_LIBRARY__NAME}
+    SUPPRESS_WARNINGS_HEADER ${RWTHVR_ADD_LIBRARY__SUPPRESS_WARNINGS_HEADER}
+    )
 endmacro()
 
 macro(RWTHVR_ADD_EXECUTABLE)
   set(options)
-  set(oneValueArgs NAME)
+  set(oneValueArgs NAME SUPPRESS_WARNINGS_HEADER)
   set(multiValueArgs SOURCES HEADERS)
   cmake_parse_arguments(RWTHVR_ADD_EXECUTABLE_
     "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -45,5 +47,7 @@ macro(RWTHVR_ADD_EXECUTABLE)
   add_executable(${RWTHVR_ADD_EXECUTABLE__NAME}
     ${RWTHVR_ADD_EXECUTABLE__SOURCES}
     ${RWTHVR_ADD_EXECUTABLE__HEADERS})
-  set_warning_levels_rwth(${RWTHVR_ADD_EXECUTABLE__NAME})
+  set_warning_levels_rwth(${RWTHVR_ADD_EXECUTABLE__NAME}
+    SUPPRESS_WARNINGS_HEADER ${RWTHVR_ADD_EXECUTABLE__SUPPRESS_WARNINGS_HEADER}
+    )
 endmacro()

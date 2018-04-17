@@ -26,6 +26,12 @@ rwthvr_add_executable(
   NAME contra_tests
   SOURCES ${CONTRA_TEST_SOURCES} 
   HEADERS ${CONTRA_TEST_HEADERS}
+  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra_tests/suppress_warnings.hpp"
+  )
+  
+target_include_directories(contra_tests
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+  PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
   )
 set(CONTRA_TEST_ARGUMENTS ""
   CACHE STRING
@@ -33,10 +39,6 @@ set(CONTRA_TEST_ARGUMENTS ""
   )
 add_test(NAME contra_tests
   COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS}
-  )
-
-target_include_directories(contra_tests
-  PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
   )
 
 target_link_libraries(contra_tests
