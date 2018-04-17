@@ -28,12 +28,15 @@ add_executable(contra_tests
   )
 set(CONTRA_TEST_ARGUMENTS ""
   CACHE STRING
-  "Arguments, e.g., tags, that are passed to contra_tests executable.")
-add_test(NAME contra_tests COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS})
+  "Arguments, e.g., tags, that are passed to contra_tests executable."
+  )
+add_test(NAME contra_tests
+  COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS}
+  )
 
-SET_WARNING_LEVELS_RWTH(contra_tests)
+set_warning_levels_rwth(contra_tests)
 
-
-target_link_libraries(contra_tests contra)
-
-target_link_libraries(contra_tests ${CONAN_OR_CMAKE_catch})
+target_link_libraries(contra_tests
+  PRIVATE contra
+  PRIVATE ${CONAN_OR_CMAKE_catch}
+  )
