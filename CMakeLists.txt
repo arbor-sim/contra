@@ -38,5 +38,8 @@ conan_or_find_package(catch REQUIRED)
 conan_or_find_package(cpplint REQUIRED)
 include(cpplint)
 
+conan_or_find_package(cppcheck REQUIRED)
+include(cppcheck)
+
 
 add_subdirectory(contra)
