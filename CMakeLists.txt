@@ -35,4 +35,21 @@ enable_testing()
 
 conan_or_find_package(catch REQUIRED)
 
+conan_or_find_package(cpplint REQUIRED)
+include(cpplint)
+
+conan_or_find_package(cppcheck REQUIRED)
+include(cppcheck)
+
 add_subdirectory(contra)
+
+get_property(ALL_FILES GLOBAL PROPERTY CONTRA_ALL_FILES)
+
+add_test_cppcheck(NAME "contra-tests--cppcheck"
+    ${ALL_FILES}
+  )
+  
+add_test_cpplint(NAME "contra-tests--cpplint"
+    ${ALL_FILES}
+  )
+

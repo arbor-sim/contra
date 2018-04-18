@@ -19,12 +19,12 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
-#define CONTRA_CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
+#ifndef CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
+#define CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
 
 namespace contra {
 
 void Greet();
 }
 
-#endif  // CONTRA_CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
+#endif  // CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
