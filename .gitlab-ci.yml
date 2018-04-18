@@ -205,3 +205,61 @@ test:linux:gcc6.3.1:
   script:
     - cd build
     - ctest -C Release
+
+#-------------------------------------------------------------------------------
+#  MacOS
+#-------------------------------------------------------------------------------
+
+conan:mac:gcc:
+  stage: conan
+  tags:
+    - osx
+  script:
+    - mkdir build
+    # - cd build
+    # - export CC=gcc
+    # - export CXX=g++
+    # - conan install .. --build=missing -s compiler.version="5.3" -s build_type=Release
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
+cmake:mac:gcc:
+  stage: cmake
+  tags:
+    - osx
+  dependencies:
+    - conan:mac:gcc
+  script:
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=Release
+  artifacts:
+    untracked: true
+    paths:
+    - build
+    expire_in: 1 week
+
+build:mac:gcc:
+  stage: build
+  tags:
+    - osx
+  dependencies:
+    - cmake:mac:gcc
+  script:
+    - cd build
+    - make
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
+test:mac:gcc:
+  stage: test
+  tags:
+    - osx
+  dependencies:
+    - build:mac:gcc
+  script:
+    - cd build
+    - ctest -C Release
