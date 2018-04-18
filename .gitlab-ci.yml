@@ -93,7 +93,6 @@ conan:linux:gcc5.3.1:
   script:
     - mkdir build
     - cd build
-    - df -h	
     - export CC=gcc
     - export CXX=g++
     - conan install .. --build=missing -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
@@ -183,6 +182,7 @@ test:linux:gcc5.3.1:
     - build:linux:gcc5.3.1
   script:
     - cd build
+    - df -h
     - ls contra
     - ls contra/tests
     - ctest -C Release
