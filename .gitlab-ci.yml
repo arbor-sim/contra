@@ -33,6 +33,7 @@ conan:windows:msvc++14.1:
   stage: conan
   tags:
     - msvc++14.1
+    - opengl
   script:
     - rmdir /s /q build
     - mkdir build
@@ -47,6 +48,7 @@ cmake:windows:msvc++14.1:
   stage: cmake
   tags:
     - msvc++14.1
+    - opengl
   dependencies:
     - conan:windows:msvc++14.1
   script:
@@ -62,6 +64,7 @@ build:windows:msvc++14.1:
   stage: build
   tags:
     - msvc++14.1
+    - opengl
   dependencies:
     - cmake:windows:msvc++14.1
   script:
@@ -76,6 +79,7 @@ test:windows:msvc++14.1:
   stage: test
   tags:
     - msvc++14.1
+    - opengl
   dependencies:
     - build:windows:msvc++14.1
   script:
@@ -90,6 +94,7 @@ conan:linux:gcc5.3.1:
   stage: conan
   tags:
     - gcc5.3.1
+    - opengl
   script:
     - mkdir build
     - cd build
@@ -105,6 +110,7 @@ conan:linux:gcc6.3.1:
   stage: conan
   tags:
     - gcc6.3.1
+    - opengl
   script:
     - mkdir build
     - cd build
@@ -120,6 +126,7 @@ cmake:linux:gcc5.3.1:
   stage: cmake
   tags:
     - gcc5.3.1
+    - opengl
   dependencies:
     - conan:linux:gcc5.3.1
   script:
@@ -135,6 +142,7 @@ cmake:linux:gcc6.3.1:
   stage: cmake
   tags:
     - gcc6.3.1
+    - opengl
   dependencies:
     - conan:linux:gcc6.3.1
   script:
@@ -150,6 +158,7 @@ build:linux:gcc5.3.1:
   stage: build
   tags:
     - gcc5.3.1
+    - opengl
   dependencies:
     - cmake:linux:gcc5.3.1
   script:
@@ -164,6 +173,7 @@ build:linux:gcc6.3.1:
   stage: build
   tags:
     - gcc6.3.1
+    - opengl
   dependencies:
     - cmake:linux:gcc6.3.1
   script:
@@ -178,6 +188,7 @@ test:linux:gcc5.3.1:
   stage: test
   tags:
     - gcc5.3.1
+    - opengl
   dependencies:
     - build:linux:gcc5.3.1
   script:
@@ -188,6 +199,7 @@ test:linux:gcc6.3.1:
   stage: test
   tags:
     - gcc6.3.1
+    - opengl
   dependencies:
     - build:linux:gcc6.3.1
   script:
