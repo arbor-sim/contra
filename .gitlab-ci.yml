@@ -210,27 +210,27 @@ test:linux:gcc6.3.1:
 #  MacOS
 #-------------------------------------------------------------------------------
 
-conan:mac:gcc:
+conan:mac:clang9.1:
   stage: conan
   tags:
     - osx
   script:
     - mkdir build
-    # - cd build
-    # - export CC=gcc
-    # - export CXX=g++
-    # - conan install .. --build=missing -s compiler.version="5.3" -s build_type=Release
+    - cd build
+    - export CC=gcc
+    - export CXX=g++
+    - conan install .. -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++11 --build=missing
   artifacts:
     paths:
     - build
     expire_in: 1 week
 
-cmake:mac:gcc:
+cmake:mac:clang9.1:
   stage: cmake
   tags:
     - osx
   dependencies:
-    - conan:mac:gcc
+    - conan:mac:clang9.1
   script:
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release
@@ -240,12 +240,12 @@ cmake:mac:gcc:
     - build
     expire_in: 1 week
 
-build:mac:gcc:
+build:mac:clang9.1:
   stage: build
   tags:
     - osx
   dependencies:
-    - cmake:mac:gcc
+    - cmake:mac:clang9.1
   script:
     - cd build
     - make
@@ -254,12 +254,12 @@ build:mac:gcc:
     - build
     expire_in: 1 week
 
-test:mac:gcc:
+test:mac:clang9.1:
   stage: test
   tags:
     - osx
   dependencies:
-    - build:mac:gcc
+    - build:mac:clang9.1
   script:
     - cd build
     - ctest -C Release
