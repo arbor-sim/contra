@@ -27,5 +27,6 @@ class contra(ConanFile):
     description = """Contra, a lightweigth transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
 
-    requires = (("catch/1.12.0@RWTH-VR/thirdparty"))
+    requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
+                 ("cpplint/e8ffd7c@RWTH-VR/thirdparty"))
     generators = "cmake"
