@@ -1,0 +1,265 @@
+#-------------------------------------------------------------------------------
+# contra -- a lightweigth transport library for conduit data
+#
+# Copyright (c) 2018 RWTH Aachen University, Germany,
+# Virtual Reality & Immersive Visualization Group.
+#-------------------------------------------------------------------------------
+#                                  License
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#-------------------------------------------------------------------------------
+
+stages:
+  - conan
+  - cmake
+  - build
+  - test
+  
+#-------------------------------------------------------------------------------
+#  Windows
+#-------------------------------------------------------------------------------
+
+conan:windows:msvc++14.1:
+  stage: conan
+  tags:
+    - msvc++14.1
+    - opengl
+  script:
+    - rmdir /s /q build
+    - mkdir build
+    - cd build
+    - conan install --build=missing -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MD ..
+  artifacts:
+    paths:
+      - build
+    expire_in: 1 week
+    
+cmake:windows:msvc++14.1:
+  stage: cmake
+  tags:
+    - msvc++14.1
+    - opengl
+  dependencies:
+    - conan:windows:msvc++14.1
+  script:
+    - cd build
+    - cmake -G "Visual Studio 15 2017 Win64" ..
+  artifacts:
+    untracked: true
+    paths:
+    - build
+    expire_in: 1 week
+
+build:windows:msvc++14.1:
+  stage: build
+  tags:
+    - msvc++14.1
+    - opengl
+  dependencies:
+    - cmake:windows:msvc++14.1
+  script:
+    - cd build
+    - cmake --build . --config Release
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
+test:windows:msvc++14.1:
+  stage: test
+  tags:
+    - msvc++14.1
+    - opengl
+  dependencies:
+    - build:windows:msvc++14.1
+  script:
+    - cd build
+    - ctest -C Release
+
+#-------------------------------------------------------------------------------
+#  Linux
+#-------------------------------------------------------------------------------
+
+conan:linux:gcc5.3.1:
+  stage: conan
+  tags:
+    - gcc5.3.1
+    - opengl
+  script:
+    - mkdir build
+    - cd build
+    - export CC=gcc
+    - export CXX=g++
+    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+    
+conan:linux:gcc6.3.1:
+  stage: conan
+  tags:
+    - gcc6.3.1
+    - opengl
+  script:
+    - mkdir build
+    - cd build
+    - export CC=gcc
+    - export CXX=g++
+    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
+cmake:linux:gcc5.3.1:
+  stage: cmake
+  tags:
+    - gcc5.3.1
+    - opengl
+  dependencies:
+    - conan:linux:gcc5.3.1
+  script:
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=Release
+  artifacts:
+    untracked: true
+    paths:
+    - build
+    expire_in: 1 week
+
+cmake:linux:gcc6.3.1:
+  stage: cmake
+  tags:
+    - gcc6.3.1
+    - opengl
+  dependencies:
+    - conan:linux:gcc6.3.1
+  script:
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=Release
+  artifacts:
+    untracked: true
+    paths:
+    - build
+    expire_in: 1 week
+
+build:linux:gcc5.3.1:
+  stage: build
+  tags:
+    - gcc5.3.1
+    - opengl
+  dependencies:
+    - cmake:linux:gcc5.3.1
+  script:
+    - cd build
+    - make -j8
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
+build:linux:gcc6.3.1:
+  stage: build
+  tags:
+    - gcc6.3.1
+    - opengl
+  dependencies:
+    - cmake:linux:gcc6.3.1
+  script:
+    - cd build
+    - make -j8
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
+test:linux:gcc5.3.1:
+  stage: test
+  tags:
+    - gcc5.3.1
+    - opengl
+  dependencies:
+    - build:linux:gcc5.3.1
+  script:
+    - cd build
+    - ctest -C Release
+
+test:linux:gcc6.3.1:
+  stage: test
+  tags:
+    - gcc6.3.1
+    - opengl
+  dependencies:
+    - build:linux:gcc6.3.1
+  script:
+    - cd build
+    - ctest -C Release
+
+#-------------------------------------------------------------------------------
+#  MacOS
+#-------------------------------------------------------------------------------
+
+conan:mac:clang9.1:
+  stage: conan
+  tags:
+    - osx
+  script:
+    - mkdir build
+    - cd build
+    - export CC=gcc
+    - export CXX=g++
+    - conan install .. -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build=missing
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
+cmake:mac:clang9.1:
+  stage: cmake
+  tags:
+    - osx
+  dependencies:
+    - conan:mac:clang9.1
+  script:
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=Release
+  artifacts:
+    untracked: true
+    paths:
+    - build
+    expire_in: 1 week
+
+build:mac:clang9.1:
+  stage: build
+  tags:
+    - osx
+  dependencies:
+    - cmake:mac:clang9.1
+  script:
+    - cd build
+    - make
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
+test:mac:clang9.1:
+  stage: test
+  tags:
+    - osx
+  dependencies:
+    - build:mac:clang9.1
+  script:
+    - cd build
+    - ctest -C Release
