@@ -43,13 +43,14 @@ include(cppcheck)
 
 add_subdirectory(contra)
 
-get_property(ALL_FILES GLOBAL PROPERTY CONTRA_ALL_FILES)
+get_property(ALL_SOURCES GLOBAL PROPERTY RWTHVR_ALL_SOURCES)
+get_property(ALL_HEADERS GLOBAL PROPERTY RWTHVR_ALL_HEADERS)
 
 add_test_cppcheck(NAME "contra-tests--cppcheck"
-    ${ALL_FILES}
+    ${ALL_SOURCES}
   )
   
 add_test_cpplint(NAME "contra-tests--cpplint"
-    ${ALL_FILES}
+    ${ALL_SOURCES} ${ALL_HEADERS}
   )
 

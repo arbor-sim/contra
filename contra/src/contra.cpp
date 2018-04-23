@@ -20,6 +20,7 @@
 //------------------------------------------------------------------------------
 
 #include "contra/contra.hpp"
+
 #include <iostream>
 
 namespace contra {
