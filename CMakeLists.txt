@@ -34,6 +34,7 @@ include(rwthvr)
 enable_testing()
 
 conan_or_find_package(catch REQUIRED)
+conan_or_find_package(conduit REQUIRED)
 
 conan_or_find_package(cpplint REQUIRED)
 include(cpplint)

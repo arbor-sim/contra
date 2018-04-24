@@ -29,5 +29,6 @@ class contra(ConanFile):
 
     requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
                  ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
-                 ("cppcheck/1.82@RWTH-VR/thirdparty"))
+                 ("cppcheck/1.82@RWTH-VR/thirdparty"),
+                 ("conduit/0.3.1@RWTH-VR/thirdparty"))
     generators = "cmake"
