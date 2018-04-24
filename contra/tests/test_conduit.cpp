@@ -48,13 +48,15 @@ SCENARIO("conduit array leafs are compatible to std::vector", "[conduit]") {
 
     THEN("data is stored in the node") {
       for (std::size_t i = 0; i < some_data.size(); ++i) {
-        REQUIRE(node[some_path].as_uint64_array()[i] == some_data[i]);
+        REQUIRE(node[some_path]
+                    .as_uint64_array()[static_cast<conduit::index_t>(i)] ==
+                some_data[i]);
       }
     }
 
     WHEN("data is retrieved from the node into a vector") {
       const auto& node_data = node[some_path].as_uint64_array();
-      const std::size_t num_elements = node_data.number_of_elements();
+      const conduit::index_t num_elements = node_data.number_of_elements();
       const auto* begin = reinterpret_cast<std::size_t*>(node_data.data_ptr());
       const auto* end = begin + num_elements;
       std::vector<std::size_t> retrieved_data(begin, end);

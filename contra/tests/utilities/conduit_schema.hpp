@@ -51,7 +51,7 @@ inline std::string DoubleData(std::size_t offset) {
 
 inline void RemoveNextIndicator(std::stringstream* s) {
   s->clear();
-  s->seekp(s->str().size() - 3);
+  s->seekp(static_cast<std::streamoff>(s->str().size() - 3));
   *s << " \n";
 }
 
