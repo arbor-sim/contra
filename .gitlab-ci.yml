@@ -193,6 +193,8 @@ test:linux:gcc5.3.1:
     - build:linux:gcc5.3.1
   script:
     - cd build
+    - ls
+    - pwd
     - ctest -C Release
     - ls
   artifacts:
@@ -209,6 +211,8 @@ test:linux:gcc6.3.1:
     - build:linux:gcc6.3.1
   script:
     - cd build
+    - ls
+    - pwd
     - ctest -C Release
     - ls
   artifacts:
