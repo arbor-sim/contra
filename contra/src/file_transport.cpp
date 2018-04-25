@@ -32,7 +32,7 @@
 
 namespace contra {
 
-constexpr char FileTransport::kSignature[];
+const char FileTransport::kSignature[] = {'C', 'O', 'N', 'T', 'R', 'A'};
 
 FileTransport::FileTransport(const std::string& filename)
     : filename_{filename} {}

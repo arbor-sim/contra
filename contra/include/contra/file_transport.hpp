@@ -45,8 +45,8 @@ class FileTransport {
 
   std::string filename_;
 
-  static constexpr char kSignature[]{'C', 'O', 'N', 'T', 'R', 'A'};
-  static constexpr unsigned int kSignatureLength{6};
+  static const unsigned int kSignatureLength{6};
+  static const char kSignature[kSignatureLength];
 };
 
 }  // namespace contra
