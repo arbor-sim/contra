@@ -44,16 +44,20 @@ Packet FileTransport::Receive() {
   Packet return_packet;
 
   std::ifstream stream(filename_, std::fstream::binary);
-  char signature_buffer[kSignatureLength + 1]{};
-  std::fill_n(signature_buffer, kSignatureLength + 1, 0x00);
-  stream.read(signature_buffer, kSignatureLength);
 
-  if (std::string(signature_buffer) == std::string(kSignature)) {
+  if (ReadAndCheckSignature(&stream)) {
     return_packet =
         Packet{std::string{"Foo"}, std::vector<uint8_t>{0x01u, 0x03u, 0x02u}};
   }
 
   return return_packet;
+}
+
+bool FileTransport::ReadAndCheckSignature(std::ifstream* stream) const {
+  char signature_buffer[kSignatureLength + 1]{};
+  std::fill_n(signature_buffer, kSignatureLength + 1, 0x00);
+  stream->read(signature_buffer, kSignatureLength);
+  return std::string(signature_buffer) == std::string(kSignature);
 }
 
 }  // namespace contra

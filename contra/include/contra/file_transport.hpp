@@ -36,6 +36,8 @@ class FileTransport {
   Packet Receive();
 
  private:
+  bool ReadAndCheckSignature(std::ifstream* stream) const;
+
   std::string filename_;
 
   constexpr static char kSignature[]{"CONTRA"};
