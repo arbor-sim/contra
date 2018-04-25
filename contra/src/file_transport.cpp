@@ -25,6 +25,7 @@
 
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -39,6 +40,12 @@ FileTransport::FileTransport(const std::string& filename)
 
 void FileTransport::Send(const Packet& packet) {
   std::ofstream stream(filename_, std::fstream::binary);
+
+  if (!stream.is_open()) {
+    std::cerr << "Failed to open " << filename_ << " for reading" << std::endl;
+    return;
+  }
+
   stream << kSignature;
 
   WriteSchema(packet.schema, &stream);
@@ -64,6 +71,11 @@ Packet FileTransport::Receive() {
   Packet return_packet;
 
   std::ifstream stream(filename_, std::fstream::binary);
+
+  if (!stream.is_open()) {
+    std::cerr << "Failed to open " << filename_ << " for writing" << std::endl;
+    return return_packet;
+  }
 
   if (!ReadAndCheckSignature(&stream)) {
     return return_packet;
