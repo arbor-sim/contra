@@ -42,7 +42,7 @@ void FileTransport::Send(const Packet& packet) {
   std::ofstream stream(filename_, std::fstream::binary);
 
   if (!stream.is_open()) {
-    std::cerr << "Failed to open " << filename_ << " for reading" << std::endl;
+    std::cout << "Failed to open " << filename_ << " for reading" << std::endl;
     return;
   }
 
@@ -73,7 +73,7 @@ Packet FileTransport::Receive() {
   std::ifstream stream(filename_, std::fstream::binary);
 
   if (!stream.is_open()) {
-    std::cerr << "Failed to open " << filename_ << " for writing" << std::endl;
+    std::cout << "Failed to open " << filename_ << " for writing" << std::endl;
     return return_packet;
   }
 

@@ -26,8 +26,11 @@
 
 #include "contra/file_transport.hpp"
 #include "contra/packet.hpp"
+#include "utilities/cout_capture.hpp"
 
 SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
+  test_utilities::CoutCapture capture;
+
   const std::string any_string{"Foo"};
   const std::vector<uint8_t> any_data{0x01u, 0x03u, 0x02u};
 
@@ -38,4 +41,6 @@ SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
 
   REQUIRE(received.schema == any_string);
   REQUIRE(received.data == any_data);
+
+  REQUIRE(capture.ToString() == "\"\"");
 }
