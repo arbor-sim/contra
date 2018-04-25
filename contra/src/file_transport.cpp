@@ -21,6 +21,10 @@
 
 #include "contra/file_transport.hpp"
 
+#include <cstring>
+
+#include <algorithm>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -28,12 +32,28 @@
 
 namespace contra {
 
-FileTransport::FileTransport(const std::string& /*filename*/) {}
+FileTransport::FileTransport(const std::string& filename)
+    : filename_{filename} {}
 
-void FileTransport::Send(const Packet& /*packet*/) {}
+void FileTransport::Send(const Packet& /*packet*/) {
+  std::ofstream stream(filename_, std::fstream::binary);
+  stream << kSignature;
+}
 
 Packet FileTransport::Receive() {
-  return Packet{std::string{"Foo"}, std::vector<uint8_t>{0x01u, 0x03u, 0x02u}};
+  Packet return_packet;
+
+  std::ifstream stream(filename_, std::fstream::binary);
+  char signature_buffer[kSignatureLength + 1]{};
+  std::fill_n(signature_buffer, kSignatureLength + 1, 0x00);
+  stream.read(signature_buffer, kSignatureLength);
+
+  if (std::string(signature_buffer) == std::string(kSignature)) {
+    return_packet =
+        Packet{std::string{"Foo"}, std::vector<uint8_t>{0x01u, 0x03u, 0x02u}};
+  }
+
+  return return_packet;
 }
 
 }  // namespace contra

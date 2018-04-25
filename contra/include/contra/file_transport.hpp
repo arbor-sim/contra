@@ -36,6 +36,10 @@ class FileTransport {
   Packet Receive();
 
  private:
+  std::string filename_;
+
+  constexpr static char kSignature[]{"CONTRA"};
+  constexpr static unsigned int kSignatureLength{6};
 };
 
 }  // namespace contra
