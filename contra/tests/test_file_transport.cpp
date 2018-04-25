@@ -36,6 +36,9 @@ SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
 
   contra::FileTransport transport("tmp.contra");
   transport.Send(contra::Packet{any_string, any_data});
+  system("pwd");
+  system("ls -al");
+  system("ls -al contra/tests");
   REQUIRE(capture.ToString() == "\"\"");
 
   auto received = transport.Receive();

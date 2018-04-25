@@ -78,6 +78,7 @@ Packet FileTransport::Receive() {
   }
 
   if (!ReadAndCheckSignature(&stream)) {
+    std::cout << "ReadAndCheckSignature() failed" << std::endl;
     return return_packet;
   }
 
