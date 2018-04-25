@@ -45,7 +45,7 @@ class FileTransport {
 
   std::string filename_;
 
-  static constexpr char kSignature[]{"CONTRA"};
+  static constexpr char kSignature[]{'C', 'O', 'N', 'T', 'R', 'A'};
   static constexpr unsigned int kSignatureLength{6};
 };
 
