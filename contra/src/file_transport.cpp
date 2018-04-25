@@ -68,7 +68,7 @@ Packet FileTransport::Receive() {
   }
 
   return_packet.schema = ReadSchema(&stream);
-  return_packet.data = std::vector<uint8_t>{0x01u, 0x03u, 0x02u};
+  return_packet.data = ReadData(&stream);
 
   return return_packet;
 }
@@ -88,6 +88,16 @@ std::string FileTransport::ReadSchema(std::ifstream* stream) const {
   stream->read(schema.data(), size);
 
   return std::string(schema.data());
+}
+
+std::vector<uint8_t> FileTransport::ReadData(std::ifstream* stream) const {
+  std::streamsize size = 0u;
+  stream->read(reinterpret_cast<char*>(&size), sizeof(size));
+
+  std::vector<uint8_t> data(static_cast<std::size_t>(size), 0x00);
+  stream->read(reinterpret_cast<char*>(data.data()), size);
+
+  return data;
 }
 
 }  // namespace contra
