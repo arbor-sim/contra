@@ -54,6 +54,7 @@ void FileTransport::Send(const Packet& packet) {
 
 void FileTransport::WriteSchema(const std::string& schema,
                                 std::ofstream* stream) const {
+  std::cout << "schema[" << schema.length() << "]: " << schema << std::endl;
   const std::size_t size = schema.size();
   stream->write(reinterpret_cast<const char*>(&size), sizeof(size));
   *stream << schema;
@@ -61,6 +62,7 @@ void FileTransport::WriteSchema(const std::string& schema,
 
 void FileTransport::WriteData(const std::vector<uint8_t>& data,
                               std::ofstream* stream) const {
+  std::cout << "data[" << schema.length() << "]" << std::endl;
   const std::size_t size = data.size();
   stream->write(reinterpret_cast<const char*>(&size), sizeof(size));
   stream->write(reinterpret_cast<const char*>(data.data()),

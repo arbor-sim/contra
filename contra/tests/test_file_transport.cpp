@@ -31,6 +31,8 @@
 SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
   test_utilities::CoutCapture capture;
 
+  REQUIRE(sizeof(std::streamsize) == sizeof(std::size_t));
+
   const std::string any_string{"Foo"};
   const std::vector<uint8_t> any_data{0x01u, 0x03u, 0x02u};
 
