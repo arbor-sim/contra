@@ -76,8 +76,10 @@ Packet FileTransport::Receive() {
 }
 
 bool FileTransport::ReadAndCheckSignature(std::ifstream* stream) const {
-  char signature_buffer[kSignatureLength + 1]{};
-  std::fill_n(signature_buffer, kSignatureLength + 1, 0x00);
+  const std::size_t kBufferSize = kSignatureLength + 1;
+  char signature_buffer[kBufferSize];
+  std::fill(std::begin(signature_buffer),
+            std::begin(signature_buffer) + kBufferSize, 0x00);
   stream->read(signature_buffer, kSignatureLength);
   return std::string(signature_buffer) == std::string(kSignature);
 }
