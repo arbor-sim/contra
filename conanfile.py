@@ -36,5 +36,6 @@ class contra(ConanFile):
     def imports(self):
        self.copy("*.dll", dst="contra/tests/Debug", src="bin")
        self.copy("*.dll", dst="contra/tests/Release", src="bin")
+       self.copy("*.dll", dst="contra/tests", src="bin")
        self.copy("*.so", dst="contra/tests", src="lib")
        self.copy("*.dylib", dst="contra/tests", src="lib")
