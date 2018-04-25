@@ -62,7 +62,7 @@ void FileTransport::WriteSchema(const std::string& schema,
 
 void FileTransport::WriteData(const std::vector<uint8_t>& data,
                               std::ofstream* stream) const {
-  std::cout << "data[" << schema.length() << "]" << std::endl;
+  std::cout << "data[" << data.size() << "]" << std::endl;
   const std::size_t size = data.size();
   stream->write(reinterpret_cast<const char*>(&size), sizeof(size));
   stream->write(reinterpret_cast<const char*>(data.data()),
