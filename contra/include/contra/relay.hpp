@@ -43,6 +43,9 @@ class Relay {
   conduit::Node Receive();
 
  private:
+  Packet CreatePacket(const conduit::Node& node) const;
+  conduit::Node CreateNode(const Packet& packet) const;
+
   FileTransport transport_;
 };
 

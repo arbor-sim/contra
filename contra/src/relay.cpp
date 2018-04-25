@@ -24,15 +24,43 @@
 #include <fstream>
 #include <string>
 
-#include "../tests/utilities/conduit_helpers.hpp"
 #include "conduit/conduit_node.hpp"
+#include "conduit/conduit_schema.hpp"
+
+#include "contra/packet.hpp"
 
 namespace contra {
 
 Relay::Relay(const std::string& name) : transport_{name} {}
 
-void Relay::Send(const conduit::Node& /*node*/) {}
+void Relay::Send(const conduit::Node& node) {
+  const Packet packet{CreatePacket(node)};
+  transport_.Send(packet);
+}
 
-conduit::Node Relay::Receive() { return test_utilities::ANY_NODE; }
+Packet Relay::CreatePacket(const conduit::Node& node) const {
+  Packet packet;
+
+  const conduit::Schema schema{node.schema()};
+  conduit::Schema compact_schema;
+  schema.compact_to(compact_schema);
+  packet.schema = compact_schema.to_json();
+
+  node.serialize(packet.data);
+  return packet;
+}
+
+conduit::Node Relay::Receive() {
+  Packet packet{transport_.Receive()};
+  return CreateNode(packet);
+}
+
+conduit::Node Relay::CreateNode(const Packet& packet) const {
+  constexpr bool use_external_data{false};
+  return conduit::Node(
+      packet.schema,
+      const_cast<void*>(reinterpret_cast<const void*>(packet.data.data())),
+      use_external_data);
+}
 
 }  // namespace contra
