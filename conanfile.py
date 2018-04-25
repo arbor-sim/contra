@@ -27,7 +27,13 @@ class contra(ConanFile):
     description = """Contra, a lightweigth transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
 
-    requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
-                 ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
-                 ("cppcheck/1.82@RWTH-VR/thirdparty"))
+    requires = (("boost_interprocess/1.66.0@bincrafters/testing"),
+                ("catch/1.12.0@RWTH-VR/thirdparty"),
+                ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
+                ("cppcheck/1.82@RWTH-VR/thirdparty"))
     generators = "cmake"
+    
+    def configure(self):
+      self.options["boost"].header_only = True
+      self.options["boost_python"].python_version = 2.7
+    
