@@ -35,9 +35,27 @@ namespace contra {
 FileTransport::FileTransport(const std::string& filename)
     : filename_{filename} {}
 
-void FileTransport::Send(const Packet& /*packet*/) {
+void FileTransport::Send(const Packet& packet) {
   std::ofstream stream(filename_, std::fstream::binary);
   stream << kSignature;
+
+  WriteSchema(packet.schema, &stream);
+  WriteData(packet.data, &stream);
+}
+
+void FileTransport::WriteSchema(const std::string& schema,
+                                std::ofstream* stream) const {
+  const std::size_t size = schema.size();
+  stream->write(reinterpret_cast<const char*>(&size), sizeof(size));
+  *stream << schema;
+}
+
+void FileTransport::WriteData(const std::vector<uint8_t>& data,
+                              std::ofstream* stream) const {
+  const std::size_t size = data.size();
+  stream->write(reinterpret_cast<const char*>(&size), sizeof(size));
+  stream->write(reinterpret_cast<const char*>(data.data()),
+                static_cast<std::streamsize>(data.size()));
 }
 
 Packet FileTransport::Receive() {
@@ -45,10 +63,12 @@ Packet FileTransport::Receive() {
 
   std::ifstream stream(filename_, std::fstream::binary);
 
-  if (ReadAndCheckSignature(&stream)) {
-    return_packet =
-        Packet{std::string{"Foo"}, std::vector<uint8_t>{0x01u, 0x03u, 0x02u}};
+  if (!ReadAndCheckSignature(&stream)) {
+    return return_packet;
   }
+
+  return_packet =
+      Packet{std::string{"Foo"}, std::vector<uint8_t>{0x01u, 0x03u, 0x02u}};
 
   return return_packet;
 }
