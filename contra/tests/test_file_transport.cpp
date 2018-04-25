@@ -36,8 +36,10 @@ SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
 
   contra::FileTransport transport("tmp.contra");
   transport.Send(contra::Packet{any_string, any_data});
+  REQUIRE(capture.ToString() == "\"\"");
 
   auto received = transport.Receive();
+  REQUIRE(capture.ToString() == "\"\"");
 
   REQUIRE(received.schema == any_string);
   REQUIRE(received.data == any_data);
