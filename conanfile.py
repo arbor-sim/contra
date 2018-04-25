@@ -33,6 +33,9 @@ class contra(ConanFile):
                  ("conduit/0.3.1@RWTH-VR/thirdparty"))
     generators = "cmake"
 
+    def configure(self):
+        self.options["conduit"].shared = False
+
     def imports(self):
        self.copy("*.dll", dst="contra/tests/Debug", src="bin")
        self.copy("*.dll", dst="contra/tests/Release", src="bin")
