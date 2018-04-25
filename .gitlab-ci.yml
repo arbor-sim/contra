@@ -194,6 +194,10 @@ test:linux:gcc5.3.1:
   script:
     - cd build
     - ctest -C Release
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
 
 test:linux:gcc6.3.1:
   stage: test
@@ -205,6 +209,10 @@ test:linux:gcc6.3.1:
   script:
     - cd build
     - ctest -C Release
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
 
 #-------------------------------------------------------------------------------
 #  MacOS
