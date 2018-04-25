@@ -67,8 +67,8 @@ Packet FileTransport::Receive() {
     return return_packet;
   }
 
-  return_packet =
-      Packet{std::string{"Foo"}, std::vector<uint8_t>{0x01u, 0x03u, 0x02u}};
+  return_packet.schema = ReadSchema(&stream);
+  return_packet.data = std::vector<uint8_t>{0x01u, 0x03u, 0x02u};
 
   return return_packet;
 }
@@ -78,6 +78,16 @@ bool FileTransport::ReadAndCheckSignature(std::ifstream* stream) const {
   std::fill_n(signature_buffer, kSignatureLength + 1, 0x00);
   stream->read(signature_buffer, kSignatureLength);
   return std::string(signature_buffer) == std::string(kSignature);
+}
+
+std::string FileTransport::ReadSchema(std::ifstream* stream) const {
+  std::streamsize size = 0u;
+  stream->read(reinterpret_cast<char*>(&size), sizeof(size));
+
+  std::vector<char> schema(static_cast<std::size_t>(size + 1), 0x00);
+  stream->read(schema.data(), size);
+
+  return std::string(schema.data());
 }
 
 }  // namespace contra

@@ -40,6 +40,7 @@ class FileTransport {
   void WriteSchema(const std::string& schema, std::ofstream* stream) const;
   void WriteData(const std::vector<uint8_t>& data, std::ofstream* stream) const;
   bool ReadAndCheckSignature(std::ifstream* stream) const;
+  std::string ReadSchema(std::ifstream* stream) const;
 
   std::string filename_;
 
