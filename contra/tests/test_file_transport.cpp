@@ -29,8 +29,6 @@
 #include "utilities/cout_capture.hpp"
 
 SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
-  test_utilities::CoutCapture capture;
-
   REQUIRE(sizeof(std::streamsize) == sizeof(std::size_t));
 
   const std::string any_string{"Foo"};
@@ -38,17 +36,9 @@ SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
 
   contra::FileTransport transport("tmp.contra");
   transport.Send(contra::Packet{any_string, any_data});
-  system("hexdump tmp.contra");
-  system("pwd");
-  system("ls -al");
-  system("ls -al contra/tests");
-  REQUIRE(capture.ToString() == "\"\"");
 
   auto received = transport.Receive();
-  REQUIRE(capture.ToString() == "\"\"");
 
   REQUIRE(received.schema == any_string);
   REQUIRE(received.data == any_data);
-
-  REQUIRE(capture.ToString() == "\"\"");
 }

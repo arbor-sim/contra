@@ -41,21 +41,13 @@ FileTransport::FileTransport(const std::string& filename)
 void FileTransport::Send(const Packet& packet) {
   std::ofstream stream(filename_, std::fstream::binary);
 
-  if (!stream.is_open()) {
-    std::cout << "Failed to open " << filename_ << " for reading" << std::endl;
-    return;
-  }
-
-  stream << kSignature;
-
+  stream.write(kSignature, 6);
   WriteSchema(packet.schema, &stream);
   WriteData(packet.data, &stream);
 }
 
 void FileTransport::WriteSchema(const std::string& schema,
                                 std::ofstream* stream) const {
-  std::cout << "sizeof(std::size_t): " << sizeof(std::size_t) << std::endl;
-  std::cout << "schema[" << schema.length() << "]: " << schema << std::endl;
   const std::size_t size = schema.size();
   stream->write(reinterpret_cast<const char*>(&size), sizeof(size));
   *stream << schema;
@@ -63,8 +55,6 @@ void FileTransport::WriteSchema(const std::string& schema,
 
 void FileTransport::WriteData(const std::vector<uint8_t>& data,
                               std::ofstream* stream) const {
-  std::cout << "sizeof(std::size_t): " << sizeof(std::size_t) << std::endl;
-  std::cout << "data[" << data.size() << "]" << std::endl;
   const std::size_t size = data.size();
   stream->write(reinterpret_cast<const char*>(&size), sizeof(size));
   stream->write(reinterpret_cast<const char*>(data.data()),
@@ -76,13 +66,7 @@ Packet FileTransport::Receive() {
 
   std::ifstream stream(filename_, std::fstream::binary);
 
-  if (!stream.is_open()) {
-    std::cout << "Failed to open " << filename_ << " for writing" << std::endl;
-    return return_packet;
-  }
-
   if (!ReadAndCheckSignature(&stream)) {
-    std::cout << "ReadAndCheckSignature() failed" << std::endl;
     return return_packet;
   }
 
