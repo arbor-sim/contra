@@ -21,6 +21,9 @@
 
 #include "contra/shared_memory_transport.hpp"
 
+#include <algorithm>
+#include <vector>
+
 namespace contra {
 
 SharedMemoryTransport::SharedMemoryTransport(const Create&)

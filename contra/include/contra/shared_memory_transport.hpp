@@ -22,8 +22,14 @@
 #ifndef CONTRA_INCLUDE_CONTRA_SHARED_MEMORY_TRANSPORT_HPP_
 #define CONTRA_INCLUDE_CONTRA_SHARED_MEMORY_TRANSPORT_HPP_
 
+#include <vector>
+
+#include "contra/suppress_warnings.hpp"
+
+SUPPRESS_WARNINGS_BEGIN
 #include "boost/interprocess/allocators/allocator.hpp"
 #include "boost/interprocess/managed_shared_memory.hpp"
+SUPPRESS_WARNINGS_END
 
 namespace contra {
 
