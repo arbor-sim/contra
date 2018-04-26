@@ -26,7 +26,7 @@
 #include "utilities/conduit_helpers.hpp"
 #include "utilities/conduit_node_helper.hpp"
 
-SCENARIO("Data gets transported", "[contra][contra::Relay][.]") {
+SCENARIO("Data gets transported", "[contra][contra::Relay]") {
   contra::Relay relay("relay.contra");
 
   relay.Send(test_utilities::ANY_NODE);
