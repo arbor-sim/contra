@@ -21,13 +21,14 @@
 
 #include "catch/catch.hpp"
 
+#include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
 
 #include "utilities/conduit_helpers.hpp"
 #include "utilities/conduit_node_helper.hpp"
 
-SCENARIO("Data gets transported", "[contra][contra::Relay]") {
-  contra::Relay relay("relay.contra");
+SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
+  contra::Relay<contra::FileTransport> relay("relay_file_transport.contra");
 
   relay.Send(test_utilities::ANY_NODE);
 
