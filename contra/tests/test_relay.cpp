@@ -23,12 +23,25 @@
 
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
+#include "contra/shared_memory_transport.hpp"
 
 #include "utilities/conduit_helpers.hpp"
 #include "utilities/conduit_node_helper.hpp"
 
 SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
   contra::Relay<contra::FileTransport> relay("relay_file_transport.contra");
+
+  relay.Send(test_utilities::ANY_NODE);
+
+  conduit::Node received{relay.Receive()};
+
+  REQUIRE_THAT(received, Equals(test_utilities::ANY_NODE));
+}
+
+SCENARIO("Data gets transported via SharedMemoryTransport",
+         "[contra][contra::Relay]") {
+  contra::Relay<contra::SharedMemoryTransport> relay{
+      contra::SharedMemoryTransport::Create()};
 
   relay.Send(test_utilities::ANY_NODE);
 

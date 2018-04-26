@@ -22,8 +22,10 @@
 #ifndef CONTRA_INCLUDE_CONTRA_SHARED_MEMORY_TRANSPORT_HPP_
 #define CONTRA_INCLUDE_CONTRA_SHARED_MEMORY_TRANSPORT_HPP_
 
+#include <string>
 #include <vector>
 
+#include "contra/packet.hpp"
 #include "contra/suppress_warnings.hpp"
 
 SUPPRESS_WARNINGS_BEGIN
@@ -69,6 +71,17 @@ class SharedMemoryTransport {
 
   void Store(const Packet& packet);
   std::vector<Packet> Read();
+
+  inline void Send(const contra::Packet& packet) {
+    Store({std::vector<char>(packet.schema.begin(), packet.schema.end()),
+           packet.data});
+  }
+
+  inline contra::Packet Receive() {
+    auto packet = Read().front();
+    return {std::string(packet.schema.begin(), packet.schema.end()),
+            packet.data};
+  }
 
   bool IsEmpty() const;
 
