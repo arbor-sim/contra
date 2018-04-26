@@ -34,7 +34,8 @@ class contra(ConanFile):
     generators = "cmake"
 
     def configure(self):
-        self.options["conduit"].shared = False
+        if (self.settings.os == "Windows"):
+            self.options["conduit"].shared = False
 
     def imports(self):
        self.copy("*.dll", dst="contra/tests/Debug", src="bin")
