@@ -41,7 +41,7 @@ FileTransport::FileTransport(const std::string& filename)
 void FileTransport::Send(const Packet& packet) {
   std::ofstream stream(filename_, std::fstream::binary);
 
-  stream.write(kSignature, 6);
+  stream.write(kSignature, kSignatureLength);
   WriteSchema(packet.schema, &stream);
   WriteData(packet.data, &stream);
 }
