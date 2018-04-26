@@ -29,6 +29,9 @@
 SUPPRESS_WARNINGS_BEGIN
 #include "boost/interprocess/allocators/allocator.hpp"
 #include "boost/interprocess/managed_shared_memory.hpp"
+#ifdef _WIN32
+#include "boost/interprocess/managed_windows_shared_memory.hpp"
+#endif
 SUPPRESS_WARNINGS_END
 
 namespace contra {
@@ -43,7 +46,12 @@ class SharedMemoryTransport {
     std::vector<uint8_t> data;
   };
 
+#ifdef _WIN32
+  using ManagedSharedMemory =
+      boost::interprocess::managed_windows_shared_memory;
+#else
   using ManagedSharedMemory = boost::interprocess::managed_shared_memory;
+#endif
   using SegmentManager = ManagedSharedMemory::segment_manager;
   using Allocator = boost::interprocess::allocator<Packet, SegmentManager>;
   using PacketStorage = std::vector<Packet, Allocator>;
