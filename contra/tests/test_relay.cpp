@@ -27,6 +27,7 @@
 
 #include "utilities/conduit_helpers.hpp"
 #include "utilities/conduit_node_helper.hpp"
+#include "utilities/reset_shared_memory.hpp"
 
 SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
   contra::Relay<contra::FileTransport> relay("relay_file_transport.contra");
@@ -40,6 +41,7 @@ SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
 
 SCENARIO("Data gets transported via SharedMemoryTransport",
          "[contra][contra::Relay][.]") {
+  test_utilities::ResetSharedMemory();
   contra::Relay<contra::SharedMemoryTransport> relay{
       contra::SharedMemoryTransport::Create()};
 

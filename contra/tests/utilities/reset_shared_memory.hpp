@@ -19,25 +19,15 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#include "catch/catch.hpp"
+#ifndef CONTRA_TESTS_UTILITIES_RESET_SHARED_MEMORY_HPP_
+#define CONTRA_TESTS_UTILITIES_RESET_SHARED_MEMORY_HPP_
 
 #include "contra/shared_memory_transport.hpp"
-#include "utilities/reset_shared_memory.hpp"
 
-SCENARIO("Packet shared memory creation",
-         "[contra][contra::SharedMemoryTransport]") {
-  GIVEN("A shared memory segment") {}
-  test_utilities::ResetSharedMemory();
-  contra::SharedMemoryTransport segment{
-      contra::SharedMemoryTransport::Create()};
-  WHEN("I ask it for its free size") {
-    auto free_size_after_creation = segment.GetFreeSize();
-    THEN("it is > 0") { REQUIRE(free_size_after_creation > 0); }
-  }
+namespace test_utilities {
 
-  WHEN("I read data from the new segment") {
-    THEN("it does not throw") { REQUIRE_NOTHROW(segment.Read()); }
-    THEN("it is empty") { REQUIRE(segment.Read().empty()); }
-  }
-  segment.Destroy();
-}
+void ResetSharedMemory();
+
+}  // namespace test_utilities
+
+#endif  // CONTRA_TESTS_UTILITIES_RESET_SHARED_MEMORY_HPP_
