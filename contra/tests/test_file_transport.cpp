@@ -41,4 +41,5 @@ SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
 
   REQUIRE(received.schema == any_string);
   REQUIRE(received.data == any_data);
+  REQUIRE(true == false);
 }
