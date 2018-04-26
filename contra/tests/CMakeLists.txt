@@ -19,8 +19,8 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
-file(GLOB CONTRA_TEST_SOURCES *.cpp)
-file(GLOB CONTRA_TEST_HEADERS *.hpp)
+file(GLOB_RECURSE  CONTRA_TEST_SOURCES *.cpp)
+file(GLOB_RECURSE  CONTRA_TEST_HEADERS *.hpp)
 
 rwthvr_add_executable(
   NAME contra_tests
@@ -30,7 +30,7 @@ rwthvr_add_executable(
   )
   
 target_include_directories(contra_tests
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
   )
 set(CONTRA_TEST_ARGUMENTS ""

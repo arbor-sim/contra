@@ -29,5 +29,17 @@ class contra(ConanFile):
 
     requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
                  ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
-                 ("cppcheck/1.82@RWTH-VR/thirdparty"))
+                 ("cppcheck/1.82@RWTH-VR/thirdparty"),
+                 ("conduit/0.3.1@RWTH-VR/thirdparty"))
     generators = "cmake"
+
+    def configure(self):
+        if (self.settings.os == "Windows"):
+            self.options["conduit"].shared = False
+
+    def imports(self):
+       self.copy("*.dll", dst="contra/tests/Debug", src="bin")
+       self.copy("*.dll", dst="contra/tests/Release", src="bin")
+       self.copy("*.dll", dst="contra/tests", src="bin")
+       self.copy("*.so", dst="contra/tests", src="lib")
+       self.copy("*.dylib", dst="contra/tests", src="lib")
