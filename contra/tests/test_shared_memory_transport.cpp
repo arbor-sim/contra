@@ -26,6 +26,7 @@
 
 #include "contra/shared_memory_transport.hpp"
 #include "utilities/reset_shared_memory.hpp"
+#include "utilities/test_data.hpp"
 
 namespace {
 
@@ -82,7 +83,7 @@ SCENARIO("Packet shared memory access",
   }
 
   GIVEN("A shared memory segment") {
-    contra::SharedMemoryTransport segment{
+    contra::SharedMemoryTransport segment_send{
         contra::SharedMemoryTransport::Create()};
 
     THEN("Creating a shared memory access does not throw an exception.") {
@@ -90,12 +91,18 @@ SCENARIO("Packet shared memory access",
           contra::SharedMemoryTransport::Access()});
     }
 
-    WHEN("A Packet is stored in the segment") {
-      THEN("It can be read from the acces segment") {
+    contra::SharedMemoryTransport segment_receive{
+        contra::SharedMemoryTransport::Access()};
 
+    WHEN("A Packet is send into the segment") {
+      segment_send.Send(test_utilities::anypacket);
+      THEN("It can be read from the acces segment") {
+        auto received_packet = segment_receive.Receive();
+        CHECK(received_packet.schema == test_utilities::anypacket.schema);
+        CHECK(received_packet.data  == test_utilities::anypacket.data);
       }
     }
 
-    segment.Destroy();
+    segment_send.Destroy();
   }
 }
