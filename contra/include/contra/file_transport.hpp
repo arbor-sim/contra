@@ -34,7 +34,7 @@ class FileTransport {
   explicit FileTransport(const std::string& filename);
 
   void Send(const Packet& packet);
-  Packet Receive();
+  std::vector<Packet> Receive();
 
  private:
   void WriteSchema(const std::string& schema, std::ofstream* stream) const;

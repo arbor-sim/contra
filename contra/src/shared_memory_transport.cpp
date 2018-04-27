@@ -50,11 +50,11 @@ std::size_t SharedMemoryTransport::GetFreeSize() const {
   return segment_.get_free_memory();
 }
 
-void SharedMemoryTransport::Store(const Packet& packet) {
+void SharedMemoryTransport::Send(const Packet& packet) {
   packet_storage_.push_back(packet);
 }
 
-std::vector<Packet> SharedMemoryTransport::Read() {
+std::vector<Packet> SharedMemoryTransport::Receive() {
   std::vector<Packet> temp;
   if (packet_storage_.empty()) {
     std::copy(packet_storage_.begin(), packet_storage_.end(),

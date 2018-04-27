@@ -25,6 +25,7 @@
 #include <string>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 #include "conduit/conduit_node.hpp"
 
@@ -46,7 +47,7 @@ class Relay {
   Relay& operator=(Relay&&) = delete;
 
   void Send(const conduit::Node& node);
-  conduit::Node Receive();
+  std::vector<conduit::Node> Receive();
 
  private:
   Packet CreatePacket(const conduit::Node& node) const;
@@ -84,9 +85,14 @@ Packet Relay<Transport>::CreatePacket(const conduit::Node& node) const {
 }
 
 template <typename Transport>
-conduit::Node Relay<Transport>::Receive() {
-  Packet packet{transport_.Receive()};
-  return CreateNode(packet);
+std::vector<conduit::Node> Relay<Transport>::Receive() {
+  const auto packets = transport_.Receive();
+  std::vector<conduit::Node> nodes;
+  nodes.reserve(packets.size());
+  for (const auto& packet : packets) {
+    nodes.push_back(CreateNode(packet));
+  }
+  return nodes;
 }
 
 template <typename Transport>

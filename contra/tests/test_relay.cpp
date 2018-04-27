@@ -34,9 +34,10 @@ SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
 
   relay.Send(test_utilities::ANY_NODE);
 
-  conduit::Node received{relay.Receive()};
+  auto received_nodes = relay.Receive();
 
-  REQUIRE_THAT(received, Equals(test_utilities::ANY_NODE));
+  REQUIRE(received_nodes.size() == 1);
+  REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
 }
 
 SCENARIO("Data gets transported via SharedMemoryTransport",
@@ -47,7 +48,8 @@ SCENARIO("Data gets transported via SharedMemoryTransport",
 
   relay.Send(test_utilities::ANY_NODE);
 
-  conduit::Node received{relay.Receive()};
+  auto received_nodes = relay.Receive();
 
-  REQUIRE_THAT(received, Equals(test_utilities::ANY_NODE));
+  REQUIRE(received_nodes.size() == 1);
+  REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
 }

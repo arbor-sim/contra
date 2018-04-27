@@ -64,19 +64,8 @@ class SharedMemoryTransport {
 
   std::size_t GetFreeSize() const;
 
-  void Store(const Packet& packet);
-  std::vector<Packet> Read();
-
-  inline void Send(const contra::Packet& packet) {
-    Store(
-        {std::string(packet.schema.begin(), packet.schema.end()), packet.data});
-  }
-
-  inline contra::Packet Receive() {
-    auto packet = Read().front();
-    return {std::string(packet.schema.begin(), packet.schema.end()),
-            packet.data};
-  }
+  void Send(const Packet& packet);
+  std::vector<Packet> Receive();
 
   static constexpr const char* SegmentName() { return "packet-shared-memory"; }
   static constexpr const char* PacketStorageName() { return "PacketStorage"; }
