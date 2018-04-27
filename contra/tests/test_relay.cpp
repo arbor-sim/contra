@@ -40,16 +40,16 @@ SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
   REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
 }
 
-SCENARIO("Data gets transported via SharedMemoryTransport",
-         "[contra][contra::Relay]") {
-  test_utilities::ResetSharedMemory();
-  contra::Relay<contra::SharedMemoryTransport> relay{
-      contra::SharedMemoryTransport::Create()};
+ SCENARIO("Data gets transported via SharedMemoryTransport",
+          "[contra][contra::Relay]") {
+   test_utilities::ResetSharedMemory();
+   contra::Relay<contra::SharedMemoryTransport> relay{
+       contra::SharedMemoryTransport::Create()};
 
-  relay.Send(test_utilities::ANY_NODE);
+   relay.Send(test_utilities::ANY_NODE);
 
-  auto received_nodes = relay.Receive();
+   auto received_nodes = relay.Receive();
 
-  REQUIRE(received_nodes.size() == 1);
-  REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
-}
+   REQUIRE(received_nodes.size() == 1);
+   REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
+ }

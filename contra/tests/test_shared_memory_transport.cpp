@@ -83,7 +83,7 @@ SCENARIO("Packet shared memory access",
   }
 
   GIVEN("A shared memory segment") {
-    contra::SharedMemoryTransport segment_send{
+    contra::SharedMemoryTransport segment_create{
         contra::SharedMemoryTransport::Create()};
 
     THEN("Creating a shared memory access does not throw an exception.") {
@@ -91,18 +91,19 @@ SCENARIO("Packet shared memory access",
           contra::SharedMemoryTransport::Access()});
     }
 
-    contra::SharedMemoryTransport segment_receive{
+    contra::SharedMemoryTransport segment_acces{
         contra::SharedMemoryTransport::Access()};
 
     WHEN("A Packet is send into the segment") {
-      segment_send.Send(test_utilities::anypacket);
+      segment_create.Send(test_utilities::anypacket);
       THEN("It can be read from the acces segment") {
-        auto received_packet = segment_receive.Receive();
-        CHECK(received_packet.schema == test_utilities::anypacket.schema);
-        CHECK(received_packet.data == test_utilities::anypacket.data);
+        auto received_packet = segment_acces.Receive();
+        CHECK(received_packet.front().schema ==
+              test_utilities::anypacket.schema);
+        CHECK(received_packet.back().data == test_utilities::anypacket.data);
       }
     }
 
-      segment_send.Destroy();
-    }
+    segment_create.Destroy();
   }
+}

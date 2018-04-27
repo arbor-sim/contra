@@ -76,11 +76,11 @@ class SharedMemoryTransport {
   SharedMemoryTransport& operator=(SharedMemoryTransport&&) = delete;
 
  private:
-  PacketStorage ConstructPacketStorage();
-  PacketStorage FindPacketStorage();
+  PacketStorage* ConstructPacketStorage();
+  PacketStorage* FindPacketStorage();
 
   ManagedSharedMemory segment_;
-  PacketStorage packet_storage_;
+  PacketStorage* packet_storage_;
 };
 
 }  // namespace contra

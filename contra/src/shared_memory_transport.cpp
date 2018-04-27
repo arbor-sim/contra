@@ -22,6 +22,7 @@
 #include "contra/shared_memory_transport.hpp"
 
 #include <algorithm>
+#include <iostream>
 #include <vector>
 
 namespace contra {
@@ -31,9 +32,9 @@ SharedMemoryTransport::SharedMemoryTransport(const Create&)
                InitialSize()},
       packet_storage_{ConstructPacketStorage()} {}
 
-SharedMemoryTransport::PacketStorage
+SharedMemoryTransport::PacketStorage*
 SharedMemoryTransport::ConstructPacketStorage() {
-  return *segment_.construct<PacketStorage>(PacketStorageName())(
+  return segment_.construct<PacketStorage>(PacketStorageName())(
       Allocator(segment_.get_segment_manager()));
 }
 
@@ -41,9 +42,9 @@ SharedMemoryTransport::SharedMemoryTransport(const Access&)
     : segment_{boost::interprocess::open_only, SegmentName()},
       packet_storage_{FindPacketStorage()} {}
 
-SharedMemoryTransport::PacketStorage
+SharedMemoryTransport::PacketStorage*
 SharedMemoryTransport::FindPacketStorage() {
-  return *segment_.find<PacketStorage>(PacketStorageName()).first;
+  return segment_.find<PacketStorage>(PacketStorageName()).first;
 }
 
 std::size_t SharedMemoryTransport::GetFreeSize() const {
@@ -51,17 +52,17 @@ std::size_t SharedMemoryTransport::GetFreeSize() const {
 }
 
 void SharedMemoryTransport::Send(const Packet& packet) {
-  packet_storage_.push_back(packet);
+  packet_storage_->push_back(packet);
 }
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
-  std::vector<Packet> temp;
-  if (packet_storage_.empty()) {
-    std::copy(packet_storage_.begin(), packet_storage_.end(),
-              back_inserter(temp));
-    packet_storage_.clear();
+  std::vector<Packet> received_packets;
+  if (!packet_storage_->empty()) {
+    std::copy(packet_storage_->begin(), packet_storage_->end(),
+              back_inserter(received_packets));
+    packet_storage_->clear();
   }
-  return temp;
+  return received_packets;
 }
 
 void SharedMemoryTransport::Destroy() {
