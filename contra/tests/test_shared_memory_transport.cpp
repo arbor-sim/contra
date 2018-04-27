@@ -19,25 +19,41 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
+#include <vector>
+
 #include "catch/catch.hpp"
 
 #include "contra/shared_memory_transport.hpp"
 #include "utilities/reset_shared_memory.hpp"
 
+namespace {
+
+const std::vector<contra::SharedMemoryTransport::Packet> NONEMPTY_PACKET_LIST{
+    contra::SharedMemoryTransport::Packet()};
+
+}  // namespace
+
 SCENARIO("Packet shared memory creation",
          "[contra][contra::SharedMemoryTransport]") {
-  GIVEN("A shared memory segment") {}
   test_utilities::ResetSharedMemory();
-  contra::SharedMemoryTransport segment{
-      contra::SharedMemoryTransport::Create()};
-  WHEN("I ask it for its free size") {
-    auto free_size_after_creation = segment.GetFreeSize();
-    THEN("it is > 0") { REQUIRE(free_size_after_creation > 0); }
-  }
+  GIVEN("A shared memory segment") {
+    contra::SharedMemoryTransport segment{
+        contra::SharedMemoryTransport::Create()};
 
-  WHEN("I read data from the new segment") {
-    THEN("it does not throw") { REQUIRE_NOTHROW(segment.Read()); }
-    THEN("it is empty") { REQUIRE(segment.Read().empty()); }
+    WHEN("I ask it for its free size") {
+      const auto free_size_after_creation = segment.GetFreeSize();
+      THEN("it is > 0") { REQUIRE(free_size_after_creation > 0); }
+    }
+
+    WHEN("I read data from the new segment") {
+      std::vector<contra::SharedMemoryTransport::Packet> received_packets{
+          ::NONEMPTY_PACKET_LIST};
+      auto do_read = [&]() { received_packets = segment.Read(); };
+      THEN("it does not throw and is empty") {
+        REQUIRE_NOTHROW(do_read());
+        REQUIRE(received_packets.empty());
+      }
+    }
+    segment.Destroy();
   }
-  segment.Destroy();
 }
