@@ -48,7 +48,7 @@ SCENARIO("Packet shared memory creation",
 
     WHEN("I read data from the new segment") {
       std::vector<contra::Packet> received_packets{::NONEMPTY_PACKET_LIST};
-      auto do_read = [&]() { received_packets = segment.Read(); };
+      auto do_read = [&]() { received_packets = segment.Receive(); };
 
       THEN("it does not throw and is empty") {
         REQUIRE_NOTHROW(do_read());

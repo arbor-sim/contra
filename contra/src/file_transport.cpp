@@ -61,19 +61,19 @@ void FileTransport::WriteData(const std::vector<uint8_t>& data,
                 static_cast<std::streamsize>(data.size()));
 }
 
-Packet FileTransport::Receive() {
+std::vector<Packet> FileTransport::Receive() {
   Packet return_packet;
 
   std::ifstream stream(filename_, std::fstream::binary);
 
   if (!ReadAndCheckSignature(&stream)) {
-    return return_packet;
+    return {};
   }
 
   return_packet.schema = ReadSchema(&stream);
   return_packet.data = ReadData(&stream);
 
-  return return_packet;
+  return {return_packet};
 }
 
 bool FileTransport::ReadAndCheckSignature(std::ifstream* stream) const {
