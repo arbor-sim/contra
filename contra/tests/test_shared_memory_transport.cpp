@@ -19,6 +19,7 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
+#include <iostream>
 #include <vector>
 
 #include "catch/catch.hpp"
@@ -54,6 +55,17 @@ SCENARIO("Packet shared memory creation",
         REQUIRE(received_packets.empty());
       }
     }
+
+    WHEN("I request a second shared memory segment") {
+      const auto create_second_segment = []() {
+        contra::SharedMemoryTransport segment2{
+            contra::SharedMemoryTransport::Create()};
+      };
+      THEN("It throws an exception") {
+        REQUIRE_THROWS(create_second_segment());
+      }
+    }
+
     segment.Destroy();
   }
 }
