@@ -95,12 +95,12 @@ SCENARIO("Packet shared memory access",
         contra::SharedMemoryTransport::Access()};
 
     WHEN("A Packet is send into the segment") {
-      segment_create.Send(test_utilities::anypacket);
+      segment_create.Send(test_utilities::ANY_PACKET);
       THEN("It can be read from the acces segment") {
         auto received_packets{segment_access.Receive()};
         CHECK(received_packets.front().schema ==
-              test_utilities::anypacket.schema);
-        CHECK(received_packets.back().data == test_utilities::anypacket.data);
+              test_utilities::ANY_PACKET.schema);
+        CHECK(received_packets.back().data == test_utilities::ANY_PACKET.data);
 
         WHEN("The memory is read a second time") {
           THEN("It is empty") {
@@ -112,9 +112,9 @@ SCENARIO("Packet shared memory access",
     }
 
     WHEN("Multiple Packets are send into the segment") {
-      segment_create.Send(test_utilities::anypacket);
-      segment_create.Send(test_utilities::anypacket);
-      segment_create.Send(test_utilities::anypacket);
+      segment_create.Send(test_utilities::ANY_PACKET);
+      segment_create.Send(test_utilities::ANY_PACKET);
+      segment_create.Send(test_utilities::ANY_PACKET);
 
       WHEN("Packets are received") {
         auto received_packets{segment_access.Receive()};
