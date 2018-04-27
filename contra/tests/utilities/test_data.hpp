@@ -27,6 +27,9 @@
 namespace test_utilities {
 
 static const contra::Packet ANY_PACKET{{"any string"}, {1, 2, 4, 3, 5, 6}};
+static const contra::Packet ANOTHER_PACKET{{"another string"},
+                                           {22, 23, 24, 26, 25}};
+static const contra::Packet THIRD_PACKET{{"third string"}, {36, 38, 37}};
 
 }  // namespace test_utilities
 

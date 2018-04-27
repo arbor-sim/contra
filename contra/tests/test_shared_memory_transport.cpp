@@ -25,6 +25,8 @@
 #include "catch/catch.hpp"
 
 #include "contra/shared_memory_transport.hpp"
+
+#include "utilities/packet_matcher.hpp"
 #include "utilities/reset_shared_memory.hpp"
 #include "utilities/test_data.hpp"
 
@@ -90,40 +92,50 @@ SCENARIO("Packet shared memory access",
       REQUIRE_NOTHROW(contra::SharedMemoryTransport{
           contra::SharedMemoryTransport::Access()});
     }
+  }
+}
 
+SCENARIO("Data gets transported through shared memory",
+         "[contra][contra::SharedMemoryTransport]") {
+  test_utilities::ResetSharedMemory();
+
+  GIVEN("A shared memory segment and access") {
+    contra::SharedMemoryTransport segment_create{
+        contra::SharedMemoryTransport::Create()};
     contra::SharedMemoryTransport segment_access{
         contra::SharedMemoryTransport::Access()};
 
-    WHEN("A Packet is send into the segment") {
+    WHEN("a single packet is sent and received") {
       segment_create.Send(test_utilities::ANY_PACKET);
-      THEN("It can be read from the acces segment") {
-        auto received_packets{segment_access.Receive()};
-        CHECK(received_packets.front().schema ==
-              test_utilities::ANY_PACKET.schema);
-        CHECK(received_packets.back().data == test_utilities::ANY_PACKET.data);
-
-        WHEN("The memory is read a second time") {
-          THEN("It is empty") {
-            auto second_packets{segment_access.Receive()};
-            REQUIRE(second_packets.empty());
-          }
-        }
+      auto received_packets{segment_access.Receive()};
+      THEN("it arrives correctly") {
+        REQUIRE(received_packets.size() == 1);
+        REQUIRE_THAT(received_packets.front(),
+                     Equals(test_utilities::ANY_PACKET));
+      }
+      THEN("the shared memory is empty") {
+        REQUIRE(segment_access.Receive().empty());
       }
     }
 
-    WHEN("Multiple Packets are send into the segment") {
+    WHEN("Multiple Packets are sent and received") {
       segment_create.Send(test_utilities::ANY_PACKET);
-      segment_create.Send(test_utilities::ANY_PACKET);
-      segment_create.Send(test_utilities::ANY_PACKET);
+      segment_create.Send(test_utilities::ANOTHER_PACKET);
+      segment_create.Send(test_utilities::THIRD_PACKET);
 
-      WHEN("Packets are received") {
-        auto received_packets{segment_access.Receive()};
-        THEN("THe Shared Memory is empty") {
-          auto second_packets{segment_access.Receive()};
-          REQUIRE(second_packets.empty());
-        }
+      auto received_packets{segment_access.Receive()};
+      THEN("they arrive correctly") {
+        REQUIRE(received_packets.size() == 3);
+        REQUIRE_THAT(received_packets[0], Equals(test_utilities::ANY_PACKET));
+        REQUIRE_THAT(received_packets[1],
+                     Equals(test_utilities::ANOTHER_PACKET));
+        REQUIRE_THAT(received_packets[2], Equals(test_utilities::THIRD_PACKET));
+      }
+      THEN("the shared memory is empty") {
+        REQUIRE(segment_access.Receive().empty());
       }
     }
+
     segment_create.Destroy();
   }
 }
