@@ -29,7 +29,7 @@
 #include "utilities/reset_shared_memory.hpp"
 
 SCENARIO("Mutex does not stall multiple sends/receives",
-         "[contra][contra::Relay]") {
+         "[contra][contra::Relay][.]") {
   GIVEN("a pair of relays") {
     contra::Relay<contra::SharedMemoryTransport> relay_segment{
         contra::SharedMemoryTransport::Create()};
