@@ -22,7 +22,6 @@
 #include "contra/shared_memory_transport.hpp"
 
 #include <algorithm>
-#include <iostream>
 #include <vector>
 
 namespace contra {

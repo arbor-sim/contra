@@ -91,19 +91,39 @@ SCENARIO("Packet shared memory access",
           contra::SharedMemoryTransport::Access()});
     }
 
-    contra::SharedMemoryTransport segment_acces{
+    contra::SharedMemoryTransport segment_access{
         contra::SharedMemoryTransport::Access()};
 
     WHEN("A Packet is send into the segment") {
       segment_create.Send(test_utilities::anypacket);
       THEN("It can be read from the acces segment") {
-        auto received_packet = segment_acces.Receive();
-        CHECK(received_packet.front().schema ==
+        auto received_packets{segment_access.Receive()};
+        CHECK(received_packets.front().schema ==
               test_utilities::anypacket.schema);
-        CHECK(received_packet.back().data == test_utilities::anypacket.data);
+        CHECK(received_packets.back().data == test_utilities::anypacket.data);
+
+        WHEN("The memory is read a second time") {
+          THEN("It is empty") {
+            auto second_packets{segment_access.Receive()};
+            REQUIRE(second_packets.empty());
+          }
+        }
       }
     }
 
+    WHEN("Multiple Packets are send into the segment") {
+      segment_create.Send(test_utilities::anypacket);
+      segment_create.Send(test_utilities::anypacket);
+      segment_create.Send(test_utilities::anypacket);
+
+      WHEN("Packets are received") {
+        auto received_packets{segment_access.Receive()};
+        THEN("THe Shared Memory is empty") {
+          auto second_packets{segment_access.Receive()};
+          REQUIRE(second_packets.empty());
+        }
+      }
+    }
     segment_create.Destroy();
   }
 }
