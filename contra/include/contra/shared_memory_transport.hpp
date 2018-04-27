@@ -78,12 +78,9 @@ class SharedMemoryTransport {
             packet.data};
   }
 
-  bool IsEmpty() const;
-
   static constexpr const char* SegmentName() { return "packet-shared-memory"; }
   static constexpr const char* PacketStorageName() { return "PacketStorage"; }
   static constexpr const char* ReferenceCountName() { return "ReferenceCount"; }
-
   static constexpr std::size_t InitialSize() { return 1073741824u; }
 
   SharedMemoryTransport& operator=(const SharedMemoryTransport&) = delete;
@@ -91,7 +88,6 @@ class SharedMemoryTransport {
 
  private:
   PacketStorage* ConstructPacketStorage();
-
   PacketStorage* FindPacketStorage();
 
   ManagedSharedMemory segment_;

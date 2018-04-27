@@ -56,15 +56,13 @@ void SharedMemoryTransport::Store(const Packet& packet) {
 
 std::vector<Packet> SharedMemoryTransport::Read() {
   std::vector<Packet> temp;
-  if (!IsEmpty()) {
+  if (packet_storage_->empty()) {
     std::copy(packet_storage_->begin(), packet_storage_->end(),
               back_inserter(temp));
     packet_storage_->clear();
   }
   return temp;
 }
-
-bool SharedMemoryTransport::IsEmpty() const { return packet_storage_->empty(); }
 
 SharedMemoryTransport::~SharedMemoryTransport() {}
 
