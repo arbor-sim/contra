@@ -78,10 +78,8 @@ SCENARIO("Packet shared memory access",
 
   GIVEN("No shared memory segment") {
     THEN("Creating a shared memory access throws an exception.") {
-      REQUIRE_THROWS_WITH(
-          contra::SharedMemoryTransport{
-              contra::SharedMemoryTransport::Access()},
-          "No such file or directory");
+      REQUIRE_THROWS(contra::SharedMemoryTransport{
+          contra::SharedMemoryTransport::Access()});
     }
   }
 
