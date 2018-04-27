@@ -40,7 +40,7 @@ SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
 }
 
 SCENARIO("Data gets transported via SharedMemoryTransport",
-         "[contra][contra::Relay][.]") {
+         "[contra][contra::Relay]") {
   test_utilities::ResetSharedMemory();
   contra::Relay<contra::SharedMemoryTransport> relay{
       contra::SharedMemoryTransport::Create()};
