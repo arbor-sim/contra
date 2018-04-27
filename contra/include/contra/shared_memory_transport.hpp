@@ -58,7 +58,7 @@ class SharedMemoryTransport {
   explicit SharedMemoryTransport(const Access&);
   SharedMemoryTransport(const SharedMemoryTransport&) = delete;
   SharedMemoryTransport(SharedMemoryTransport&&) = delete;
-  virtual ~SharedMemoryTransport();
+  virtual ~SharedMemoryTransport() {}
 
   void Destroy();
 
@@ -67,29 +67,20 @@ class SharedMemoryTransport {
   void Send(const Packet& packet);
   std::vector<Packet> Receive();
 
-  bool IsEmpty() const;
-
   static constexpr const char* SegmentName() { return "packet-shared-memory"; }
   static constexpr const char* PacketStorageName() { return "PacketStorage"; }
   static constexpr const char* ReferenceCountName() { return "ReferenceCount"; }
-
   static constexpr std::size_t InitialSize() { return 1073741824u; }
 
   SharedMemoryTransport& operator=(const SharedMemoryTransport&) = delete;
   SharedMemoryTransport& operator=(SharedMemoryTransport&&) = delete;
 
-  int GetReferenceCount() const;
-
  private:
-  PacketStorage* ConstructPacketStorage();
-  int* ConstructReferenceCount();
-
-  PacketStorage* FindPacketStorage();
-  int* FindReferenceCount();
+  PacketStorage ConstructPacketStorage();
+  PacketStorage FindPacketStorage();
 
   ManagedSharedMemory segment_;
-  PacketStorage* packet_storage_;
-  int* reference_count_;
+  PacketStorage packet_storage_;
 };
 
 }  // namespace contra

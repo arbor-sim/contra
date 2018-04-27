@@ -29,37 +29,21 @@ namespace contra {
 SharedMemoryTransport::SharedMemoryTransport(const Create&)
     : segment_{boost::interprocess::open_or_create, SegmentName(),
                InitialSize()},
-      packet_storage_{ConstructPacketStorage()},
-      reference_count_{ConstructReferenceCount()} {}
+      packet_storage_{ConstructPacketStorage()} {}
 
-SharedMemoryTransport::PacketStorage*
+SharedMemoryTransport::PacketStorage
 SharedMemoryTransport::ConstructPacketStorage() {
-  return segment_.construct<PacketStorage>(PacketStorageName())(
+  return *segment_.construct<PacketStorage>(PacketStorageName())(
       Allocator(segment_.get_segment_manager()));
-}
-
-int* SharedMemoryTransport::ConstructReferenceCount() {
-  return segment_.construct<int>(ReferenceCountName())(0);
 }
 
 SharedMemoryTransport::SharedMemoryTransport(const Access&)
     : segment_{boost::interprocess::open_only, SegmentName()},
-      packet_storage_{FindPacketStorage()},
-      reference_count_{FindReferenceCount()} {
-  ++(*reference_count_);
-}
+      packet_storage_{FindPacketStorage()} {}
 
-SharedMemoryTransport::PacketStorage*
+SharedMemoryTransport::PacketStorage
 SharedMemoryTransport::FindPacketStorage() {
-  return segment_.find<PacketStorage>(PacketStorageName()).first;
-}
-
-int* SharedMemoryTransport::FindReferenceCount() {
-  return segment_.find<int>(ReferenceCountName()).first;
-}
-
-int SharedMemoryTransport::GetReferenceCount() const {
-  return *reference_count_;
+  return *segment_.find<PacketStorage>(PacketStorageName()).first;
 }
 
 std::size_t SharedMemoryTransport::GetFreeSize() const {
@@ -67,22 +51,18 @@ std::size_t SharedMemoryTransport::GetFreeSize() const {
 }
 
 void SharedMemoryTransport::Send(const Packet& packet) {
-  packet_storage_->push_back(packet);
+  packet_storage_.push_back(packet);
 }
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
   std::vector<Packet> temp;
-  if (!IsEmpty()) {
-    std::copy(packet_storage_->begin(), packet_storage_->end(),
+  if (packet_storage_.empty()) {
+    std::copy(packet_storage_.begin(), packet_storage_.end(),
               back_inserter(temp));
-    packet_storage_->clear();
+    packet_storage_.clear();
   }
   return temp;
 }
-
-bool SharedMemoryTransport::IsEmpty() const { return packet_storage_->empty(); }
-
-SharedMemoryTransport::~SharedMemoryTransport() { --(*reference_count_); }
 
 void SharedMemoryTransport::Destroy() {
   segment_.destroy<PacketStorage>(PacketStorageName());
