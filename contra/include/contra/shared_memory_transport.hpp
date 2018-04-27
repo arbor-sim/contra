@@ -43,11 +43,6 @@ class SharedMemoryTransport {
   class Create {};
   class Access {};
 
-  struct Packet {
-    std::vector<char> schema;
-    std::vector<uint8_t> data;
-  };
-
 #ifdef _WIN32
   using ManagedSharedMemory =
       boost::interprocess::managed_windows_shared_memory;
@@ -73,8 +68,8 @@ class SharedMemoryTransport {
   std::vector<Packet> Read();
 
   inline void Send(const contra::Packet& packet) {
-    Store({std::vector<char>(packet.schema.begin(), packet.schema.end()),
-           packet.data});
+    Store(
+        {std::string(packet.schema.begin(), packet.schema.end()), packet.data});
   }
 
   inline contra::Packet Receive() {

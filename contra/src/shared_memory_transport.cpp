@@ -70,8 +70,8 @@ void SharedMemoryTransport::Store(const Packet& packet) {
   packet_storage_->push_back(packet);
 }
 
-std::vector<SharedMemoryTransport::Packet> SharedMemoryTransport::Read() {
-  std::vector<SharedMemoryTransport::Packet> temp;
+std::vector<Packet> SharedMemoryTransport::Read() {
+  std::vector<Packet> temp;
   if (!IsEmpty()) {
     std::copy(packet_storage_->begin(), packet_storage_->end(),
               back_inserter(temp));

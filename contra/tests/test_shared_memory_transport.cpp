@@ -29,8 +29,7 @@
 
 namespace {
 
-const std::vector<contra::SharedMemoryTransport::Packet> NONEMPTY_PACKET_LIST{
-    contra::SharedMemoryTransport::Packet()};
+const std::vector<contra::Packet> NONEMPTY_PACKET_LIST{contra::Packet()};
 
 }  // namespace
 
@@ -48,8 +47,7 @@ SCENARIO("Packet shared memory creation",
     }
 
     WHEN("I read data from the new segment") {
-      std::vector<contra::SharedMemoryTransport::Packet> received_packets{
-          ::NONEMPTY_PACKET_LIST};
+      std::vector<contra::Packet> received_packets{::NONEMPTY_PACKET_LIST};
       auto do_read = [&]() { received_packets = segment.Read(); };
 
       THEN("it does not throw and is empty") {
