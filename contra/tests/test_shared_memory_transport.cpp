@@ -37,6 +37,7 @@ const std::vector<contra::SharedMemoryTransport::Packet> NONEMPTY_PACKET_LIST{
 SCENARIO("Packet shared memory creation",
          "[contra][contra::SharedMemoryTransport]") {
   test_utilities::ResetSharedMemory();
+
   GIVEN("A shared memory segment") {
     contra::SharedMemoryTransport segment{
         contra::SharedMemoryTransport::Create()};
@@ -50,6 +51,7 @@ SCENARIO("Packet shared memory creation",
       std::vector<contra::SharedMemoryTransport::Packet> received_packets{
           ::NONEMPTY_PACKET_LIST};
       auto do_read = [&]() { received_packets = segment.Read(); };
+
       THEN("it does not throw and is empty") {
         REQUIRE_NOTHROW(do_read());
         REQUIRE(received_packets.empty());
@@ -64,6 +66,32 @@ SCENARIO("Packet shared memory creation",
       THEN("It throws an exception") {
         REQUIRE_THROWS(create_second_segment());
       }
+    }
+
+    segment.Destroy();
+  }
+}
+
+SCENARIO("Packet shared memory access",
+         "[contra][contra::SharedMemoryTransport]") {
+  test_utilities::ResetSharedMemory();
+
+  GIVEN("No shared memory segment") {
+    THEN("Creating a shared memory access throws an exception.") {
+      REQUIRE_THROWS_WITH(
+          contra::SharedMemoryTransport{
+              contra::SharedMemoryTransport::Access()},
+          "No such file or directory");
+    }
+  }
+
+  GIVEN("A shared memory segment") {
+    contra::SharedMemoryTransport segment{
+        contra::SharedMemoryTransport::Create()};
+
+    THEN("Creating a shared memory access does not throw an exception.") {
+      REQUIRE_NOTHROW(contra::SharedMemoryTransport{
+          contra::SharedMemoryTransport::Access()});
     }
 
     segment.Destroy();
