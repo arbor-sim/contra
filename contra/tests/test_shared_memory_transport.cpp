@@ -90,6 +90,12 @@ SCENARIO("Packet shared memory access",
           contra::SharedMemoryTransport::Access()});
     }
 
+    WHEN("A Packet is stored in the segment") {
+      THEN("It can be read from the acces segment") {
+
+      }
+    }
+
     segment.Destroy();
   }
 }

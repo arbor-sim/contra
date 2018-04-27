@@ -89,18 +89,13 @@ class SharedMemoryTransport {
   SharedMemoryTransport& operator=(const SharedMemoryTransport&) = delete;
   SharedMemoryTransport& operator=(SharedMemoryTransport&&) = delete;
 
-  int GetReferenceCount() const;
-
  private:
   PacketStorage* ConstructPacketStorage();
-  int* ConstructReferenceCount();
 
   PacketStorage* FindPacketStorage();
-  int* FindReferenceCount();
 
   ManagedSharedMemory segment_;
   PacketStorage* packet_storage_;
-  int* reference_count_;
 };
 
 }  // namespace contra
