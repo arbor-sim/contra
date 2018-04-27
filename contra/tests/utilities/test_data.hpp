@@ -26,8 +26,8 @@
 
 namespace test_utilities {
 
-contra::Packet anypacket{{"Test String"}, {1, 2, 3, 4, 5, 6}};
+static const contra::Packet anypacket{{"Test String"}, {1, 2, 3, 4, 5, 6}};
 
-}
+}  // namespace test_utilities
 
 #endif  // CONTRA_TESTS_UTILITIES_TEST_DATA_HPP_
