@@ -35,7 +35,6 @@ SUPPRESS_WARNINGS_BEGIN
 #include "boost/interprocess/sync/scoped_lock.hpp"
 #ifdef _WIN32
 #include "boost/interprocess/managed_windows_shared_memory.hpp"
-#include "boost/interprocess/sync/windows_named_mutex.hpp"
 #endif
 SUPPRESS_WARNINGS_END
 
@@ -49,11 +48,10 @@ class SharedMemoryTransport {
 #ifdef _WIN32
   using ManagedSharedMemory =
       boost::interprocess::managed_windows_shared_memory;
-  using ManagedMutex = boost::interprocess::windows_named_mutex;
 #else
   using ManagedSharedMemory = boost::interprocess::managed_shared_memory;
-  using ManagedMutex = boost::interprocess::named_mutex;
 #endif
+  using ManagedMutex = boost::interprocess::named_mutex;
   using SegmentManager = ManagedSharedMemory::segment_manager;
   using ManagedScopedLock = boost::interprocess::scoped_lock<ManagedMutex>;
 
