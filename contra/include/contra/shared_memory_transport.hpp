@@ -58,7 +58,7 @@ class SharedMemoryTransport {
   explicit SharedMemoryTransport(const Access&);
   SharedMemoryTransport(const SharedMemoryTransport&) = delete;
   SharedMemoryTransport(SharedMemoryTransport&&) = delete;
-  virtual ~SharedMemoryTransport() {}
+  virtual ~SharedMemoryTransport() = default;
 
   void Destroy();
 
