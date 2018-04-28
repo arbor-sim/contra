@@ -29,6 +29,7 @@ namespace contra {
 SharedMemoryTransport::SharedMemoryTransport(const Create&)
     : segment_{boost::interprocess::open_or_create, SegmentName(),
                InitialSize()},
+      mutex_{boost::interprocess::create_only, MutexName()},
       packet_storage_{ConstructPacketStorage()} {}
 
 SharedMemoryTransport::PacketStorage*
@@ -39,6 +40,7 @@ SharedMemoryTransport::ConstructPacketStorage() {
 
 SharedMemoryTransport::SharedMemoryTransport(const Access&)
     : segment_{boost::interprocess::open_only, SegmentName()},
+      mutex_{boost::interprocess::open_only, MutexName()},
       packet_storage_{FindPacketStorage()} {}
 
 SharedMemoryTransport::PacketStorage*
@@ -51,10 +53,12 @@ std::size_t SharedMemoryTransport::GetFreeSize() const {
 }
 
 void SharedMemoryTransport::Send(const Packet& packet) {
+  ManagedScopedLock lock(mutex_);
   packet_storage_->push_back(packet);
 }
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
+  ManagedScopedLock lock(mutex_);
   std::vector<Packet> received_packets{packet_storage_->begin(),
                                        packet_storage_->end()};
   packet_storage_->clear();
@@ -64,6 +68,7 @@ std::vector<Packet> SharedMemoryTransport::Receive() {
 void SharedMemoryTransport::Destroy() {
   segment_.destroy<PacketStorage>(PacketStorageName());
   boost::interprocess::shared_memory_object::remove(SegmentName());
+  ManagedMutex::remove(MutexName());
 }
 
 }  // namespace contra

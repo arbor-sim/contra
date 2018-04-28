@@ -31,8 +31,11 @@
 SUPPRESS_WARNINGS_BEGIN
 #include "boost/interprocess/allocators/allocator.hpp"
 #include "boost/interprocess/managed_shared_memory.hpp"
+#include "boost/interprocess/sync/named_mutex.hpp"
+#include "boost/interprocess/sync/scoped_lock.hpp"
 #ifdef _WIN32
 #include "boost/interprocess/managed_windows_shared_memory.hpp"
+#include "boost/interprocess/sync/windows_named_mutex.hpp"
 #endif
 SUPPRESS_WARNINGS_END
 
@@ -46,10 +49,14 @@ class SharedMemoryTransport {
 #ifdef _WIN32
   using ManagedSharedMemory =
       boost::interprocess::managed_windows_shared_memory;
+  using ManagedMutex = boost::interprocess::windows_named_mutex;
 #else
   using ManagedSharedMemory = boost::interprocess::managed_shared_memory;
+  using ManagedMutex = boost::interprocess::named_mutex;
 #endif
   using SegmentManager = ManagedSharedMemory::segment_manager;
+  using ManagedScopedLock = boost::interprocess::scoped_lock<ManagedMutex>;
+
   using Allocator = boost::interprocess::allocator<Packet, SegmentManager>;
   using PacketStorage = std::vector<Packet, Allocator>;
 
@@ -68,6 +75,8 @@ class SharedMemoryTransport {
   std::vector<Packet> Receive();
 
   static constexpr const char* SegmentName() { return "packet-shared-memory"; }
+  static constexpr const char* MutexName() { return "shared-mutex"; }
+
   static constexpr const char* PacketStorageName() { return "PacketStorage"; }
   static constexpr const char* ReferenceCountName() { return "ReferenceCount"; }
   static constexpr std::size_t InitialSize() { return 1073741824u; }
@@ -80,6 +89,8 @@ class SharedMemoryTransport {
   PacketStorage* FindPacketStorage();
 
   ManagedSharedMemory segment_;
+  ManagedMutex mutex_;
+
   PacketStorage* packet_storage_;
 };
 

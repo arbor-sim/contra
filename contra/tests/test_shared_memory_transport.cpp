@@ -19,7 +19,10 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
+#include <chrono>
 #include <iostream>
+#include <random>
+#include <thread>
 #include <vector>
 
 #include "catch/catch.hpp"
@@ -137,5 +140,55 @@ SCENARIO("Data gets transported through shared memory",
     }
 
     segment_create.Destroy();
+  }
+}
+
+namespace {
+
+void Send(contra::SharedMemoryTransport* transport) {
+  std::random_device random_seed;
+  std::mt19937 generator(random_seed());
+  std::uniform_int_distribution<> distribution(1, 4);  // define the range
+
+  for (auto i = 0u; i < 10; ++i) {
+    const int wait = distribution(generator);
+    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+    transport->Send(test_utilities::ANY_PACKET);
+  }
+}
+
+void Receive(contra::SharedMemoryTransport* transport) {
+  std::random_device random_seed;
+  std::mt19937 generator(random_seed());
+  std::uniform_int_distribution<> distribution(3, 6);  // define the range
+
+  for (auto i = 0u; i < 10; ++i) {
+    const int wait = distribution(generator);
+    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+    transport->Receive();
+  }
+}
+
+constexpr bool we_reach_this_before_timeout = true;
+
+}  // namespace
+
+SCENARIO("Synchronization across separate threads does not accidently block",
+         "[niv][niv::RelaySharedMemory]") {
+  GIVEN("A pair of sync relays") {
+    contra::SharedMemoryTransport segment_create{
+        contra::SharedMemoryTransport::Create()};
+    contra::SharedMemoryTransport segment_access{
+        contra::SharedMemoryTransport::Access()};
+
+    WHEN("These send and receive in separate threads") {
+      std::thread sender(::Send, &segment_access);
+      std::thread receiver(::Receive, &segment_create);
+      THEN("they do not block each other") {
+        sender.join();
+        receiver.join();
+        REQUIRE(::we_reach_this_before_timeout);
+      }
+    }
   }
 }
