@@ -26,20 +26,28 @@
 
 #include "contra/file_transport.hpp"
 #include "contra/packet.hpp"
-#include "utilities/cout_capture.hpp"
+
+#include "utilities/packet_matcher.hpp"
+#include "utilities/test_data.hpp"
+
+TEST_CASE("make sure that the involved size types have equal size",
+          "[contra][contra::FileTransport]") {
+  REQUIRE(sizeof(std::streamsize) == sizeof(std::size_t));
+}
 
 SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
-  REQUIRE(sizeof(std::streamsize) == sizeof(std::size_t));
+  GIVEN("a file transport pair") {
+    contra::FileTransport sender("tmp.contra");
+    contra::FileTransport receiver("tmp.contra");
 
-  const std::string any_string{"Foo"};
-  const std::vector<uint8_t> any_data{0x01u, 0x03u, 0x02u};
+    WHEN("a single packet is sent and received") {
+      sender.Send(test_utilities::ANY_PACKET);
+      const auto received_packets = receiver.Receive();
 
-  contra::FileTransport transport("tmp.contra");
-  transport.Send(contra::Packet{any_string, any_data});
-
-  auto received_packets = transport.Receive();
-
-  REQUIRE(received_packets.size() == 1);
-  REQUIRE(received_packets[0].schema == any_string);
-  REQUIRE(received_packets[0].data == any_data);
+      THEN("it arrives correctly") {
+        REQUIRE(received_packets.size() == 1);
+        REQUIRE_THAT(received_packets[0], Equals(test_utilities::ANY_PACKET));
+      }
+    }
+  }
 }
