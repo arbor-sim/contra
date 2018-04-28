@@ -55,12 +55,9 @@ void SharedMemoryTransport::Send(const Packet& packet) {
 }
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
-  std::vector<Packet> received_packets;
-  if (!packet_storage_->empty()) {
-    std::copy(packet_storage_->begin(), packet_storage_->end(),
-              back_inserter(received_packets));
-    packet_storage_->clear();
-  }
+  std::vector<Packet> received_packets{packet_storage_->begin(),
+                                       packet_storage_->end()};
+  packet_storage_->clear();
   return received_packets;
 }
 
