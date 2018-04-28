@@ -25,7 +25,7 @@
 
 #include "contra/relay.hpp"
 #include "utilities/conduit_helpers.hpp"
-#include "utilities/conduit_node_helper.hpp"
+#include "utilities/conduit_node_matcher.hpp"
 #include "utilities/reset_shared_memory.hpp"
 
 SCENARIO("Mutex does not stall multiple sends/receives",

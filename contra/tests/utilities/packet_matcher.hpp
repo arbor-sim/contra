@@ -51,9 +51,10 @@ namespace Matchers {
 class PacketEquals : public Catch::MatcherBase<contra::Packet> {
  public:
   explicit PacketEquals(const contra::Packet& packet) : packet_{packet} {}
-  bool match(const contra::Packet& packet) const override {
-    return Catch::Matchers::Equals(StringMaker<contra::Packet>::convert(packet))
-        .match(StringMaker<contra::Packet>::convert(packet_));
+  bool match(const contra::Packet& other) const override {
+    const std::string others = StringMaker<contra::Packet>::convert(other);
+    const std::string mine = StringMaker<contra::Packet>::convert(packet_);
+    return Catch::Matchers::Equals(others).match(mine);
   }
   std::string describe() const override {
     return Catch::Matchers::Equals(

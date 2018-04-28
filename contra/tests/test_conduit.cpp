@@ -28,7 +28,7 @@
 #include "conduit/conduit_node.hpp"
 
 #include "utilities/conduit_helpers.hpp"
-#include "utilities/conduit_node_helper.hpp"
+#include "utilities/conduit_node_matcher.hpp"
 #include "utilities/conduit_schema.hpp"
 
 namespace conduit {

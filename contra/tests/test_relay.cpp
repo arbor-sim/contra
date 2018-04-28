@@ -26,7 +26,7 @@
 #include "contra/shared_memory_transport.hpp"
 
 #include "utilities/conduit_helpers.hpp"
-#include "utilities/conduit_node_helper.hpp"
+#include "utilities/conduit_node_matcher.hpp"
 #include "utilities/reset_shared_memory.hpp"
 
 SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
