@@ -29,27 +29,26 @@
 #include "utilities/conduit_node_matcher.hpp"
 #include "utilities/reset_shared_memory.hpp"
 
-SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
-  contra::Relay<contra::FileTransport> relay("relay_file_transport.contra");
-
-  relay.Send(test_utilities::ANY_NODE);
-
-  auto received_nodes = relay.Receive();
-
-  REQUIRE(received_nodes.size() == 1);
+#define RELAY_TRANSPORT_TEST(transport_type, sender_params, receiver_params) \
+  contra::Relay<transport_type> sender{sender_params};                       \
+  contra::Relay<transport_type> receiver{receiver_params};                   \
+                                                                             \
+  sender.Send(test_utilities::ANY_NODE);                                     \
+  const auto received_nodes = receiver.Receive();                            \
+                                                                             \
+  REQUIRE(received_nodes.size() == 1);                                       \
   REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
+
+SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
+  RELAY_TRANSPORT_TEST(contra::FileTransport, "relay_file_transport.contra",
+                       "relay_file_transport.contra");
 }
 
 SCENARIO("Data gets transported via SharedMemoryTransport",
          "[contra][contra::Relay]") {
   test_utilities::ResetSharedMemory();
-  contra::Relay<contra::SharedMemoryTransport> relay{
-      contra::SharedMemoryTransport::Create()};
 
-  relay.Send(test_utilities::ANY_NODE);
-
-  auto received_nodes = relay.Receive();
-
-  REQUIRE(received_nodes.size() == 1);
-  REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
+  RELAY_TRANSPORT_TEST(contra::SharedMemoryTransport,
+                       contra::SharedMemoryTransport::Create(),
+                       contra::SharedMemoryTransport::Access());
 }
