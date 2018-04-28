@@ -175,13 +175,15 @@ constexpr bool we_reach_this_before_timeout = true;
 
 SCENARIO("Synchronization across separate threads does not accidently block",
          "[niv][niv::RelaySharedMemory]") {
-  GIVEN("A pair of sync relays") {
+  test_utilities::ResetSharedMemory();
+
+  GIVEN("a pair of shared memory transports") {
     contra::SharedMemoryTransport segment_create{
         contra::SharedMemoryTransport::Create()};
     contra::SharedMemoryTransport segment_access{
         contra::SharedMemoryTransport::Access()};
 
-    WHEN("These send and receive in separate threads") {
+    WHEN("these send and receive in separate threads") {
       std::thread sender(::Send, &segment_access);
       std::thread receiver(::Receive, &segment_create);
       THEN("they do not block each other") {
