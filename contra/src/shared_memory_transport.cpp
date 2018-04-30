@@ -66,9 +66,18 @@ std::vector<Packet> SharedMemoryTransport::Receive() {
 }
 
 void SharedMemoryTransport::Destroy() {
-  segment_.destroy<PacketStorage>(PacketStorageName());
-  boost::interprocess::shared_memory_object::remove(SegmentName());
-  ManagedMutex::remove(MutexName());
+  try {
+    segment_.destroy<PacketStorage>(PacketStorageName());
+  } catch (...) {
+  }
+  try {
+    boost::interprocess::shared_memory_object::remove(SegmentName());
+  } catch (...) {
+  }
+  try {
+    ManagedMutex::remove(MutexName());
+  } catch (...) {
+  }
 }
 
 }  // namespace contra
