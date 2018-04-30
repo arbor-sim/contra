@@ -256,7 +256,7 @@ build:mac:clang9.1:
     - cmake:mac:clang9.1
   script:
     - cd build
-    - make
+    - make -j4
   artifacts:
     paths:
     - build
