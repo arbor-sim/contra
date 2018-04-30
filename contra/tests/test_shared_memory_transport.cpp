@@ -174,7 +174,7 @@ constexpr bool we_reach_this_before_timeout = true;
 }  // namespace
 
 SCENARIO("Synchronization across separate threads does not accidently block",
-         "[niv][niv::RelaySharedMemory]") {
+         "[niv][niv::RelaySharedMemory][.]") {
   contra::SharedMemoryTransport::Destroy();
 
   GIVEN("a pair of shared memory transports") {
