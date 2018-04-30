@@ -77,8 +77,11 @@ SCENARIO("Packet shared memory creation",
 }
 
 SCENARIO("Packet shared memory access",
-         "[contra][contra::SharedMemoryTransport][.]") {
+         "[contra][contra::SharedMemoryTransport]") {
+  auto start = std::chrono::system_clock::now();
   contra::SharedMemoryTransport::Destroy();
+  std::cout << "After Destroy: "
+            << (std::chrono::system_clock::now() - start).count() << '\n';
 
   GIVEN("No shared memory segment") {
     THEN("Creating a shared memory access throws an exception.") {
@@ -86,6 +89,8 @@ SCENARIO("Packet shared memory access",
           contra::SharedMemoryTransport::Access()});
     }
   }
+  std::cout << "After No shared memory segment: "
+            << (std::chrono::system_clock::now() - start).count() << '\n';
 
   GIVEN("A shared memory segment") {
     contra::SharedMemoryTransport segment_create{
@@ -96,6 +101,8 @@ SCENARIO("Packet shared memory access",
           contra::SharedMemoryTransport::Access()});
     }
   }
+  std::cout << "After A shared memory segment: "
+            << (std::chrono::system_clock::now() - start).count() << '\n';
 }
 
 SCENARIO("Data gets transported through shared memory",
