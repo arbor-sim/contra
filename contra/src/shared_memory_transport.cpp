@@ -58,7 +58,7 @@ void SharedMemoryTransport::Send(const Packet& packet) {
 }
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
-  ManagedScopedLock lock(mutex_);
+  // ManagedScopedLock lock(mutex_);
   std::vector<Packet> received_packets{packet_storage_->begin(),
                                        packet_storage_->end()};
   packet_storage_->clear();
