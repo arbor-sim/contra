@@ -22,6 +22,8 @@
 #include "contra/shared_memory_transport.hpp"
 
 #include <algorithm>
+#include <chrono>
+#include <iostream>
 #include <vector>
 
 #ifdef _WIN32
@@ -57,7 +59,13 @@ SharedMemoryTransport::SharedMemoryTransport(const Access&)
 
 SharedMemoryTransport::PacketStorage*
 SharedMemoryTransport::FindPacketStorage() {
-  return segment_.find<PacketStorage>(PacketStorageName()).first;
+  auto start = std::chrono::system_clock::now();
+  std::chrono::duration<double> diff;
+  auto* packet_storage =
+      segment_.find<PacketStorage>(PacketStorageName()).first;
+  diff = std::chrono::system_clock::now() - start;
+  std::cout << "FindPacketStorage: " diff.count();
+  return packet_storage;
 }
 
 std::size_t SharedMemoryTransport::GetFreeSize() const {
