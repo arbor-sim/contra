@@ -21,6 +21,9 @@
 
 #include "catch/catch.hpp"
 
+#ifdef _WIN32
+#define BOOST_INTERPROCESS_SHARED_DIR_PATH "."
+#endif
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
 #include "contra/shared_memory_transport.hpp"
