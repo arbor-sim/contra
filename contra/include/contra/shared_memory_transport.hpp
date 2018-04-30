@@ -29,7 +29,7 @@
 #include "contra/suppress_warnings.hpp"
 
 #ifdef _WIN32
-BOOST_INTERPROCESS_SHARED_DIR_FUNC
+#define BOOST_INTERPROCESS_SHARED_DIR_FUNC
 #endif
 
 SUPPRESS_WARNINGS_BEGIN
