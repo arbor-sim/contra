@@ -53,7 +53,7 @@ std::size_t SharedMemoryTransport::GetFreeSize() const {
 }
 
 void SharedMemoryTransport::Send(const Packet& packet) {
-  ManagedScopedLock lock(mutex_);
+  // ManagedScopedLock lock(mutex_);
   packet_storage_->push_back(packet);
 }
 
