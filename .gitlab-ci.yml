@@ -237,8 +237,8 @@ cmake:mac:clang9.1:
   stage: cmake
   tags:
     - osx
-  dependencies:
-    - conan:mac:clang9.1
+  #dependencies:
+  #  - conan:mac:clang9.1
   script:
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release
