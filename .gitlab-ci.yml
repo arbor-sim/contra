@@ -270,4 +270,4 @@ test:mac:clang9.1:
     - build:mac:clang9.1
   script:
     - cd build
-    - ctest -C Release
+    - CTEST_OUTPUT_ON_FAILURE=1 ctest -C Release
