@@ -87,7 +87,7 @@ class SharedMemoryTransport {
   PacketStorage* FindPacketStorage();
 
   ManagedSharedMemory segment_;
-  // ManagedMutex mutex_;
+  ManagedMutex mutex_;
 
   PacketStorage* packet_storage_;
 };
