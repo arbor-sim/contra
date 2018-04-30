@@ -29,19 +29,6 @@
 #include "utilities/conduit_node_matcher.hpp"
 #include "utilities/reset_shared_memory.hpp"
 
-#ifdef _WIN32
-namespace boost {
-namespace interprocess {
-namespace ipcdetail {
-inline void get_shared_dir(
-    std::string& shared_dir) {  // NOLINT runtime/references
-  shared_dir = ".";
-}
-}  // namespace ipcdetail
-}  // namespace interprocess
-}  // namespace boost
-#endif
-
 #define RELAY_TRANSPORT_TEST(transport_type, sender_params, receiver_params) \
   contra::Relay<transport_type> sender{sender_params};                       \
   contra::Relay<transport_type> receiver{receiver_params};                   \

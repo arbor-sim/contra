@@ -37,8 +37,7 @@
 namespace boost {
 namespace interprocess {
 namespace ipcdetail {
-inline void get_shared_dir(
-    std::string& shared_dir) {  // NOLINT runtime/references
+void get_shared_dir(std::string& shared_dir) {  // NOLINT runtime/references
   shared_dir = ".";
 }
 }  // namespace ipcdetail
