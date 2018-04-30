@@ -29,6 +29,9 @@
 #include "contra/suppress_warnings.hpp"
 
 SUPPRESS_WARNINGS_BEGIN
+#ifdef _WIN32
+#define BOOST_INTERPROCESS_SHARED_DIR_PATH "."
+#endif
 #include "boost/interprocess/allocators/allocator.hpp"
 #include "boost/interprocess/managed_shared_memory.hpp"
 #include "boost/interprocess/sync/named_mutex.hpp"
