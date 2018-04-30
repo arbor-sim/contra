@@ -19,6 +19,10 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
+#include <string>
+
+#include "contra/shared_memory_transport.hpp"
+
 #ifdef _WIN32
 namespace boost {
 namespace interprocess {
@@ -30,8 +34,6 @@ void get_shared_dir(std::string& shared_dir) {  // NOLINT runtime/references
 }  // namespace interprocess
 }  // namespace boost
 #endif
-
-#include "contra/shared_memory_transport.hpp"
 
 void Destroy() {
   contra::SharedMemoryTransport access{contra::SharedMemoryTransport::Access()};
