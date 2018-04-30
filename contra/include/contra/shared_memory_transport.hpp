@@ -28,6 +28,10 @@
 #include "contra/packet.hpp"
 #include "contra/suppress_warnings.hpp"
 
+#ifdef _WIN32
+BOOST_INTERPROCESS_SHARED_DIR_FUNC
+#endif
+
 SUPPRESS_WARNINGS_BEGIN
 #include "boost/interprocess/allocators/allocator.hpp"
 #include "boost/interprocess/managed_shared_memory.hpp"
