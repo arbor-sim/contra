@@ -103,6 +103,7 @@ SCENARIO("Packet shared memory access",
   }
   std::cout << "After A shared memory segment: "
             << (std::chrono::system_clock::now() - start).count() << '\n';
+  REQUIRE(true == false);
 }
 
 SCENARIO("Data gets transported through shared memory",
