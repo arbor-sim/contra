@@ -50,7 +50,7 @@ class SharedMemoryTransport {
 #ifdef _WIN32
   using ManagedSharedMemory =
       boost::interprocess::managed_windows_shared_memory;
-  using NamedMutex = boost::interprocess::windows_named_mutex;
+  using NamedMutex = boost::interprocess::ipcdetail::windows_named_mutex;
 #else
   using ManagedSharedMemory = boost::interprocess::managed_shared_memory;
   using NamedMutex = boost::interprocess::named_mutex;
