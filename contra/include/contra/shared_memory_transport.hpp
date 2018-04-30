@@ -33,7 +33,7 @@ SUPPRESS_WARNINGS_BEGIN
 #include "boost/interprocess/sync/scoped_lock.hpp"
 #ifdef _WIN32
 #include "boost/interprocess/managed_windows_shared_memory.hpp"
-#include "boost/interprocess/sync/windows_named_mutex.hpp"
+#include "boost/interprocess/sync/windows/named_mutex.hpp"
 #else
 #include "boost/interprocess/managed_shared_memory.hpp"
 #include "boost/interprocess/sync/named_mutex.hpp"
