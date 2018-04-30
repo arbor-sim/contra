@@ -33,18 +33,6 @@
 #include "utilities/reset_shared_memory.hpp"
 #include "utilities/test_data.hpp"
 
-#ifdef _WIN32
-namespace boost {
-namespace interprocess {
-namespace ipcdetail {
-void get_shared_dir(std::string& shared_dir) {  // NOLINT runtime/references
-  shared_dir = ".";
-}
-}  // namespace ipcdetail
-}  // namespace interprocess
-}  // namespace boost
-#endif
-
 namespace {
 
 const std::vector<contra::Packet> NONEMPTY_PACKET_LIST{contra::Packet()};

@@ -24,6 +24,19 @@
 #include <algorithm>
 #include <vector>
 
+#ifdef _WIN32
+namespace boost {
+namespace interprocess {
+namespace ipcdetail {
+inline void get_shared_dir(
+    std::string& shared_dir) {  // NOLINT runtime/references
+  shared_dir = ".";
+}
+}  // namespace ipcdetail
+}  // namespace interprocess
+}  // namespace boost
+#endif
+
 namespace contra {
 
 SharedMemoryTransport::SharedMemoryTransport(const Create&)
