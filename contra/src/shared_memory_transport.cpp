@@ -64,7 +64,7 @@ SharedMemoryTransport::FindPacketStorage() {
   auto* packet_storage =
       segment_.find<PacketStorage>(PacketStorageName()).first;
   diff = std::chrono::system_clock::now() - start;
-  std::cout << "FindPacketStorage: " diff.count();
+  std::cout << "FindPacketStorage: " << diff.count() << std::endl;
   return packet_storage;
 }
 
