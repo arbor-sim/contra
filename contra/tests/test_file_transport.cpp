@@ -35,7 +35,7 @@ TEST_CASE("make sure that the involved size types have equal size",
   REQUIRE(sizeof(std::streamsize) == sizeof(std::size_t));
 }
 
-SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
+SCENARIO("a Packet can be transported", "[contra][contra::FileTransport][.]") {
   GIVEN("a file transport pair") {
     contra::FileTransport sender("tmp.contra");
     contra::FileTransport receiver("tmp.contra");

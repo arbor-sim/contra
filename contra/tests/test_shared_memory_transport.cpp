@@ -77,7 +77,7 @@ SCENARIO("Packet shared memory creation",
 }
 
 SCENARIO("Packet shared memory access",
-         "[contra][contra::SharedMemoryTransport]") {
+         "[contra][contra::SharedMemoryTransport][.]") {
   contra::SharedMemoryTransport::Destroy();
 
   GIVEN("No shared memory segment") {
@@ -99,7 +99,7 @@ SCENARIO("Packet shared memory access",
 }
 
 SCENARIO("Data gets transported through shared memory",
-         "[contra][contra::SharedMemoryTransport]") {
+         "[contra][contra::SharedMemoryTransport][.]") {
   contra::SharedMemoryTransport::Destroy();
 
   GIVEN("A shared memory segment and access") {
@@ -174,7 +174,7 @@ constexpr bool we_reach_this_before_timeout = true;
 }  // namespace
 
 SCENARIO("Synchronization across separate threads does not accidently block",
-         "[niv][niv::RelaySharedMemory]") {
+         "[niv][niv::RelaySharedMemory][.]") {
   contra::SharedMemoryTransport::Destroy();
 
   GIVEN("a pair of shared memory transports") {
