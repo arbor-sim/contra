@@ -19,6 +19,18 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
+#ifdef _WIN32
+namespace boost {
+namespace interprocess {
+namespace ipcdetail {
+void get_shared_dir(std::string& shared_dir) {  // NOLINT runtime/references
+  shared_dir = ".";
+}
+}  // namespace ipcdetail
+}  // namespace interprocess
+}  // namespace boost
+#endif
+
 #include "contra/shared_memory_transport.hpp"
 
 void Destroy() {
