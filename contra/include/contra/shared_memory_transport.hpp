@@ -35,6 +35,7 @@ SUPPRESS_WARNINGS_BEGIN
 #include "boost/interprocess/sync/scoped_lock.hpp"
 #ifdef _WIN32
 #include "boost/interprocess/managed_windows_shared_memory.hpp"
+#define BOOST_INTERPROCESS_SHARED_DIR_PATH "."
 #endif
 SUPPRESS_WARNINGS_END
 
