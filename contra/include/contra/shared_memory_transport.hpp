@@ -30,11 +30,13 @@
 
 SUPPRESS_WARNINGS_BEGIN
 #include "boost/interprocess/allocators/allocator.hpp"
-#include "boost/interprocess/managed_shared_memory.hpp"
-#include "boost/interprocess/sync/named_mutex.hpp"
 #include "boost/interprocess/sync/scoped_lock.hpp"
 #ifdef _WIN32
 #include "boost/interprocess/managed_windows_shared_memory.hpp"
+#include "boost/interprocess/sync/windows_named_mutex.hpp"
+#else
+#include "boost/interprocess/managed_shared_memory.hpp"
+#include "boost/interprocess/sync/named_mutex.hpp"
 #endif
 SUPPRESS_WARNINGS_END
 
@@ -48,12 +50,13 @@ class SharedMemoryTransport {
 #ifdef _WIN32
   using ManagedSharedMemory =
       boost::interprocess::managed_windows_shared_memory;
+  using NamedMutex = boost::interprocess::windows_named_mutex;
 #else
   using ManagedSharedMemory = boost::interprocess::managed_shared_memory;
+  using NamedMutex = boost::interprocess::named_mutex;
 #endif
-  using ManagedMutex = boost::interprocess::named_mutex;
   using SegmentManager = ManagedSharedMemory::segment_manager;
-  using ManagedScopedLock = boost::interprocess::scoped_lock<ManagedMutex>;
+  using ManagedScopedLock = boost::interprocess::scoped_lock<NamedMutex>;
 
   using Allocator = boost::interprocess::allocator<Packet, SegmentManager>;
   using PacketStorage = std::vector<Packet, Allocator>;
@@ -87,7 +90,7 @@ class SharedMemoryTransport {
   PacketStorage* FindPacketStorage();
 
   ManagedSharedMemory segment_;
-  ManagedMutex mutex_;
+  NamedMutex mutex_;
 
   PacketStorage* packet_storage_;
 };
