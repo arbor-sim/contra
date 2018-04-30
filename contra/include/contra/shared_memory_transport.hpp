@@ -65,7 +65,7 @@ class SharedMemoryTransport {
   SharedMemoryTransport(SharedMemoryTransport&&) = delete;
   ~SharedMemoryTransport() = default;
 
-  void Destroy();
+  static void Destroy();
 
   std::size_t GetFreeSize() const;
 

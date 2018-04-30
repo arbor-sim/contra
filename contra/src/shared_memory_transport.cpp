@@ -27,8 +27,7 @@
 namespace contra {
 
 SharedMemoryTransport::SharedMemoryTransport(const Create&)
-    : segment_{boost::interprocess::open_or_create, SegmentName(),
-               InitialSize()},
+    : segment_{boost::interprocess::create_only, SegmentName(), InitialSize()},
       mutex_{boost::interprocess::create_only, MutexName()},
       packet_storage_{ConstructPacketStorage()} {}
 
@@ -66,18 +65,8 @@ std::vector<Packet> SharedMemoryTransport::Receive() {
 }
 
 void SharedMemoryTransport::Destroy() {
-  try {
-    segment_.destroy<PacketStorage>(PacketStorageName());
-  } catch (...) {
-  }
-  try {
-    boost::interprocess::shared_memory_object::remove(SegmentName());
-  } catch (...) {
-  }
-  try {
-    ManagedMutex::remove(MutexName());
-  } catch (...) {
-  }
+  boost::interprocess::shared_memory_object::remove(SegmentName());
+  boost::interprocess::named_mutex::remove(MutexName());
 }
 
 }  // namespace contra
