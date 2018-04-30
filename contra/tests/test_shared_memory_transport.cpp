@@ -77,7 +77,7 @@ SCENARIO("Packet shared memory creation",
 }
 
 SCENARIO("Packet shared memory access",
-         "[contra][contra::SharedMemoryTransport][.]") {
+         "[contra][contra::SharedMemoryTransport]") {
   contra::SharedMemoryTransport::Destroy();
 
   GIVEN("No shared memory segment") {
