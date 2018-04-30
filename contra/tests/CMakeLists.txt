@@ -40,7 +40,7 @@ set(CONTRA_TEST_ARGUMENTS ""
 add_test(NAME contra_tests
   COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS}
   )
-set_tests_properties(contra_tests PROPERTIES TIMEOUT 2.0)
+#set_tests_properties(contra_tests PROPERTIES TIMEOUT 2.0)
 
 target_link_libraries(contra_tests
   PRIVATE contra
