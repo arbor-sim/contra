@@ -355,3 +355,71 @@ SCENARIO("conduit::Node::getch_child(path) behaves as intended", "[conduit]") {
     }
   }
 }
+
+SCENARIO(
+    "Node copy does not preserve externalness as intended by conduit."
+    "[conduit]") {
+  INFO(
+      "This test's failing indicates that the intended behaviour of conduit "
+      "has changed. \n"
+      "On failure: Copying preserves externalness. \n"
+      "* Check back with the conduit developers, if this is intended. \n"
+      "* Simplify listening, e.g., in niv::ConduitReceiver::Start(...) "
+      "to not use set_external(...) anymore.")
+  GIVEN("An external conduit node") {
+    std::string schema = test_utilities::ANY_NODE.schema().to_json();
+    std::vector<conduit::uint8> data;
+    test_utilities::ANY_NODE.serialize(data);
+
+    constexpr bool external{true};
+    conduit::Node external_node(schema, data.data(), external);
+    const std::string original_json{external_node.to_json()};
+
+    GIVEN("a copy of the external node") {
+      conduit::Node copied_node(external_node);
+      std::string original_json_copied{copied_node.to_json()};
+
+      THEN("The two nodes are equal") {
+        REQUIRE_THAT(external_node, Equals(copied_node));
+      }
+
+      WHEN("the data is changed") {
+        data[0] = ~data[0];
+        data[7] = ~data[7];
+        THEN("the external node has changed data") {
+          REQUIRE(external_node.to_json() != original_json);
+        }
+        THEN("the copied node has changed data") {
+          REQUIRE_FALSE(copied_node.to_json() != original_json_copied);
+        }
+        THEN("the copied node is still equal to the external one") {
+          REQUIRE_FALSE(external_node.to_json() == copied_node.to_json());
+        }
+      }
+    }
+
+    GIVEN("the external node assigned to a new one") {
+      conduit::Node assigned_node;
+      assigned_node = external_node;
+      std::string original_json_assigned{assigned_node.to_json()};
+
+      THEN("The two nodes are equal") {
+        REQUIRE_THAT(external_node, Equals(assigned_node));
+      }
+
+      WHEN("the data is changed") {
+        data[0] = ~data[0];
+        data[7] = ~data[7];
+        THEN("the external node has changed data") {
+          REQUIRE(external_node.to_json() != original_json);
+        }
+        THEN("the assigned node has changed data") {
+          REQUIRE_FALSE(assigned_node.to_json() != original_json_assigned);
+        }
+        THEN("the copied node is still equal to the external one") {
+          REQUIRE_FALSE(external_node.to_json() == assigned_node.to_json());
+        }
+      }
+    }
+  }
+}
