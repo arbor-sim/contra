@@ -78,6 +78,8 @@ SCENARIO("Packet shared memory creation",
 
 SCENARIO("Packet shared memory access",
          "[contra][contra::SharedMemoryTransport]") {
+  std::cout << "--------------------" << std::endl;
+  std::cout << "SCENARIO Packet shared memory access" << std::endl;
   auto start = std::chrono::system_clock::now();
   std::chrono::duration<double> diff;
   contra::SharedMemoryTransport::Destroy();
@@ -85,25 +87,37 @@ SCENARIO("Packet shared memory access",
   std::cout << "After Destroy: " << diff.count() << '\n';
 
   GIVEN("No shared memory segment") {
+    std::cout << "GIVEN No shared memory segment" << std::endl;
     THEN("Creating a shared memory access throws an exception.") {
+      std::cout << "THEN Creating a shared memory access throws an exception"
+                << std::endl;
+      diff = std::chrono::system_clock::now() - start;
+      std::cout << "Before REQUIRE_THROWS: " << diff.count() << '\n';
       REQUIRE_THROWS(contra::SharedMemoryTransport{
           contra::SharedMemoryTransport::Access()});
+      diff = std::chrono::system_clock::now() - start;
+      std::cout << "After REQUIRE_THROWS: " << diff.count() << '\n';
     }
   }
-  diff = std::chrono::system_clock::now() - start;
-  std::cout << "After No shared memory segment: " << diff.count() << '\n';
 
   GIVEN("A shared memory segment") {
+    std::cout << "GIVEN A shared memory segment" << std::endl;
     contra::SharedMemoryTransport segment_create{
         contra::SharedMemoryTransport::Create()};
 
     THEN("Creating a shared memory access does not throw an exception.") {
+      std::cout
+          << "THEN Creating a shared memory access does not throw an exception."
+          << std::endl;
+      diff = std::chrono::system_clock::now() - start;
+      std::cout << "Before REQUIRE_NOTHROW: " << diff.count() << '\n';
       REQUIRE_NOTHROW(contra::SharedMemoryTransport{
           contra::SharedMemoryTransport::Access()});
+      diff = std::chrono::system_clock::now() - start;
+      std::cout << "After REQUIRE_NOTHROW: " << diff.count() << '\n';
     }
   }
-  diff = std::chrono::system_clock::now() - start;
-  std::cout << "After A shared memory segment: " << diff.count() << '\n';
+  std::cout << "--------------------" << std::endl;
   REQUIRE(true == false);
 }
 

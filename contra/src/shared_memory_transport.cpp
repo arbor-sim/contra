@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <memory>
 #include <vector>
 
 #ifdef _WIN32
@@ -42,43 +43,111 @@ inline void get_shared_dir(
 namespace contra {
 
 SharedMemoryTransport::SharedMemoryTransport(const Create&)
-    : segment_{boost::interprocess::create_only, SegmentName(), InitialSize()},
-      mutex_{boost::interprocess::open_or_create, MutexName()},
+    : segment_{CreateSegment()},
+      mutex_{CreateMutex()},
       packet_storage_{ConstructPacketStorage()} {}
+
+std::unique_ptr<SharedMemoryTransport::ManagedSharedMemory>
+SharedMemoryTransport::CreateSegment() {
+  auto start = std::chrono::system_clock::now();
+  std::chrono::duration<double> diff;
+
+  auto ret_val = std::make_unique<ManagedSharedMemory>(
+      boost::interprocess::create_only, SegmentName(), InitialSize());
+
+  diff = std::chrono::system_clock::now() - start;
+  std::cout << "SharedMemoryTransport::CreateSegment(): " << diff.count()
+            << "s\n";
+  return ret_val;
+}
+
+std::unique_ptr<SharedMemoryTransport::ManagedMutex>
+SharedMemoryTransport::CreateMutex() {
+  auto start = std::chrono::system_clock::now();
+  std::chrono::duration<double> diff;
+
+  auto ret_val = std::make_unique<ManagedMutex>(
+      boost::interprocess::open_or_create, MutexName());
+
+  diff = std::chrono::system_clock::now() - start;
+  std::cout << "SharedMemoryTransport::CreateMutex(): " << diff.count()
+            << "s\n";
+  return ret_val;
+}
 
 SharedMemoryTransport::PacketStorage*
 SharedMemoryTransport::ConstructPacketStorage() {
-  return segment_.construct<PacketStorage>(PacketStorageName())(
-      Allocator(segment_.get_segment_manager()));
+  auto start = std::chrono::system_clock::now();
+  std::chrono::duration<double> diff;
+
+  auto ret_val = segment_->construct<PacketStorage>(PacketStorageName())(
+      Allocator(segment_->get_segment_manager()));
+
+  diff = std::chrono::system_clock::now() - start;
+  std::cout << "SharedMemoryTransport::ConstructPacketStorage(): "
+            << diff.count() << "s\n";
+
+  return ret_val;
 }
 
 SharedMemoryTransport::SharedMemoryTransport(const Access&)
-    : segment_{boost::interprocess::open_only, SegmentName()},
-      mutex_{boost::interprocess::open_or_create, MutexName()},
+    : segment_{AccessSegment()},
+      mutex_{AccessMutex()},
       packet_storage_{FindPacketStorage()} {}
+
+std::unique_ptr<SharedMemoryTransport::ManagedSharedMemory>
+SharedMemoryTransport::AccessSegment() {
+  auto start = std::chrono::system_clock::now();
+  std::chrono::duration<double> diff;
+
+  auto ret_val = std::make_unique<ManagedSharedMemory>(
+      boost::interprocess::open_only, SegmentName());
+
+  diff = std::chrono::system_clock::now() - start;
+  std::cout << "SharedMemoryTransport::AccessSegment(): " << diff.count()
+            << "s\n";
+  return ret_val;
+}
+
+std::unique_ptr<SharedMemoryTransport::ManagedMutex>
+SharedMemoryTransport::AccessMutex() {
+  auto start = std::chrono::system_clock::now();
+  std::chrono::duration<double> diff;
+
+  auto ret_val = std::make_unique<ManagedMutex>(
+      boost::interprocess::open_or_create, MutexName());
+
+  diff = std::chrono::system_clock::now() - start;
+  std::cout << "SharedMemoryTransport::AccessMutex(): " << diff.count()
+            << "s\n";
+  return ret_val;
+}
 
 SharedMemoryTransport::PacketStorage*
 SharedMemoryTransport::FindPacketStorage() {
   auto start = std::chrono::system_clock::now();
   std::chrono::duration<double> diff;
+
   auto* packet_storage =
-      segment_.find<PacketStorage>(PacketStorageName()).first;
+      segment_->find<PacketStorage>(PacketStorageName()).first;
+
   diff = std::chrono::system_clock::now() - start;
-  std::cout << "FindPacketStorage: " << diff.count() << std::endl;
+  std::cout << "SharedMemoryTransport::FindPacketStorage(): " << diff.count()
+            << std::endl;
   return packet_storage;
 }
 
 std::size_t SharedMemoryTransport::GetFreeSize() const {
-  return segment_.get_free_memory();
+  return segment_->get_free_memory();
 }
 
 void SharedMemoryTransport::Send(const Packet& packet) {
-  ManagedScopedLock lock(mutex_);
+  ManagedScopedLock lock(*mutex_);
   packet_storage_->push_back(packet);
 }
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
-  ManagedScopedLock lock(mutex_);
+  ManagedScopedLock lock(*mutex_);
   std::vector<Packet> received_packets{packet_storage_->begin(),
                                        packet_storage_->end()};
   packet_storage_->clear();
