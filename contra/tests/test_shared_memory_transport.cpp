@@ -132,6 +132,7 @@ SCENARIO("Packet shared memory access",
           "exception.");
     }
     CONTRA_LOG_TIME("end GIVEN A shared memory segment");
+    segment_create.Destroy();
   }
   CONTRA_LOG_TIME("after GIVEN A shared memory segment");
 
