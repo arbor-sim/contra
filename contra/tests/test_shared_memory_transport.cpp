@@ -93,33 +93,48 @@ SCENARIO("Packet shared memory access",
 
   CONTRA_LOG_TIME("after Destroy()");
 
+  CONTRA_LOG_TIME("before GIVEN No shared memory segment");
   GIVEN("No shared memory segment") {
-    CONTRA_LOG_NOTE("GIVEN No shared memory segment");
+    CONTRA_LOG_TIME("GIVEN No shared memory segment");
     THEN("Creating a shared memory access throws an exception.") {
-      CONTRA_LOG_NOTE(
+      CONTRA_LOG_TIME(
           "THEN Creating a shared memory access throws an exception.");
       CONTRA_LOG_TIME("before REQUIRE_THROWS");
       REQUIRE_THROWS(contra::SharedMemoryTransport{
           contra::SharedMemoryTransport::Access()});
       CONTRA_LOG_TIME("after REQUIRE_THROWS");
+      CONTRA_LOG_TIME(
+          "end THEN Creating a shared memory access throws an exception.");
     }
+    CONTRA_LOG_TIME("end GIVEN No shared memory segment");
   }
+  CONTRA_LOG_TIME("after GIVEN No shared memory segment");
 
+  CONTRA_LOG_TIME("before GIVEN A shared memory segment");
   GIVEN("A shared memory segment") {
-    CONTRA_LOG_NOTE("GIVEN A shared memory segment");
+    CONTRA_LOG_TIME("GIVEN A shared memory segment");
 
     contra::SharedMemoryTransport segment_create{
         contra::SharedMemoryTransport::Create()};
 
+    CONTRA_LOG_TIME(
+        "before THEN Creating a shared memory access does not throw an "
+        "exception.");
     THEN("Creating a shared memory access does not throw an exception.") {
-      CONTRA_LOG_NOTE(
+      CONTRA_LOG_TIME(
           "THEN Creating a shared memory access does not throw an exception.");
       CONTRA_LOG_TIME("before REQUIRE_NOTHROW");
       REQUIRE_NOTHROW(contra::SharedMemoryTransport{
           contra::SharedMemoryTransport::Access()});
       CONTRA_LOG_TIME("after REQUIRE_THROWS");
+      CONTRA_LOG_TIME(
+          "end THEN Creating a shared memory access does not throw an "
+          "exception.");
     }
+    CONTRA_LOG_TIME("end GIVEN A shared memory segment");
   }
+  CONTRA_LOG_TIME("after GIVEN A shared memory segment");
+
   CONTRA_LOG_TIME("end");
   CONTRA_LOG_HLINE;
   REQUIRE(true == false);
