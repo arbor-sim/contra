@@ -27,6 +27,7 @@
 
 #include "catch/catch.hpp"
 
+#include "contra/log_time.hpp"
 #include "contra/shared_memory_transport.hpp"
 
 #include "utilities/packet_matcher.hpp"
@@ -41,7 +42,12 @@ const std::vector<contra::Packet> NONEMPTY_PACKET_LIST{contra::Packet()};
 
 SCENARIO("Packet shared memory creation",
          "[contra][contra::SharedMemoryTransport]") {
+  CONTRA_LOG_HLINE;
+  CONTRA_LOG_TIME_BEGIN("SCENARIO Packet shared memory creation");
+
   contra::SharedMemoryTransport::Destroy();
+
+  CONTRA_LOG_TIME("after Destroy()");
 
   GIVEN("A shared memory segment") {
     contra::SharedMemoryTransport segment{
@@ -74,56 +80,58 @@ SCENARIO("Packet shared memory creation",
 
     segment.Destroy();
   }
+  CONTRA_LOG_TIME("end");
+  CONTRA_LOG_HLINE;
 }
 
 SCENARIO("Packet shared memory access",
          "[contra][contra::SharedMemoryTransport]") {
-  std::cout << "--------------------" << std::endl;
-  std::cout << "SCENARIO Packet shared memory access" << std::endl;
-  auto start = std::chrono::system_clock::now();
-  std::chrono::duration<double> diff;
+  CONTRA_LOG_HLINE;
+  CONTRA_LOG_TIME_BEGIN("SCENARIO Packet shared memory access");
+
   contra::SharedMemoryTransport::Destroy();
-  diff = std::chrono::system_clock::now() - start;
-  std::cout << "After Destroy: " << diff.count() << '\n';
+
+  CONTRA_LOG_TIME("after Destroy()");
 
   GIVEN("No shared memory segment") {
-    std::cout << "GIVEN No shared memory segment" << std::endl;
+    CONTRA_LOG_NOTE("GIVEN No shared memory segment");
     THEN("Creating a shared memory access throws an exception.") {
-      std::cout << "THEN Creating a shared memory access throws an exception"
-                << std::endl;
-      diff = std::chrono::system_clock::now() - start;
-      std::cout << "Before REQUIRE_THROWS: " << diff.count() << '\n';
+      CONTRA_LOG_NOTE(
+          "THEN Creating a shared memory access throws an exception.");
+      CONTRA_LOG_TIME("before REQUIRE_THROWS");
       REQUIRE_THROWS(contra::SharedMemoryTransport{
           contra::SharedMemoryTransport::Access()});
-      diff = std::chrono::system_clock::now() - start;
-      std::cout << "After REQUIRE_THROWS: " << diff.count() << '\n';
+      CONTRA_LOG_TIME("after REQUIRE_THROWS");
     }
   }
 
   GIVEN("A shared memory segment") {
-    std::cout << "GIVEN A shared memory segment" << std::endl;
+    CONTRA_LOG_NOTE("GIVEN A shared memory segment");
+
     contra::SharedMemoryTransport segment_create{
         contra::SharedMemoryTransport::Create()};
 
     THEN("Creating a shared memory access does not throw an exception.") {
-      std::cout
-          << "THEN Creating a shared memory access does not throw an exception."
-          << std::endl;
-      diff = std::chrono::system_clock::now() - start;
-      std::cout << "Before REQUIRE_NOTHROW: " << diff.count() << '\n';
+      CONTRA_LOG_NOTE(
+          "THEN Creating a shared memory access does not throw an exception.");
+      CONTRA_LOG_TIME("before REQUIRE_NOTHROW");
       REQUIRE_NOTHROW(contra::SharedMemoryTransport{
           contra::SharedMemoryTransport::Access()});
-      diff = std::chrono::system_clock::now() - start;
-      std::cout << "After REQUIRE_NOTHROW: " << diff.count() << '\n';
+      CONTRA_LOG_TIME("after REQUIRE_THROWS");
     }
   }
-  std::cout << "--------------------" << std::endl;
+  CONTRA_LOG_TIME("end");
+  CONTRA_LOG_HLINE;
   REQUIRE(true == false);
 }
 
 SCENARIO("Data gets transported through shared memory",
          "[contra][contra::SharedMemoryTransport]") {
+  CONTRA_LOG_HLINE;
+  CONTRA_LOG_TIME_BEGIN("SCENARIO Data gets transported through shared memory");
+
   contra::SharedMemoryTransport::Destroy();
+  CONTRA_LOG_TIME("after Destroy()");
 
   GIVEN("A shared memory segment and access") {
     contra::SharedMemoryTransport segment_create{
@@ -164,6 +172,8 @@ SCENARIO("Data gets transported through shared memory",
 
     segment_create.Destroy();
   }
+  CONTRA_LOG_TIME("end");
+  CONTRA_LOG_HLINE;
 }
 
 namespace {
