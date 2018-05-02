@@ -20,14 +20,12 @@
 //------------------------------------------------------------------------------
 
 #include <chrono>
-#include <iostream>
 #include <random>
 #include <thread>
 #include <vector>
 
 #include "catch/catch.hpp"
 
-#include "contra/log_time.hpp"
 #include "contra/shared_memory_transport.hpp"
 
 #include "utilities/packet_matcher.hpp"

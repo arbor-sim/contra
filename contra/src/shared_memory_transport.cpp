@@ -22,12 +22,8 @@
 #include "contra/shared_memory_transport.hpp"
 
 #include <algorithm>
-#include <chrono>
 #include <iostream>
-#include <memory>
 #include <vector>
-
-#include "contra/log_time.hpp"
 
 #ifdef _WIN32
 namespace boost {
@@ -45,92 +41,37 @@ inline void get_shared_dir(
 namespace contra {
 
 SharedMemoryTransport::SharedMemoryTransport(const Create&)
-    : segment_{CreateSegment()},
-      mutex_{CreateMutex()},
+    : segment_{boost::interprocess::create_only, SegmentName(), InitialSize()},
+      mutex_{boost::interprocess::open_or_create, MutexName()},
       packet_storage_{ConstructPacketStorage()} {}
-
-std::unique_ptr<SharedMemoryTransport::ManagedSharedMemory>
-SharedMemoryTransport::CreateSegment() {
-  CONTRA_LOG_TIME_BEGIN("SharedMemoryTransport::CreateSegment");
-
-  auto ret_val = std::make_unique<ManagedSharedMemory>(
-      boost::interprocess::create_only, SegmentName(), InitialSize());
-
-  CONTRA_LOG_TIME("  ");
-  return ret_val;
-}
-
-std::unique_ptr<SharedMemoryTransport::ManagedMutex>
-SharedMemoryTransport::CreateMutex() {
-  CONTRA_LOG_TIME_BEGIN("SharedMemoryTransport::CreateMutex");
-
-  auto ret_val = std::make_unique<ManagedMutex>(
-      boost::interprocess::open_or_create, MutexName());
-
-  CONTRA_LOG_TIME("  ");
-  return ret_val;
-}
 
 SharedMemoryTransport::PacketStorage*
 SharedMemoryTransport::ConstructPacketStorage() {
-  CONTRA_LOG_TIME_BEGIN("SharedMemoryTransport::ConstructPacketStorage");
-
-  auto ret_val = segment_->construct<PacketStorage>(PacketStorageName())(
-      Allocator(segment_->get_segment_manager()));
-
-  CONTRA_LOG_TIME("  ");
-  return ret_val;
+  return segment_.construct<PacketStorage>(PacketStorageName())(
+      Allocator(segment_.get_segment_manager()));
 }
 
 SharedMemoryTransport::SharedMemoryTransport(const Access&)
-    : segment_{AccessSegment()},
-      mutex_{AccessMutex()},
+    : segment_{boost::interprocess::open_only, SegmentName()},
+      mutex_{boost::interprocess::open_or_create, MutexName()},
       packet_storage_{FindPacketStorage()} {}
-
-std::unique_ptr<SharedMemoryTransport::ManagedSharedMemory>
-SharedMemoryTransport::AccessSegment() {
-  CONTRA_LOG_TIME_BEGIN("SharedMemoryTransport::AccessSegment");
-
-  auto ret_val = std::make_unique<ManagedSharedMemory>(
-      boost::interprocess::open_only, SegmentName());
-
-  CONTRA_LOG_TIME("  ");
-  return ret_val;
-}
-
-std::unique_ptr<SharedMemoryTransport::ManagedMutex>
-SharedMemoryTransport::AccessMutex() {
-  CONTRA_LOG_TIME_BEGIN("SharedMemoryTransport::AccessMutex");
-
-  auto ret_val = std::make_unique<ManagedMutex>(
-      boost::interprocess::open_or_create, MutexName());
-
-  CONTRA_LOG_TIME("  ");
-  return ret_val;
-}
 
 SharedMemoryTransport::PacketStorage*
 SharedMemoryTransport::FindPacketStorage() {
-  CONTRA_LOG_TIME_BEGIN("SharedMemoryTransport::FindPacketStorage");
-
-  auto* packet_storage =
-      segment_->find<PacketStorage>(PacketStorageName()).first;
-
-  CONTRA_LOG_TIME("  ");
-  return packet_storage;
+  return segment_.find<PacketStorage>(PacketStorageName()).first;
 }
 
 std::size_t SharedMemoryTransport::GetFreeSize() const {
-  return segment_->get_free_memory();
+  return segment_.get_free_memory();
 }
 
 void SharedMemoryTransport::Send(const Packet& packet) {
-  ManagedScopedLock lock(*mutex_);
+  ScopedLock lock(mutex_);
   packet_storage_->push_back(packet);
 }
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
-  ManagedScopedLock lock(*mutex_);
+  ScopedLock lock(mutex_);
   std::vector<Packet> received_packets{packet_storage_->begin(),
                                        packet_storage_->end()};
   packet_storage_->clear();

@@ -22,7 +22,6 @@
 #ifndef CONTRA_INCLUDE_CONTRA_SHARED_MEMORY_TRANSPORT_HPP_
 #define CONTRA_INCLUDE_CONTRA_SHARED_MEMORY_TRANSPORT_HPP_
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -56,12 +55,12 @@ class SharedMemoryTransport {
 #else
   using ManagedSharedMemory = boost::interprocess::managed_shared_memory;
 #endif
-  using ManagedMutex = boost::interprocess::named_mutex;
   using SegmentManager = ManagedSharedMemory::segment_manager;
-  using ManagedScopedLock = boost::interprocess::scoped_lock<ManagedMutex>;
-
   using Allocator = boost::interprocess::allocator<Packet, SegmentManager>;
   using PacketStorage = std::vector<Packet, Allocator>;
+
+  using NamedMutex = boost::interprocess::named_mutex;
+  using ScopedLock = boost::interprocess::scoped_lock<NamedMutex>;
 
   SharedMemoryTransport() = delete;
   explicit SharedMemoryTransport(const Create&);
@@ -88,17 +87,11 @@ class SharedMemoryTransport {
   SharedMemoryTransport& operator=(SharedMemoryTransport&&) = delete;
 
  private:
-  static std::unique_ptr<ManagedSharedMemory> CreateSegment();
-  static std::unique_ptr<ManagedSharedMemory> AccessSegment();
-
-  std::unique_ptr<ManagedMutex> CreateMutex();
-  std::unique_ptr<ManagedMutex> AccessMutex();
-
   PacketStorage* ConstructPacketStorage();
   PacketStorage* FindPacketStorage();
 
-  std::unique_ptr<ManagedSharedMemory> segment_;
-  std::unique_ptr<ManagedMutex> mutex_;
+  ManagedSharedMemory segment_;
+  NamedMutex mutex_;
 
   PacketStorage* packet_storage_;
 };
