@@ -40,39 +40,32 @@ inline void get_shared_dir(
 
 namespace contra {
 
-SharedMemoryTransport::SharedMemoryTransport(const Create&)
-    : segment_{boost::interprocess::create_only, SegmentName(), InitialSize()},
+SharedMemoryTransport::SharedMemoryTransport()
+    : segment_{boost::interprocess::open_or_create, SegmentName(),
+               InitialSize()},
       mutex_{boost::interprocess::open_or_create, MutexName()},
-      packet_storage_{ConstructPacketStorage()},
-      reference_count_{ConstructReferenceCount()} {
+      packet_storage_{FindOrConstructPacketStorage()},
+      reference_count_{FindOrConstructReferenceCount()} {
   ++(*reference_count_);
 }
 
 SharedMemoryTransport::PacketStorage*
-SharedMemoryTransport::ConstructPacketStorage() {
-  return segment_.construct<PacketStorage>(PacketStorageName())(
-      Allocator(segment_.get_segment_manager()));
+SharedMemoryTransport::FindOrConstructPacketStorage() {
+  PacketStorage* storage =
+      segment_.find<PacketStorage>(PacketStorageName()).first;
+  if (storage == nullptr) {
+    storage = segment_.construct<PacketStorage>(PacketStorageName())(
+        Allocator(segment_.get_segment_manager()));
+  }
+  return storage;
 }
 
-int* SharedMemoryTransport::ConstructReferenceCount() {
-  return segment_.construct<int>(ReferenceCountName())(0);
-}
-
-SharedMemoryTransport::SharedMemoryTransport(const Access&)
-    : segment_{boost::interprocess::open_only, SegmentName()},
-      mutex_{boost::interprocess::open_or_create, MutexName()},
-      packet_storage_{FindPacketStorage()},
-      reference_count_{FindReferenceCount()} {
-  ++(*reference_count_);
-}
-
-SharedMemoryTransport::PacketStorage*
-SharedMemoryTransport::FindPacketStorage() {
-  return segment_.find<PacketStorage>(PacketStorageName()).first;
-}
-
-int* SharedMemoryTransport::FindReferenceCount() {
-  return segment_.find<int>(ReferenceCountName()).first;
+int* SharedMemoryTransport::FindOrConstructReferenceCount() {
+  int* count = segment_.find<int>(ReferenceCountName()).first;
+  if (count == nullptr) {
+    count = segment_.construct<int>(ReferenceCountName())(0);
+  }
+  return count;
 }
 
 SharedMemoryTransport::~SharedMemoryTransport() {

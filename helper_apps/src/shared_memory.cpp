@@ -24,7 +24,7 @@
 #include "contra/shared_memory_transport.hpp"
 
 void Destroy() {
-  contra::SharedMemoryTransport access{contra::SharedMemoryTransport::Access()};
+  contra::SharedMemoryTransport access;
   access.Destroy();
 }
 

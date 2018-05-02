@@ -49,7 +49,13 @@ SCENARIO("Data gets transported via SharedMemoryTransport",
          "[contra][contra::Relay]") {
   contra::SharedMemoryTransport::Destroy();
 
-  RELAY_TRANSPORT_TEST(contra::SharedMemoryTransport,
-                       contra::SharedMemoryTransport::Create(),
-                       contra::SharedMemoryTransport::Access());
+  contra::Relay<contra::SharedMemoryTransport> sender;
+  contra::Relay<contra::SharedMemoryTransport> receiver;
+
+  sender.Send(test_utilities::ANY_NODE);
+  const auto received_nodes = receiver.Receive();
+
+  REQUIRE(received_nodes.size() == 1);
+  REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
+  contra::SharedMemoryTransport::Destroy();
 }

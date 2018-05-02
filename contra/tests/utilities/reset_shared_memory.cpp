@@ -26,8 +26,7 @@ namespace test_utilities {
 
 void ResetSharedMemory() {
   try {
-    contra::SharedMemoryTransport access{
-        contra::SharedMemoryTransport::Access()};
+    contra::SharedMemoryTransport access;
     access.Destroy();
   } catch (...) {
   }

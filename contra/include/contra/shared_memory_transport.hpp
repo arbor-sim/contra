@@ -46,9 +46,6 @@ namespace contra {
 
 class SharedMemoryTransport {
  public:
-  class Create {};
-  class Access {};
-
 #ifdef _WIN32
   using ManagedSharedMemory =
       boost::interprocess::managed_windows_shared_memory;
@@ -62,9 +59,7 @@ class SharedMemoryTransport {
   using NamedMutex = boost::interprocess::named_mutex;
   using ScopedLock = boost::interprocess::scoped_lock<NamedMutex>;
 
-  SharedMemoryTransport() = delete;
-  explicit SharedMemoryTransport(const Create&);
-  explicit SharedMemoryTransport(const Access&);
+  SharedMemoryTransport();
   SharedMemoryTransport(const SharedMemoryTransport&) = delete;
   SharedMemoryTransport(SharedMemoryTransport&&) = delete;
   ~SharedMemoryTransport();
@@ -89,11 +84,8 @@ class SharedMemoryTransport {
   SharedMemoryTransport& operator=(SharedMemoryTransport&&) = delete;
 
  private:
-  PacketStorage* ConstructPacketStorage();
-  int* ConstructReferenceCount();
-
-  PacketStorage* FindPacketStorage();
-  int* FindReferenceCount();
+  PacketStorage* FindOrConstructPacketStorage();
+  int* FindOrConstructReferenceCount();
 
   ManagedSharedMemory segment_;
   NamedMutex mutex_;

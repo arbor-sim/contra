@@ -43,8 +43,7 @@ SCENARIO("Packet shared memory creation",
   contra::SharedMemoryTransport::Destroy();
 
   GIVEN("A shared memory segment") {
-    contra::SharedMemoryTransport segment{
-        contra::SharedMemoryTransport::Create()};
+    contra::SharedMemoryTransport segment;
 
     WHEN("I ask it for its free size") {
       const auto free_size_after_creation = segment.GetFreeSize();
@@ -61,16 +60,6 @@ SCENARIO("Packet shared memory creation",
       }
     }
 
-    WHEN("I request a second shared memory segment") {
-      const auto create_second_segment = []() {
-        contra::SharedMemoryTransport segment2{
-            contra::SharedMemoryTransport::Create()};
-      };
-      THEN("It throws an exception") {
-        REQUIRE_THROWS(create_second_segment());
-      }
-    }
-
     segment.Destroy();
   }
 }
@@ -79,20 +68,11 @@ SCENARIO("Packet shared memory access",
          "[contra][contra::SharedMemoryTransport]") {
   contra::SharedMemoryTransport::Destroy();
 
-  GIVEN("No shared memory segment") {
-    THEN("Creating a shared memory access throws an exception.") {
-      REQUIRE_THROWS(contra::SharedMemoryTransport{
-          contra::SharedMemoryTransport::Access()});
-    }
-  }
-
   GIVEN("A shared memory segment") {
-    contra::SharedMemoryTransport segment_create{
-        contra::SharedMemoryTransport::Create()};
+    contra::SharedMemoryTransport segment_create;
 
     THEN("Creating a shared memory access does not throw an exception.") {
-      REQUIRE_NOTHROW(contra::SharedMemoryTransport{
-          contra::SharedMemoryTransport::Access()});
+      REQUIRE_NOTHROW(contra::SharedMemoryTransport());
     }
     segment_create.Destroy();
   }
@@ -103,10 +83,8 @@ SCENARIO("Data gets transported through shared memory",
   contra::SharedMemoryTransport::Destroy();
 
   GIVEN("A shared memory segment and access") {
-    contra::SharedMemoryTransport segment_create{
-        contra::SharedMemoryTransport::Create()};
-    contra::SharedMemoryTransport segment_access{
-        contra::SharedMemoryTransport::Access()};
+    contra::SharedMemoryTransport segment_create;
+    contra::SharedMemoryTransport segment_access;
 
     WHEN("a single packet is sent and received") {
       segment_create.Send(test_utilities::ANY_PACKET);
@@ -178,10 +156,8 @@ SCENARIO("Synchronization across separate threads does not accidently block",
   contra::SharedMemoryTransport::Destroy();
 
   GIVEN("a pair of shared memory transports") {
-    contra::SharedMemoryTransport segment_create{
-        contra::SharedMemoryTransport::Create()};
-    contra::SharedMemoryTransport segment_access{
-        contra::SharedMemoryTransport::Access()};
+    contra::SharedMemoryTransport segment_create;
+    contra::SharedMemoryTransport segment_access;
 
     WHEN("these send and receive in separate threads") {
       std::thread sender(::Send, &segment_access);
@@ -201,14 +177,12 @@ TEST_CASE("reference counting", "[niv][niv::RelaySharedMemory]") {
 
   // scope A
   {
-    contra::SharedMemoryTransport segment_create{
-        contra::SharedMemoryTransport::Create()};
+    contra::SharedMemoryTransport segment_create;
     REQUIRE(segment_create.GetReferenceCount() == 1);
 
     // scope A.1
     {
-      contra::SharedMemoryTransport segment_access{
-          contra::SharedMemoryTransport::Access()};
+      contra::SharedMemoryTransport segment_access;
       REQUIRE(segment_access.GetReferenceCount() == 2);
     }  // scope  A.1
 
@@ -217,8 +191,7 @@ TEST_CASE("reference counting", "[niv][niv::RelaySharedMemory]") {
 
   // scope B
   {
-    contra::SharedMemoryTransport segment_create{
-        contra::SharedMemoryTransport::Create()};
+    contra::SharedMemoryTransport segment_create;
     REQUIRE(segment_create.GetReferenceCount() == 1);
   }  // scope B
 
