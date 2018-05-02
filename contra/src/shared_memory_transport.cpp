@@ -43,7 +43,10 @@ namespace contra {
 SharedMemoryTransport::SharedMemoryTransport(const Create&)
     : segment_{boost::interprocess::create_only, SegmentName(), InitialSize()},
       mutex_{boost::interprocess::open_or_create, MutexName()},
-      packet_storage_{ConstructPacketStorage()} {}
+      packet_storage_{ConstructPacketStorage()},
+      reference_count_{ConstructReferenceCount()} {
+  ++(*reference_count_);
+}
 
 SharedMemoryTransport::PacketStorage*
 SharedMemoryTransport::ConstructPacketStorage() {
@@ -51,14 +54,32 @@ SharedMemoryTransport::ConstructPacketStorage() {
       Allocator(segment_.get_segment_manager()));
 }
 
+int* SharedMemoryTransport::ConstructReferenceCount() {
+  return segment_.construct<int>(ReferenceCountName())(0);
+}
+
 SharedMemoryTransport::SharedMemoryTransport(const Access&)
     : segment_{boost::interprocess::open_only, SegmentName()},
       mutex_{boost::interprocess::open_or_create, MutexName()},
-      packet_storage_{FindPacketStorage()} {}
+      packet_storage_{FindPacketStorage()},
+      reference_count_{FindReferenceCount()} {
+  ++(*reference_count_);
+}
 
 SharedMemoryTransport::PacketStorage*
 SharedMemoryTransport::FindPacketStorage() {
   return segment_.find<PacketStorage>(PacketStorageName()).first;
+}
+
+int* SharedMemoryTransport::FindReferenceCount() {
+  return segment_.find<int>(ReferenceCountName()).first;
+}
+
+SharedMemoryTransport::~SharedMemoryTransport() {
+  --(*reference_count_);
+  if (*reference_count_ == 0) {
+    Destroy();
+  }
 }
 
 std::size_t SharedMemoryTransport::GetFreeSize() const {
@@ -81,6 +102,10 @@ std::vector<Packet> SharedMemoryTransport::Receive() {
 void SharedMemoryTransport::Destroy() {
   boost::interprocess::shared_memory_object::remove(SegmentName());
   boost::interprocess::named_mutex::remove(MutexName());
+}
+
+int SharedMemoryTransport::GetReferenceCount() const {
+  return *reference_count_;
 }
 
 }  // namespace contra

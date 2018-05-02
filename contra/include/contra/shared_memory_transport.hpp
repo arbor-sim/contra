@@ -67,7 +67,7 @@ class SharedMemoryTransport {
   explicit SharedMemoryTransport(const Access&);
   SharedMemoryTransport(const SharedMemoryTransport&) = delete;
   SharedMemoryTransport(SharedMemoryTransport&&) = delete;
-  ~SharedMemoryTransport() = default;
+  ~SharedMemoryTransport();
 
   static void Destroy();
 
@@ -75,6 +75,8 @@ class SharedMemoryTransport {
 
   void Send(const Packet& packet);
   std::vector<Packet> Receive();
+
+  int GetReferenceCount() const;
 
   static constexpr const char* SegmentName() { return "packet-shared-memory"; }
   static constexpr const char* MutexName() { return "shared-mutex"; }
@@ -88,12 +90,16 @@ class SharedMemoryTransport {
 
  private:
   PacketStorage* ConstructPacketStorage();
+  int* ConstructReferenceCount();
+
   PacketStorage* FindPacketStorage();
+  int* FindReferenceCount();
 
   ManagedSharedMemory segment_;
   NamedMutex mutex_;
 
   PacketStorage* packet_storage_;
+  int* reference_count_;
 };
 
 }  // namespace contra

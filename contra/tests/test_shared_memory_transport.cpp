@@ -195,3 +195,32 @@ SCENARIO("Synchronization across separate threads does not accidently block",
     segment_create.Destroy();
   }
 }
+
+TEST_CASE("reference counting", "[niv][niv::RelaySharedMemory]") {
+  contra::SharedMemoryTransport::Destroy();
+
+  // scope A
+  {
+    contra::SharedMemoryTransport segment_create{
+        contra::SharedMemoryTransport::Create()};
+    REQUIRE(segment_create.GetReferenceCount() == 1);
+
+    // scope A.1
+    {
+      contra::SharedMemoryTransport segment_access{
+          contra::SharedMemoryTransport::Access()};
+      REQUIRE(segment_access.GetReferenceCount() == 2);
+    }  // scope  A.1
+
+    REQUIRE(segment_create.GetReferenceCount() == 1);
+  }  // scope A
+
+  // scope B
+  {
+    contra::SharedMemoryTransport segment_create{
+        contra::SharedMemoryTransport::Create()};
+    REQUIRE(segment_create.GetReferenceCount() == 1);
+  }  // scope B
+
+  contra::SharedMemoryTransport::Destroy();
+}
