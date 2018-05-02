@@ -28,6 +28,7 @@ rwthvr_add_executable(
   HEADERS ${CONTRA_TEST_HEADERS}
   SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra_tests/suppress_warnings.hpp"
   )
+set_tests_properties(contra_tests PROPERTIES TIMEOUT 2.0)
   
 target_include_directories(contra_tests
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
