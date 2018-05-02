@@ -41,7 +41,7 @@ const std::vector<contra::Packet> NONEMPTY_PACKET_LIST{contra::Packet()};
 }  // namespace
 
 SCENARIO("Packet shared memory creation",
-         "[contra][contra::SharedMemoryTransport]") {
+         "[contra][contra::SharedMemoryTransport][.]") {
   CONTRA_LOG_HLINE;
   CONTRA_LOG_TIME_BEGIN("SCENARIO Packet shared memory creation");
 
@@ -141,7 +141,7 @@ SCENARIO("Packet shared memory access",
 }
 
 SCENARIO("Data gets transported through shared memory",
-         "[contra][contra::SharedMemoryTransport]") {
+         "[contra][contra::SharedMemoryTransport][.]") {
   CONTRA_LOG_HLINE;
   CONTRA_LOG_TIME_BEGIN("SCENARIO Data gets transported through shared memory");
 
