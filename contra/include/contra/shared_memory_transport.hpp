@@ -37,9 +37,6 @@ SUPPRESS_WARNINGS_BEGIN
 #include "boost/interprocess/managed_shared_memory.hpp"
 #include "boost/interprocess/sync/named_mutex.hpp"
 #include "boost/interprocess/sync/scoped_lock.hpp"
-#ifdef _WIN32
-#include "boost/interprocess/managed_windows_shared_memory.hpp"
-#endif
 SUPPRESS_WARNINGS_END
 
 namespace contra {
@@ -49,12 +46,7 @@ class SharedMemoryTransport {
   class Create {};
   class Access {};
 
-#ifdef _WIN32
-  using ManagedSharedMemory =
-      boost::interprocess::managed_windows_shared_memory;
-#else
   using ManagedSharedMemory = boost::interprocess::managed_shared_memory;
-#endif
   using SegmentManager = ManagedSharedMemory::segment_manager;
   using Allocator = boost::interprocess::allocator<Packet, SegmentManager>;
   using PacketStorage = std::vector<Packet, Allocator>;
