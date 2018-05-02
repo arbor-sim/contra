@@ -41,13 +41,8 @@ const std::vector<contra::Packet> NONEMPTY_PACKET_LIST{contra::Packet()};
 }  // namespace
 
 SCENARIO("Packet shared memory creation",
-         "[contra][contra::SharedMemoryTransport][.]") {
-  CONTRA_LOG_HLINE;
-  CONTRA_LOG_TIME_BEGIN("SCENARIO Packet shared memory creation");
-
+         "[contra][contra::SharedMemoryTransport]") {
   contra::SharedMemoryTransport::Destroy();
-
-  CONTRA_LOG_TIME("after Destroy()");
 
   GIVEN("A shared memory segment") {
     contra::SharedMemoryTransport segment{
@@ -80,74 +75,34 @@ SCENARIO("Packet shared memory creation",
 
     segment.Destroy();
   }
-  CONTRA_LOG_TIME("end");
-  CONTRA_LOG_HLINE;
 }
 
 SCENARIO("Packet shared memory access",
          "[contra][contra::SharedMemoryTransport]") {
-  CONTRA_LOG_HLINE;
-  CONTRA_LOG_TIME_BEGIN("SCENARIO Packet shared memory access");
-
   contra::SharedMemoryTransport::Destroy();
 
-  CONTRA_LOG_TIME("after Destroy()");
-
-  CONTRA_LOG_TIME("before GIVEN No shared memory segment");
   GIVEN("No shared memory segment") {
-    CONTRA_LOG_TIME("GIVEN No shared memory segment");
     THEN("Creating a shared memory access throws an exception.") {
-      CONTRA_LOG_TIME(
-          "THEN Creating a shared memory access throws an exception.");
-      CONTRA_LOG_TIME("before REQUIRE_THROWS");
       REQUIRE_THROWS(contra::SharedMemoryTransport{
           contra::SharedMemoryTransport::Access()});
-      CONTRA_LOG_TIME("after REQUIRE_THROWS");
-      CONTRA_LOG_TIME(
-          "end THEN Creating a shared memory access throws an exception.");
     }
-    CONTRA_LOG_TIME("end GIVEN No shared memory segment");
   }
-  CONTRA_LOG_TIME("after GIVEN No shared memory segment");
 
-  CONTRA_LOG_TIME("before GIVEN A shared memory segment");
   GIVEN("A shared memory segment") {
-    CONTRA_LOG_TIME("GIVEN A shared memory segment");
-
     contra::SharedMemoryTransport segment_create{
         contra::SharedMemoryTransport::Create()};
 
-    CONTRA_LOG_TIME(
-        "before THEN Creating a shared memory access does not throw an "
-        "exception.");
     THEN("Creating a shared memory access does not throw an exception.") {
-      CONTRA_LOG_TIME(
-          "THEN Creating a shared memory access does not throw an exception.");
-      CONTRA_LOG_TIME("before REQUIRE_NOTHROW");
       REQUIRE_NOTHROW(contra::SharedMemoryTransport{
           contra::SharedMemoryTransport::Access()});
-      CONTRA_LOG_TIME("after REQUIRE_THROWS");
-      CONTRA_LOG_TIME(
-          "end THEN Creating a shared memory access does not throw an "
-          "exception.");
     }
-    CONTRA_LOG_TIME("end GIVEN A shared memory segment");
     segment_create.Destroy();
   }
-  CONTRA_LOG_TIME("after GIVEN A shared memory segment");
-
-  CONTRA_LOG_TIME("end");
-  CONTRA_LOG_HLINE;
-  REQUIRE(true == false);
 }
 
 SCENARIO("Data gets transported through shared memory",
-         "[contra][contra::SharedMemoryTransport][.]") {
-  CONTRA_LOG_HLINE;
-  CONTRA_LOG_TIME_BEGIN("SCENARIO Data gets transported through shared memory");
-
+         "[contra][contra::SharedMemoryTransport]") {
   contra::SharedMemoryTransport::Destroy();
-  CONTRA_LOG_TIME("after Destroy()");
 
   GIVEN("A shared memory segment and access") {
     contra::SharedMemoryTransport segment_create{
@@ -188,8 +143,6 @@ SCENARIO("Data gets transported through shared memory",
 
     segment_create.Destroy();
   }
-  CONTRA_LOG_TIME("end");
-  CONTRA_LOG_HLINE;
 }
 
 namespace {
@@ -223,7 +176,7 @@ constexpr bool we_reach_this_before_timeout = true;
 }  // namespace
 
 SCENARIO("Synchronization across separate threads does not accidently block",
-         "[niv][niv::RelaySharedMemory][.]") {
+         "[niv][niv::RelaySharedMemory]") {
   contra::SharedMemoryTransport::Destroy();
 
   GIVEN("a pair of shared memory transports") {
@@ -241,5 +194,6 @@ SCENARIO("Synchronization across separate threads does not accidently block",
         REQUIRE(::we_reach_this_before_timeout);
       }
     }
+    segment_create.Destroy();
   }
 }

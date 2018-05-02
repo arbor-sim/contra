@@ -37,7 +37,8 @@
   const auto received_nodes = receiver.Receive();                            \
                                                                              \
   REQUIRE(received_nodes.size() == 1);                                       \
-  REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
+  REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));         \
+  contra::SharedMemoryTransport::Destroy();
 
 SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
   RELAY_TRANSPORT_TEST(contra::FileTransport, "relay_file_transport.contra",
@@ -45,7 +46,7 @@ SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
 }
 
 SCENARIO("Data gets transported via SharedMemoryTransport",
-         "[contra][contra::Relay][.]") {
+         "[contra][contra::Relay]") {
   contra::SharedMemoryTransport::Destroy();
 
   RELAY_TRANSPORT_TEST(contra::SharedMemoryTransport,

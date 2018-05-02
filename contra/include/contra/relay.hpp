@@ -62,7 +62,7 @@ Relay<Transport>::Relay(ConstructorArguments&&... transport_arguments)
     : transport_(std::forward<ConstructorArguments>(transport_arguments)...) {
   static_assert(
       std::is_constructible<Transport, ConstructorArguments...>::value,
-      "Tansport must be constructible using ConstructorArguments");
+      "Transport must be constructible using ConstructorArguments");
 }
 
 template <typename Transport>
