@@ -59,12 +59,15 @@ class SharedMemoryTransport {
   using NamedMutex = boost::interprocess::named_mutex;
   using ScopedLock = boost::interprocess::scoped_lock<NamedMutex>;
 
-  SharedMemoryTransport();
+  constexpr static char kDefaultName[]{"contraShMemTransp\0"};
+  constexpr static char kMutexSuffix[]{"Mtx\0"};
+
+  explicit SharedMemoryTransport(const std::string& name = kDefaultName);
   SharedMemoryTransport(const SharedMemoryTransport&) = delete;
   SharedMemoryTransport(SharedMemoryTransport&&) = delete;
   ~SharedMemoryTransport();
 
-  static void Destroy();
+  static void Destroy(const std::string& name = kDefaultName);
 
   std::size_t GetFreeSize() const;
 
@@ -92,6 +95,8 @@ class SharedMemoryTransport {
 
   PacketStorage* packet_storage_;
   int* reference_count_;
+
+  std::string name_;
 };
 
 }  // namespace contra

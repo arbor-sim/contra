@@ -23,6 +23,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #ifdef _WIN32
@@ -40,12 +41,14 @@ inline void get_shared_dir(
 
 namespace contra {
 
-SharedMemoryTransport::SharedMemoryTransport()
-    : segment_{boost::interprocess::open_or_create, SegmentName(),
+SharedMemoryTransport::SharedMemoryTransport(const std::string& name)
+    : segment_{boost::interprocess::open_or_create, name.c_str(),
                InitialSize()},
-      mutex_{boost::interprocess::open_or_create, MutexName()},
+      mutex_{boost::interprocess::open_or_create,
+             (name + kMutexSuffix).c_str()},
       packet_storage_{FindOrConstructPacketStorage()},
-      reference_count_{FindOrConstructReferenceCount()} {
+      reference_count_{FindOrConstructReferenceCount()},
+      name_{name} {
   ++(*reference_count_);
 }
 
@@ -71,7 +74,7 @@ int* SharedMemoryTransport::FindOrConstructReferenceCount() {
 SharedMemoryTransport::~SharedMemoryTransport() {
   --(*reference_count_);
   if (*reference_count_ == 0) {
-    Destroy();
+    Destroy(name_);
   }
 }
 
@@ -92,9 +95,9 @@ std::vector<Packet> SharedMemoryTransport::Receive() {
   return received_packets;
 }
 
-void SharedMemoryTransport::Destroy() {
-  boost::interprocess::shared_memory_object::remove(SegmentName());
-  boost::interprocess::named_mutex::remove(MutexName());
+void SharedMemoryTransport::Destroy(const std::string& name) {
+  boost::interprocess::shared_memory_object::remove(name.c_str());
+  boost::interprocess::named_mutex::remove((name + kMutexSuffix).c_str());
 }
 
 int SharedMemoryTransport::GetReferenceCount() const {
