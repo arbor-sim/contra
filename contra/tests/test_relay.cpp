@@ -25,7 +25,7 @@
 #include "contra/relay.hpp"
 #include "contra/shared_memory_transport.hpp"
 
-#include "utilities/conduit_helpers.hpp"
+#include "utilities/conduit_data.hpp"
 #include "utilities/conduit_node_matcher.hpp"
 
 #define RELAY_TRANSPORT_TEST(transport_type, sender_params, receiver_params) \
