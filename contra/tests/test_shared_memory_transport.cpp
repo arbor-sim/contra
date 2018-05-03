@@ -39,8 +39,6 @@ const std::vector<contra::Packet> NONEMPTY_PACKET_LIST{contra::Packet()};
 
 SCENARIO("Packet shared memory creation",
          "[contra][contra::SharedMemoryTransport]") {
-  contra::SharedMemoryTransport::Destroy();
-
   GIVEN("A shared memory segment") {
     contra::SharedMemoryTransport segment;
 
@@ -58,29 +56,22 @@ SCENARIO("Packet shared memory creation",
         REQUIRE(received_packets.empty());
       }
     }
-
-    segment.Destroy();
   }
 }
 
 SCENARIO("Packet shared memory access",
          "[contra][contra::SharedMemoryTransport]") {
-  contra::SharedMemoryTransport::Destroy();
-
   GIVEN("A shared memory segment") {
     contra::SharedMemoryTransport segment_create;
 
     THEN("Creating a shared memory access does not throw an exception.") {
       REQUIRE_NOTHROW(contra::SharedMemoryTransport());
     }
-    segment_create.Destroy();
   }
 }
 
 SCENARIO("Data gets transported through shared memory",
          "[contra][contra::SharedMemoryTransport]") {
-  contra::SharedMemoryTransport::Destroy();
-
   GIVEN("A shared memory segment and access") {
     contra::SharedMemoryTransport segment_create;
     contra::SharedMemoryTransport segment_access;
@@ -115,8 +106,6 @@ SCENARIO("Data gets transported through shared memory",
         REQUIRE(segment_access.Receive().empty());
       }
     }
-
-    segment_create.Destroy();
   }
 }
 
@@ -152,8 +141,6 @@ constexpr bool we_reach_this_before_timeout = true;
 
 SCENARIO("Synchronization across separate threads does not accidently block",
          "[niv][niv::RelaySharedMemory]") {
-  contra::SharedMemoryTransport::Destroy();
-
   GIVEN("a pair of shared memory transports") {
     contra::SharedMemoryTransport segment_create;
     contra::SharedMemoryTransport segment_access;
@@ -167,7 +154,6 @@ SCENARIO("Synchronization across separate threads does not accidently block",
         REQUIRE(::we_reach_this_before_timeout);
       }
     }
-    segment_create.Destroy();
   }
 }
 
@@ -193,6 +179,4 @@ TEST_CASE("reference counting", "[niv][niv::RelaySharedMemory]") {
     contra::SharedMemoryTransport segment_create;
     REQUIRE(segment_create.GetReferenceCount() == 1);
   }  // scope B
-
-  contra::SharedMemoryTransport::Destroy();
 }
