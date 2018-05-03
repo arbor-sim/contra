@@ -29,7 +29,6 @@
 #include "contra/shared_memory_transport.hpp"
 
 #include "utilities/packet_matcher.hpp"
-#include "utilities/reset_shared_memory.hpp"
 #include "utilities/test_data.hpp"
 
 namespace {
