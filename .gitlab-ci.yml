@@ -105,6 +105,9 @@ deliver:windows:msvc++14.1:
     paths:
     - build
     expire_in: 1 week
+  only:
+    - master
+    - stable
 
 #-------------------------------------------------------------------------------
 #  Linux
@@ -248,6 +251,9 @@ deliver:linux:gcc5.3.1:
     paths:
     - build
     expire_in: 1 week
+  only:
+    - master
+    - stable
 
 deliver:linux:gcc6.3.1:
   stage: deliver
@@ -263,6 +269,9 @@ deliver:linux:gcc6.3.1:
     paths:
     - build
     expire_in: 1 week
+  only:
+    - master
+    - stable
 
 #-------------------------------------------------------------------------------
 #  MacOS
@@ -339,3 +348,6 @@ deliver:mac:clang9.1:
     paths:
     - build
     expire_in: 1 week
+  only:
+    - master
+    - stable
