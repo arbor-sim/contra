@@ -332,7 +332,7 @@ deliver:mac:clang9.1:
   dependencies:
     - test:mac:clang9.1
   script:
-    - conan export-pkg . contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
+    - conan export-pkg . contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64 -f
     - conan test ./test_package contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
   artifacts:
     paths:
