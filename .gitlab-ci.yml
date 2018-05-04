@@ -86,6 +86,10 @@ test:windows:msvc++14.1:
   script:
     - cd build
     - ctest -C Release
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
 
 deliver:windows:msvc++14.1:
   stage: deliver
@@ -323,6 +327,10 @@ test:mac:clang9.1:
   script:
     - cd build
     - ctest -C Release
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
 
 deliver:mac:clang9.1:
   stage: deliver
