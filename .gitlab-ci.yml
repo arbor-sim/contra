@@ -39,6 +39,8 @@ conan:windows:msvc++14.1:
     - rmdir /s /q build
     - mkdir build
     - cd build
+    - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
+    - conan user -p %CONAN_PASSWORD% -r rwth-vr--bintray %CONAN_LOGIN_USERNAME%
     - conan install --build=missing -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64 ..
   artifacts:
     paths:
@@ -124,6 +126,8 @@ conan:linux:gcc5.3.1:
     - cd build
     - export CC=gcc
     - export CXX=g++
+    - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
+    - conan user -p $CONAN_PASSWORD -r rwth-vr--bintray $CONAN_LOGIN_USERNAME
     - conan install .. --build=missing -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
   artifacts:
     paths:
@@ -140,6 +144,8 @@ conan:linux:gcc6.3.1:
     - cd build
     - export CC=gcc
     - export CXX=g++
+    - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
+    - conan user -p $CONAN_PASSWORD -r rwth-vr--bintray $CONAN_LOGIN_USERNAME
     - conan install .. --build=missing -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
   artifacts:
     paths:
@@ -289,6 +295,8 @@ conan:mac:clang9.1:
     - cd build
     - export CC=gcc
     - export CXX=g++
+    - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
+    - conan user -p $CONAN_PASSWORD -r rwth-vr--bintray $CONAN_LOGIN_USERNAME
     - conan install .. -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build=missing
   artifacts:
     paths:
