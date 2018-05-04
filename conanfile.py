@@ -28,7 +28,7 @@ class contra(ConanFile):
     description = """Contra, a lightweigth transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "src/*"
-    url = "git@devhub.vr.rwth-aachen.de:VR-Group/contra.git"
+    url = "https://devhub.vr.rwth-aachen.de/VR-Group/contra"
 
     requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
                  ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
