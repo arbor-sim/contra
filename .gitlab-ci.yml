@@ -244,8 +244,8 @@ deliver:linux:gcc5.3.1:
   dependencies:
     - test:linux:gcc5.3.1
   script:
-    - conan export-pkg . contra/0.1.0@RWTH-VR/develop compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release -f
-    - conan test ./test_package contra/0.1.0@RWTH-VR/develop compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
+    - conan export-pkg . contra/0.1.0@RWTH-VR/develop -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release -f
+    - conan test ./test_package contra/0.1.0@RWTH-VR/develop -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
   artifacts:
     paths:
     - build
@@ -259,8 +259,8 @@ deliver:linux:gcc6.3.1:
   dependencies:
     - test:linux:gcc6.3.1
   script:
-    - conan export-pkg . contra/0.1.0@RWTH-VR/develop compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release -f
-    - conan test ./test_package contra/0.1.0@RWTH-VR/develop compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
+    - conan export-pkg . contra/0.1.0@RWTH-VR/develop -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release -f
+    - conan test ./test_package contra/0.1.0@RWTH-VR/develop -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
   artifacts:
     paths:
     - build
