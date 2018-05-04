@@ -59,8 +59,8 @@ class SharedMemoryTransport {
   using NamedMutex = boost::interprocess::named_mutex;
   using ScopedLock = boost::interprocess::scoped_lock<NamedMutex>;
 
-  constexpr static char kDefaultName[]{"contraShMemTransp\0"};
-  constexpr static char kMutexSuffix[]{"Mtx\0"};
+  static constexpr char kDefaultName[]{"contraShMemTransp"};
+  static constexpr char kMutexSuffix[]{"Mtx"};
 
   explicit SharedMemoryTransport(const std::string& name = kDefaultName);
   SharedMemoryTransport(const SharedMemoryTransport&) = delete;
