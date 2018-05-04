@@ -23,7 +23,7 @@ from conans import ConanFile, CMake
 
 class contra(ConanFile):
     name = "contra"
-    version = "0.1.0"
+    version = "18.05"
     license = "Apache License, Version 2.0"
     description = """Contra, a lightweigth transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
