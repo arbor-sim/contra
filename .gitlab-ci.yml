@@ -24,6 +24,7 @@ stages:
   - cmake
   - build
   - test
+  - deliver
   
 #-------------------------------------------------------------------------------
 #  Windows
@@ -85,6 +86,21 @@ test:windows:msvc++14.1:
   script:
     - cd build
     - ctest -C Release
+
+deliver:windows:msvc++14.1:
+  stage: deliver
+  tags:
+    - msvc++14.1
+    - opengl
+  dependencies:
+    - test:windows:msvc++14.1
+  script:
+    - conan export-pkg . contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
+    - conan test ./test_package contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
 
 #-------------------------------------------------------------------------------
 #  Linux
@@ -220,6 +236,36 @@ test:linux:gcc6.3.1:
     - build
     expire_in: 1 week
 
+deliver:linux:gcc5.3.1:
+  stage: deliver
+  tags:
+    - gcc5.3.1
+    - opengl
+  dependencies:
+    - test:linux:gcc5.3.1
+  script:
+    - conan export-pkg . contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
+    - conan test ./test_package contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
+deliver:linux:gcc6.3.1:
+  stage: deliver
+  tags:
+    - gcc6.3.1
+    - opengl
+  dependencies:
+    - test:linux:gcc6.3.1
+  script:
+    - conan export-pkg . contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
+    - conan test ./test_package contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+
 #-------------------------------------------------------------------------------
 #  MacOS
 #-------------------------------------------------------------------------------
@@ -277,3 +323,18 @@ test:mac:clang9.1:
   script:
     - cd build
     - ctest -C Release
+
+deliver:mac:clang9.1:
+  stage: deliver
+  tags:
+    - clang9.1
+    - opengl
+  dependencies:
+    - test:mac:clang9.1
+  script:
+    - conan export-pkg . contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
+    - conan test ./test_package contra/0.1.0@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
