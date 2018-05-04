@@ -327,8 +327,7 @@ test:mac:clang9.1:
 deliver:mac:clang9.1:
   stage: deliver
   tags:
-    - clang9.1
-    - opengl
+    - osx
   dependencies:
     - test:mac:clang9.1
   script:
