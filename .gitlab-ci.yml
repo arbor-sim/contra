@@ -260,7 +260,7 @@ deliver:linux:gcc5.3.1:
     - build
     expire_in: 1 week
   only:
-    - "#16_create_conan_package_and_conan_ci_stages"
+    - master
     - stable
 
 deliver:linux:gcc6.3.1:
@@ -280,7 +280,7 @@ deliver:linux:gcc6.3.1:
     expire_in: 1 week
   only:
     - master
-    - "#16_create_conan_package_and_conan_ci_stages"
+    - stable
 
 #-------------------------------------------------------------------------------
 #  MacOS
