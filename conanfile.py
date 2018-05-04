@@ -25,7 +25,7 @@ class contra(ConanFile):
     name = "contra"
     version = "18.05"
     license = "Apache License, Version 2.0"
-    description = """Contra, a lightweigth transport library for conduit data"""
+    description = """Contra, a lightweight transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "src/*"
     url = "https://devhub.vr.rwth-aachen.de/VR-Group/contra"
