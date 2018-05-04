@@ -23,15 +23,22 @@
 #define CONTRA_INCLUDE_CONTRA_RELAY_HPP_
 
 #include <string>
+#include <type_traits>
+#include <utility>
+#include <vector>
 
 #include "conduit/conduit_node.hpp"
 
-#include "contra/file_transport.hpp"
+#include "contra/packet.hpp"
 
 namespace contra {
+
+template <typename Transport>
 class Relay {
  public:
-  explicit Relay(const std::string& name);
+  template <typename... ConstructorArguments>
+  explicit Relay(ConstructorArguments&&... transport_arguments);
+
   Relay(const Relay&) = delete;
   Relay(Relay&&) = delete;
   ~Relay() = default;
@@ -40,14 +47,62 @@ class Relay {
   Relay& operator=(Relay&&) = delete;
 
   void Send(const conduit::Node& node);
-  conduit::Node Receive();
+  std::vector<conduit::Node> Receive();
 
  private:
   Packet CreatePacket(const conduit::Node& node) const;
   conduit::Node CreateNode(const Packet& packet) const;
 
-  FileTransport transport_;
+  Transport transport_;
 };
+
+template <typename Transport>
+template <typename... ConstructorArguments>
+Relay<Transport>::Relay(ConstructorArguments&&... transport_arguments)
+    : transport_(std::forward<ConstructorArguments>(transport_arguments)...) {
+  static_assert(
+      std::is_constructible<Transport, ConstructorArguments...>::value,
+      "Transport must be constructible using ConstructorArguments");
+}
+
+template <typename Transport>
+void Relay<Transport>::Send(const conduit::Node& node) {
+  const Packet packet{CreatePacket(node)};
+  transport_.Send(packet);
+}
+
+template <typename Transport>
+Packet Relay<Transport>::CreatePacket(const conduit::Node& node) const {
+  Packet packet;
+
+  const conduit::Schema schema{node.schema()};
+  conduit::Schema compact_schema;
+  schema.compact_to(compact_schema);
+  packet.schema = compact_schema.to_json();
+
+  node.serialize(packet.data);
+  return packet;
+}
+
+template <typename Transport>
+std::vector<conduit::Node> Relay<Transport>::Receive() {
+  const auto packets = transport_.Receive();
+  std::vector<conduit::Node> nodes;
+  nodes.reserve(packets.size());
+  for (const auto& packet : packets) {
+    nodes.push_back(CreateNode(packet));
+  }
+  return nodes;
+}
+
+template <typename Transport>
+conduit::Node Relay<Transport>::CreateNode(const Packet& packet) const {
+  constexpr bool use_external_data{false};
+  return conduit::Node(
+      packet.schema,
+      const_cast<void*>(reinterpret_cast<const void*>(packet.data.data())),
+      use_external_data);
+}
 
 }  // namespace contra
 

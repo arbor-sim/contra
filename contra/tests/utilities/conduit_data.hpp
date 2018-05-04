@@ -19,56 +19,37 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#include "utilities/conduit_helpers.hpp"
+#ifndef CONTRA_TESTS_UTILITIES_CONDUIT_DATA_HPP_
+#define CONTRA_TESTS_UTILITIES_CONDUIT_DATA_HPP_
+
+#include "conduit/conduit_node.hpp"
 
 namespace test_utilities {
 
-conduit::Node AnyNode() {
-  conduit::Node node;
-  node["A/B/C"] = 3.1415;
-  node["A/B/D"] = 4.124;
-  node["A/E"] = 42.0;
-  return node;
-}
+class Helpers;
 
-conduit::Node AnotherNode() {
-  conduit::Node node;
-  node["A/B/C"] = 2.0 * 3.1415;
-  node["A/B/D"] = 3.0 * 4.124;
-  node["A/E"] = 4.0 * 42.0;
-  return node;
-}
+void Send(const conduit::Node& node);
 
-conduit::Node AnyUpdate() {
-  conduit::Node node;
-  node["A/B/F"] = 2.0 * 3.1415;
-  node["A/B/G"] = 3.0 * 4.124;
-  node["A/H"] = 4.0 * 42.0;
-  return node;
-}
+conduit::Node AnyNode();
+conduit::Node AnotherNode();
 
-conduit::Node UpdatedNode() {
-  conduit::Node node;
-  node["A/B/C"] = 3.1415;
-  node["A/B/D"] = 4.124;
-  node["A/E"] = 42.0;
-  node["A/B/F"] = 2.0 * 3.1415;
-  node["A/B/G"] = 3.0 * 4.124;
-  node["A/H"] = 4.0 * 42.0;
-  return node;
-}
+conduit::Node AnyUpdate();
+conduit::Node UpdatedNode();
+conduit::Node UpdatedNodeAllZeros();
 
-conduit::Node UpdatedNodeAllZeros() {
-  conduit::Node node;
-  node["A/B/C"] = 0.0;
-  node["A/B/D"] = 0.0;
-  node["A/E"] = 0.0;
-  node["A/B/F"] = 0.0;
-  node["A/B/G"] = 0.0;
-  node["A/H"] = 0.0;
-  return node;
-}
+conduit::Node ADifferentNode();
 
-conduit::Node ADifferentNode() { return AnyUpdate(); }
+static const conduit::Node ANY_NODE{AnyNode()};
+static const conduit::Node ANOTHER_NODE{AnotherNode()};
+
+static const conduit::Node ANY_UPDATE{AnyUpdate()};
+static const conduit::Node UPDATED_NODE{UpdatedNode()};
+static const conduit::Node UPDATED_NODE_ALL_ZEROS{UpdatedNodeAllZeros()};
+
+static const conduit::Node A_DIFFERENT_NODE{ADifferentNode()};
+
+static const double ANY_VALUE{4.123};
 
 }  // namespace test_utilities
+
+#endif  // CONTRA_TESTS_UTILITIES_CONDUIT_DATA_HPP_

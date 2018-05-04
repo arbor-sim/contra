@@ -36,8 +36,9 @@ target_include_directories(contra
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
   )
-
+  
 target_link_libraries(contra
+  PUBLIC ${CONAN_OR_CMAKE_boost_interprocess}
   PUBLIC ${CONAN_OR_CMAKE_conduit}
   )
 

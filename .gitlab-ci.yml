@@ -213,10 +213,7 @@ test:linux:gcc5.3.1:
     - build:linux:gcc5.3.1
   script:
     - cd build
-    - ls
-    - pwd
     - ctest -C Release
-    - ls
   artifacts:
     paths:
     - build
@@ -231,10 +228,7 @@ test:linux:gcc6.3.1:
     - build:linux:gcc6.3.1
   script:
     - cd build
-    - ls
-    - pwd
     - ctest -C Release
-    - ls
   artifacts:
     paths:
     - build
@@ -312,7 +306,7 @@ build:mac:clang9.1:
     - cmake:mac:clang9.1
   script:
     - cd build
-    - make
+    - make -j4
   artifacts:
     paths:
     - build
@@ -326,7 +320,7 @@ test:mac:clang9.1:
     - build:mac:clang9.1
   script:
     - cd build
-    - ctest -C Release
+    - CTEST_OUTPUT_ON_FAILURE=1 ctest -C Release
   artifacts:
     paths:
     - build

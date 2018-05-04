@@ -19,8 +19,8 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_TESTS_UTILITIES_CONDUIT_NODE_HELPER_HPP_
-#define CONTRA_TESTS_UTILITIES_CONDUIT_NODE_HELPER_HPP_
+#ifndef CONTRA_TESTS_UTILITIES_CONDUIT_NODE_MATCHER_HPP_
+#define CONTRA_TESTS_UTILITIES_CONDUIT_NODE_MATCHER_HPP_
 
 #include <string>
 
@@ -41,11 +41,15 @@ namespace Matchers {
 class ConduitNodeEquals : public Catch::MatcherBase<conduit::Node> {
  public:
   explicit ConduitNodeEquals(const conduit::Node& node) : node_{node} {}
-  bool match(const conduit::Node& node) const override {
-    return Catch::Matchers::Equals(node.to_json()).match(node_.to_json());
+  bool match(const conduit::Node& other) const override {
+    const std::string others = StringMaker<conduit::Node>::convert(other);
+    const std::string mine = StringMaker<conduit::Node>::convert(node_);
+
+    return Catch::Matchers::Equals(others).match(mine);
   }
   std::string describe() const override {
-    return Catch::Matchers::Equals(node_.to_json()).describe();
+    return Catch::Matchers::Equals(StringMaker<conduit::Node>::convert(node_))
+        .describe();
   }
 
  private:
@@ -62,4 +66,4 @@ inline ConduitNodeEquals Equals(const conduit::Node& node) {
 
 using Catch::Matchers::Equals;
 
-#endif  // CONTRA_TESTS_UTILITIES_CONDUIT_NODE_HELPER_HPP_
+#endif  // CONTRA_TESTS_UTILITIES_CONDUIT_NODE_MATCHER_HPP_
