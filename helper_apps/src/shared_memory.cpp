@@ -19,37 +19,16 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_TESTS_UTILITIES_CONDUIT_HELPERS_HPP_
-#define CONTRA_TESTS_UTILITIES_CONDUIT_HELPERS_HPP_
+#include <string>
 
-#include "conduit/conduit_node.hpp"
+#include "contra/shared_memory_transport.hpp"
 
-namespace test_utilities {
+void Destroy() {
+  contra::SharedMemoryTransport access;
+  access.Destroy();
+}
 
-class Helpers;
-
-void Send(const conduit::Node& node);
-
-conduit::Node AnyNode();
-conduit::Node AnotherNode();
-
-conduit::Node AnyUpdate();
-conduit::Node UpdatedNode();
-conduit::Node UpdatedNodeAllZeros();
-
-conduit::Node ADifferentNode();
-
-static const conduit::Node ANY_NODE{AnyNode()};
-static const conduit::Node ANOTHER_NODE{AnotherNode()};
-
-static const conduit::Node ANY_UPDATE{AnyUpdate()};
-static const conduit::Node UPDATED_NODE{UpdatedNode()};
-static const conduit::Node UPDATED_NODE_ALL_ZEROS{UpdatedNodeAllZeros()};
-
-static const conduit::Node A_DIFFERENT_NODE{ADifferentNode()};
-
-static const double ANY_VALUE{4.123};
-
-}  // namespace test_utilities
-
-#endif  // CONTRA_TESTS_UTILITIES_CONDUIT_HELPERS_HPP_
+int main() {
+  Destroy();
+  return EXIT_SUCCESS;
+}

@@ -2,9 +2,9 @@
 // contra -- a lightweigth transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
-// Virtual Reality & Immersive Visualisation Group.
+// Virtual Reality & Immersive Visualization Group.
 //------------------------------------------------------------------------------
-//                                 License
+//                                  License
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,36 +19,18 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_INCLUDE_CONTRA_FILE_TRANSPORT_HPP_
-#define CONTRA_INCLUDE_CONTRA_FILE_TRANSPORT_HPP_
-
-#include <string>
-#include <vector>
+#ifndef CONTRA_TESTS_UTILITIES_TEST_DATA_HPP_
+#define CONTRA_TESTS_UTILITIES_TEST_DATA_HPP_
 
 #include "contra/packet.hpp"
 
-namespace contra {
+namespace test_utilities {
 
-class FileTransport {
- public:
-  explicit FileTransport(const std::string& filename);
+static const contra::Packet ANY_PACKET{{"any string"}, {1, 2, 4, 3, 5, 6}};
+static const contra::Packet ANOTHER_PACKET{{"another string"},
+                                           {22, 23, 24, 26, 25}};
+static const contra::Packet THIRD_PACKET{{"third string"}, {36, 38, 37}};
 
-  void Send(const Packet& packet);
-  std::vector<Packet> Receive();
+}  // namespace test_utilities
 
- private:
-  void WriteSchema(const std::string& schema, std::ofstream* stream) const;
-  void WriteData(const std::vector<uint8_t>& data, std::ofstream* stream) const;
-  bool ReadAndCheckSignature(std::ifstream* stream) const;
-  std::string ReadSchema(std::ifstream* stream) const;
-  std::vector<uint8_t> ReadData(std::ifstream* stream) const;
-
-  std::string filename_;
-
-  static const unsigned int kSignatureLength{6};
-  static const char kSignature[kSignatureLength];
-};
-
-}  // namespace contra
-
-#endif  // CONTRA_INCLUDE_CONTRA_FILE_TRANSPORT_HPP_
+#endif  // CONTRA_TESTS_UTILITIES_TEST_DATA_HPP_
