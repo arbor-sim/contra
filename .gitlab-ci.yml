@@ -101,6 +101,7 @@ deliver:windows:msvc++14.1:
   script:
     - conan export-pkg . contra/18.05@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64 -f
     - conan test ./test_package contra/18.05@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
+    - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray
   artifacts:
     paths:
     - build
@@ -247,6 +248,7 @@ deliver:linux:gcc5.3.1:
   script:
     - conan export-pkg . contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release -f
     - conan test ./test_package contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
+    - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray
   artifacts:
     paths:
     - build
@@ -265,6 +267,7 @@ deliver:linux:gcc6.3.1:
   script:
     - conan export-pkg . contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release -f
     - conan test ./test_package contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
+    - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray
   artifacts:
     paths:
     - build
@@ -344,6 +347,7 @@ deliver:mac:clang9.1:
   script:
     - conan export-pkg . contra/18.05@RWTH-VR/develop -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ -f
     - conan test ./test_package contra/18.05@RWTH-VR/develop -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++
+    - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray 
   artifacts:
     paths:
     - build
