@@ -75,8 +75,7 @@ test:windows:msvc++14.1:
   dependencies:
     - build:windows:msvc++14.1
   script:
-    - cd build
-    - ctest -C Release
+    - python .gitlab-ci.py test Windows "Visual Studio" 15 18.05
   <<: *artifacts_definition
 
 deliver:windows:msvc++14.1:
@@ -169,8 +168,7 @@ test:linux:gcc5.3.1:
   dependencies:
     - build:linux:gcc5.3.1
   script:
-    - cd build
-    - ctest -C Release
+    - python .gitlab-ci.py test Linux gcc 5.3 18.05
   <<: *artifacts_definition
 
 test:linux:gcc6.3.1:
@@ -181,8 +179,7 @@ test:linux:gcc6.3.1:
   dependencies:
     - build:linux:gcc6.3.1
   script:
-    - cd build
-    - ctest -C Release
+    - python .gitlab-ci.py test Linux gcc 6.3 18.05
   <<: *artifacts_definition
 
 deliver:linux:gcc5.3.1:
@@ -246,8 +243,7 @@ build:mac:clang9.1:
   dependencies:
     - cmake:mac:clang9.1
   script:
-    - cd build
-    - make -j4
+    - python .gitlab-ci.py build OSX apple-clang 9.1 18.05
   <<: *artifacts_definition
 
 test:mac:clang9.1:
@@ -257,8 +253,7 @@ test:mac:clang9.1:
   dependencies:
     - build:mac:clang9.1
   script:
-    - cd build
-    - CTEST_OUTPUT_ON_FAILURE=1 ctest -C Release
+    - python .gitlab-ci.py test OSX apple-clang 9.1 18.05
   <<: *artifacts_definition
 
 deliver:mac:clang9.1:

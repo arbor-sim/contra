@@ -82,6 +82,12 @@ def main(argv):
             build_flags.append('--config Release')
         os.chdir('build')
         os.system('cmake --build . %s' % ' '.join(build_flags))
+
+    elif stage == "test":
+        os.chdir('build')
+        if operating_system == 'OSX':
+            os.environ['CTEST_OUTPUT_ON_FAILURE'] = 1
+        os.system('ctest -C Release')
     
 if (__name__ == '__main__'):
     main(sys.argv)
