@@ -36,15 +36,15 @@ def main(argv):
     version = argv[5]
 
     if not stage in valid_stages:
-        print("Invalid stage, possible values: " + ', '.join(valid_stages))
+        print("Invalid stage, possible values: %s" % ", ".join(valid_stages))
         return -1
 
     if not operating_system in valid_os:
-        print("Invalid operating system, possible values: " + ', '.join(valid_os))
+        print("Invalid operating system, possible values: %s" % ", ".join(valid_os))
         return -1
 
     if not compiler in valid_compilers[operating_system]:
-        print("Invalid compiler, possible values: " + ', '.join(valid_compilers[operating_system]))
+        print("Invalid compiler for %s, possible values: %s" % (operating_system, ", ".join(valid_compilers[operating_system])))
         return -1
 
     if stage == "conan":
@@ -72,7 +72,7 @@ def main(argv):
         elif compiler == "apple-clang":
             settings.append("-s -s compiler.libcxx=libc++")            
 
-        os.system("conan install --build=missing %s .." % ' '.join(settings))
+        os.system("conan install --build=missing %s .." % " ".join(settings))
     
 if (__name__ == "__main__"):
     main(sys.argv)
