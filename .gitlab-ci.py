@@ -81,7 +81,7 @@ def main(argv):
         if compiler == 'Visual Studio':
             build_flags.append('--config Release')
         os.chdir('build')
-        os.system('cmake --build %s .' % ' '.join(build_flags))
+        os.system('cmake --build . %s' % ' '.join(build_flags))
     
 if (__name__ == '__main__'):
     main(sys.argv)
