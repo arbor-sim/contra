@@ -42,12 +42,7 @@ conan:windows:msvc++14.1:
     - msvc++14.1
     - opengl
   script:
-    - rmdir /s /q build
-    - mkdir build
-    - cd build
-    - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
-    - conan user -p %CONAN_PASSWORD% -r rwth-vr--bintray %CONAN_LOGIN_USERNAME%
-    - conan install --build=missing -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64 ..
+    - python .gitlab-ci.py conan Windows "Visual Studio" 15 18.05
   <<: *artifacts_definition
     
 cmake:windows:msvc++14.1:
@@ -112,13 +107,7 @@ conan:linux:gcc5.3.1:
     - gcc5.3.1
     - opengl
   script:
-    - mkdir build
-    - cd build
-    - export CC=gcc
-    - export CXX=g++
-    - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
-    - conan user -p $CONAN_PASSWORD -r rwth-vr--bintray $CONAN_LOGIN_USERNAME
-    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
+    - python .gitlab-ci.py conan Linux gcc 5.3 18.05
   <<: *artifacts_definition
     
 conan:linux:gcc6.3.1:
@@ -127,13 +116,7 @@ conan:linux:gcc6.3.1:
     - gcc6.3.1
     - opengl
   script:
-    - mkdir build
-    - cd build
-    - export CC=gcc
-    - export CXX=g++
-    - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
-    - conan user -p $CONAN_PASSWORD -r rwth-vr--bintray $CONAN_LOGIN_USERNAME
-    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
+    - python .gitlab-ci.py conan Linux gcc 6.3 18.05
   <<: *artifacts_definition
 
 cmake:linux:gcc5.3.1:
@@ -249,13 +232,7 @@ conan:mac:clang9.1:
   tags:
     - osx
   script:
-    - mkdir build
-    - cd build
-    - export CC=gcc
-    - export CXX=g++
-    - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
-    - conan user -p $CONAN_PASSWORD -r rwth-vr--bintray $CONAN_LOGIN_USERNAME
-    - conan install .. -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build=missing
+    - python .gitlab-ci.py conan OSX apple-clang 9.1 18.05
   <<: *artifacts_definition
 
 cmake:mac:clang9.1:
