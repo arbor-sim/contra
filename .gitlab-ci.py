@@ -64,7 +64,7 @@ def main(argv):
         elif compiler == "gcc":
             settings.append("-s compiler.libcxx=\"libstdc++11\"")
         elif compiler == "apple-clang":
-            settings.append("-s -s compiler.libcxx=libc++")            
+            settings.append("-s compiler.libcxx=libc++")            
 
         os.system("conan install --build=missing %s .." % " ".join(settings))
     
