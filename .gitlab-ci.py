@@ -18,12 +18,6 @@ compiler = ""
 compiler_version = ""
 version = ""
 
-def envvar(name):
-    if operating_system == "Windows":
-        return "%%%s%%" % name
-    else:
-        return "$%s" % name
-
 def main(argv):
     if (len(argv) != 6):
         print("usage: .gitlab-ci.py [stage] [os] [compiler] [compiler_version] [version]")
@@ -56,7 +50,7 @@ def main(argv):
             os.system("export CC=gcc")
             os.system("export CXX=g++")
         os.system("conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan")
-        os.system("conan user -p %s -r rwth-vr--bintray %s" % (envvar("CONAN_PASSWORD"), envvar("CONAN_LOGIN_USERNAME")))
+        os.system("conan user -p %s -r rwth-vr--bintray %s" % (os.environ["CONAN_PASSWORD"], os.environ["CONAN_LOGIN_USERNAME"]))
 
         settings = []
 
