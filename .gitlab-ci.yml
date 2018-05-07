@@ -25,6 +25,12 @@ stages:
   - build
   - test
   - deliver
+
+.artifacts_template: &artifacts_definition
+  artifacts:
+  paths:
+    - build
+  expire_in: 1 week
   
 #-------------------------------------------------------------------------------
 #  Windows
@@ -42,10 +48,7 @@ conan:windows:msvc++14.1:
     - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
     - conan user -p %CONAN_PASSWORD% -r rwth-vr--bintray %CONAN_LOGIN_USERNAME%
     - conan install --build=missing -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64 ..
-  artifacts:
-    paths:
-      - build
-    expire_in: 1 week
+  <<: *artifacts_definition
     
 cmake:windows:msvc++14.1:
   stage: cmake
@@ -57,11 +60,7 @@ cmake:windows:msvc++14.1:
   script:
     - cd build
     - cmake -G "Visual Studio 15 2017 Win64" ..
-  artifacts:
-    untracked: true
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 build:windows:msvc++14.1:
   stage: build
@@ -73,10 +72,7 @@ build:windows:msvc++14.1:
   script:
     - cd build
     - cmake --build . --config Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 test:windows:msvc++14.1:
   stage: test
@@ -88,10 +84,7 @@ test:windows:msvc++14.1:
   script:
     - cd build
     - ctest -C Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 deliver:windows:msvc++14.1:
   stage: deliver
@@ -104,10 +97,7 @@ deliver:windows:msvc++14.1:
     - conan export-pkg . contra/18.05@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64 -f
     - conan test ./test_package contra/18.05@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
     - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
   only:
     - master
     - stable
@@ -129,10 +119,7 @@ conan:linux:gcc5.3.1:
     - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
     - conan user -p $CONAN_PASSWORD -r rwth-vr--bintray $CONAN_LOGIN_USERNAME
     - conan install .. --build=missing -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
     
 conan:linux:gcc6.3.1:
   stage: conan
@@ -147,10 +134,7 @@ conan:linux:gcc6.3.1:
     - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
     - conan user -p $CONAN_PASSWORD -r rwth-vr--bintray $CONAN_LOGIN_USERNAME
     - conan install .. --build=missing -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 cmake:linux:gcc5.3.1:
   stage: cmake
@@ -162,11 +146,7 @@ cmake:linux:gcc5.3.1:
   script:
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release
-  artifacts:
-    untracked: true
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 cmake:linux:gcc6.3.1:
   stage: cmake
@@ -178,11 +158,7 @@ cmake:linux:gcc6.3.1:
   script:
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release
-  artifacts:
-    untracked: true
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 build:linux:gcc5.3.1:
   stage: build
@@ -194,10 +170,7 @@ build:linux:gcc5.3.1:
   script:
     - cd build
     - make -j8
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 build:linux:gcc6.3.1:
   stage: build
@@ -209,10 +182,7 @@ build:linux:gcc6.3.1:
   script:
     - cd build
     - make -j8
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 test:linux:gcc5.3.1:
   stage: test
@@ -224,10 +194,7 @@ test:linux:gcc5.3.1:
   script:
     - cd build
     - ctest -C Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 test:linux:gcc6.3.1:
   stage: test
@@ -239,10 +206,7 @@ test:linux:gcc6.3.1:
   script:
     - cd build
     - ctest -C Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 deliver:linux:gcc5.3.1:
   stage: deliver
@@ -255,10 +219,7 @@ deliver:linux:gcc5.3.1:
     - conan export-pkg . contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release -f
     - conan test ./test_package contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
     - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
   only:
     - master
     - stable
@@ -274,10 +235,7 @@ deliver:linux:gcc6.3.1:
     - conan export-pkg . contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release -f
     - conan test ./test_package contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
     - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
   only:
     - master
     - stable
@@ -298,10 +256,7 @@ conan:mac:clang9.1:
     - conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
     - conan user -p $CONAN_PASSWORD -r rwth-vr--bintray $CONAN_LOGIN_USERNAME
     - conan install .. -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build=missing
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 cmake:mac:clang9.1:
   stage: cmake
@@ -312,11 +267,7 @@ cmake:mac:clang9.1:
   script:
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release
-  artifacts:
-    untracked: true
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 build:mac:clang9.1:
   stage: build
@@ -327,10 +278,7 @@ build:mac:clang9.1:
   script:
     - cd build
     - make -j4
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 test:mac:clang9.1:
   stage: test
@@ -341,10 +289,7 @@ test:mac:clang9.1:
   script:
     - cd build
     - CTEST_OUTPUT_ON_FAILURE=1 ctest -C Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
 
 deliver:mac:clang9.1:
   stage: deliver
@@ -356,10 +301,7 @@ deliver:mac:clang9.1:
     - conan export-pkg . contra/18.05@RWTH-VR/develop -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ -f
     - conan test ./test_package contra/18.05@RWTH-VR/develop -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++
     - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray 
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+  <<: *artifacts_definition
   only:
     - master
     - stable
