@@ -53,8 +53,7 @@ cmake:windows:msvc++14.1:
   dependencies:
     - conan:windows:msvc++14.1
   script:
-    - cd build
-    - cmake -G "Visual Studio 15 2017 Win64" ..
+    - python .gitlab-ci.py cmake Windows "Visual Studio" 15 18.05
   <<: *artifacts_definition
 
 build:windows:msvc++14.1:
@@ -127,8 +126,7 @@ cmake:linux:gcc5.3.1:
   dependencies:
     - conan:linux:gcc5.3.1
   script:
-    - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release
+    - python .gitlab-ci.py cmake Linux gcc 5.3 18.05
   <<: *artifacts_definition
 
 cmake:linux:gcc6.3.1:
@@ -139,8 +137,7 @@ cmake:linux:gcc6.3.1:
   dependencies:
     - conan:linux:gcc6.3.1
   script:
-    - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release
+    - python .gitlab-ci.py cmake Linux gcc 6.3 18.05
   <<: *artifacts_definition
 
 build:linux:gcc5.3.1:
@@ -242,8 +239,7 @@ cmake:mac:clang9.1:
   dependencies:
     - conan:mac:clang9.1
   script:
-    - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release
+    - python .gitlab-ci.py cmake OSX apple-clang 9.1 18.05
   <<: *artifacts_definition
 
 build:mac:clang9.1:

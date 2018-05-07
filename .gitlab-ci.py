@@ -12,6 +12,10 @@ valid_compilers = {
     'OSX': ['apple-clang', 'gcc']
 }
 
+visual_studio_version_year_map = {
+    '15': '2017'
+}
+
 stage = ''
 operating_system = ''
 compiler = ''
@@ -65,6 +69,18 @@ def main(argv):
             settings.append('-s compiler.libcxx=libc++')            
 
         os.system('conan install --build=missing %s ..' % ' '.join(settings))
+
+    elif stage == 'cmake':
+        os.chdir('build')
+
+        cmake_flags = []
+
+        if compiler == 'Visual Studio':
+            cmake_flags.append('-G "Visual Studio %s %s Win64"' % (compiler_version, visual_studio_version_year_map[compiler_version]))
+        elif:
+            cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
+
+        os.system('cmake %s ..' % ' '.join(cmake_flags))
     
 if (__name__ == '__main__'):
     main(sys.argv)
