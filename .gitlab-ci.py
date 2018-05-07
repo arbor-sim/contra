@@ -71,7 +71,7 @@ def main(argv):
 
         if compiler == 'Visual Studio':
             cmake_flags.append('-G "Visual Studio %s %s Win64"' % (compiler_version, visual_studio_version_year_map[compiler_version]))
-        elif:
+        else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
 
         os.system('cmake %s ..' % ' '.join(cmake_flags))
