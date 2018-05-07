@@ -48,21 +48,21 @@ def main(argv):
         os.system('conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan')
         os.system('conan user -p %s -r rwth-vr--bintray %s' % (os.environ['CONAN_PASSWORD'], os.environ['CONAN_LOGIN_USERNAME']))
 
-        settings = []
+        conan_flags = []
 
-        settings.append('-s compiler="%s"' % compiler)
-        settings.append('-s compiler.version="%s"' % compiler_version)
-        settings.append('-s arch=x86_64')
-        settings.append('-s build_type=Release')
+        conan_flags.append('-s compiler="%s"' % compiler)
+        conan_flags.append('-s compiler.version="%s"' % compiler_version)
+        conan_flags.append('-s arch=x86_64')
+        conan_flags.append('-s build_type=Release')
 
         if compiler == 'Visual Studio':
-            settings.append('-s compiler.runtime=MT')
+            conan_flags.append('-s compiler.runtime=MT')
         elif compiler == 'gcc':
-            settings.append('-s compiler.libcxx=libstdc++11')
+            conan_flags.append('-s compiler.libcxx=libstdc++11')
         elif compiler == 'apple-clang':
-            settings.append('-s compiler.libcxx=libc++')            
+            conan_flags.append('-s compiler.libcxx=libc++')            
 
-        os.system('conan install --build=missing %s ..' % ' '.join(settings))
+        os.system('conan install --build=missing %s ..' % ' '.join(conan_flags))
 
     elif stage == 'cmake':
         os.chdir('build')
