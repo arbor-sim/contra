@@ -64,8 +64,7 @@ build:windows:msvc++14.1:
   dependencies:
     - cmake:windows:msvc++14.1
   script:
-    - cd build
-    - cmake --build . --config Release
+    - python .gitlab-ci.py build Windows "Visual Studio" 15 18.05
   <<: *artifacts_definition
 
 test:windows:msvc++14.1:
@@ -148,8 +147,7 @@ build:linux:gcc5.3.1:
   dependencies:
     - cmake:linux:gcc5.3.1
   script:
-    - cd build
-    - make -j8
+    - python .gitlab-ci.py build Linux gcc 5.3 18.05
   <<: *artifacts_definition
 
 build:linux:gcc6.3.1:
@@ -160,8 +158,7 @@ build:linux:gcc6.3.1:
   dependencies:
     - cmake:linux:gcc6.3.1
   script:
-    - cd build
-    - make -j8
+    - python .gitlab-ci.py build Linux gcc 6.3 18.05
   <<: *artifacts_definition
 
 test:linux:gcc5.3.1:

@@ -75,6 +75,13 @@ def main(argv):
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
 
         os.system('cmake %s ..' % ' '.join(cmake_flags))
+
+    elif stage == "build":
+        build_flags = []
+        if compiler == 'Visual Studio':
+            build_flags.append('--config Release')
+        os.chdir('build')
+        os.system('cmake --build %s .' % ' '.join(build_flags))
     
 if (__name__ == '__main__'):
     main(sys.argv)
