@@ -76,14 +76,14 @@ def main(argv):
 
         os.system('cmake %s ..' % ' '.join(cmake_flags))
 
-    elif stage == "build":
+    elif stage == 'build':
         build_flags = []
         if compiler == 'Visual Studio':
             build_flags.append('--config Release')
         os.chdir('build')
         os.system('cmake --build . %s' % ' '.join(build_flags))
 
-    elif stage == "test":
+    elif stage == 'test':
         os.chdir('build')
         if operating_system == 'OSX':
             os.environ['CTEST_OUTPUT_ON_FAILURE'] = 1
