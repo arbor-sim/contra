@@ -28,9 +28,9 @@ stages:
 
 .artifacts_template: &artifacts_definition
   artifacts:
-  paths:
-    - build
-  expire_in: 1 week
+    paths:
+      - build
+    expire_in: 1 week
   
 #-------------------------------------------------------------------------------
 #  Windows
