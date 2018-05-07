@@ -16,12 +16,6 @@ visual_studio_version_year_map = {
     '15': '2017'
 }
 
-stage = ''
-operating_system = ''
-compiler = ''
-compiler_version = ''
-version = ''
-
 def main(argv):
     if (len(argv) != 6):
         print('usage: .gitlab-ci.py [stage] [os] [compiler] [compiler_version] [version]')
