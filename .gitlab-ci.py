@@ -45,7 +45,7 @@ def main(argv):
         # if operating_system == "Windows":
         #     os.system("rmdir /s /q build")
         os.system("mkdir build")
-        os.system("cd build")
+        os.chdir("build")
         if operating_system == "Linux":
             os.system("export CC=gcc")
             os.system("export CXX=g++")
