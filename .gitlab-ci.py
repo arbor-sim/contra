@@ -86,8 +86,8 @@ def main(argv):
     elif stage == 'test':
         os.chdir('build')
         if operating_system == 'OSX':
-            os.environ['CTEST_OUTPUT_ON_FAILURE'] = 1
+            os.environ['CTEST_OUTPUT_ON_FAILURE'] = '1'
         os.system('ctest -C Release')
-    
+
 if (__name__ == '__main__'):
     main(sys.argv)
