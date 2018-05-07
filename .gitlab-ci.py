@@ -42,8 +42,6 @@ def main(argv):
         return -1
 
     if stage == "conan":
-        # if operating_system == "Windows":
-        #     os.system("rmdir /s /q build")
         os.system("mkdir build")
         os.chdir("build")
         if operating_system == "Linux":
