@@ -3,7 +3,7 @@
 import os
 import sys
 
-valid_stages = ['conan', 'camke', 'build', 'test', 'deliver']
+valid_stages = ['conan', 'cmake', 'build', 'test', 'deliver']
 valid_os = ['Windows', 'Linux', 'OSX']
 
 valid_compilers = {
