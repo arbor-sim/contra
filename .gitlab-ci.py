@@ -49,14 +49,14 @@ def main(argv):
 
     if stage == "conan":
         # if operating_system == "Windows":
-        #     print("rmdir /s /q build")
-        print("mkdir build")
-        print("cd build")
+        #     os.system("rmdir /s /q build")
+        os.system("mkdir build")
+        os.system("cd build")
         if operating_system == "Linux":
-            print("export CC=gcc")
-            print("export CXX=g++")
-        print("conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan")
-        print("conan user -p %s -r rwth-vr--bintray %s" % (envvar("CONAN_PASSWORD"), envvar("CONAN_LOGIN_USERNAME")))
+            os.system("export CC=gcc")
+            os.system("export CXX=g++")
+        os.system("conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan")
+        os.system("conan user -p %s -r rwth-vr--bintray %s" % (envvar("CONAN_PASSWORD"), envvar("CONAN_LOGIN_USERNAME")))
 
         settings = []
 
@@ -72,7 +72,7 @@ def main(argv):
         elif compiler == "apple-clang":
             settings.append("-s -s compiler.libcxx=libc++")            
 
-        print("conan install --build=missing %s .." % ' '.join(settings))
+        os.system("conan install --build=missing %s .." % ' '.join(settings))
     
 if (__name__ == "__main__"):
     main(sys.argv)
