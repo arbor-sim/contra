@@ -5,27 +5,44 @@ import sys
 
 valid_stages = ['conan', 'cmake', 'build', 'test', 'deliver']
 valid_os = ['Windows', 'Linux', 'OSX']
-
 valid_compilers = {
     'Windows': ['Visual Studio'],
     'Linux': ['gcc'],
     'OSX': ['apple-clang', 'gcc']
 }
+valid_channels = ['develop', 'stable']
 
 visual_studio_version_year_map = {
     '15': '2017'
 }
 
+def get_conan_flags(compiler, compiler_version):
+    conan_flags = []
+
+    conan_flags.append('-s compiler="%s"' % compiler)
+    conan_flags.append('-s compiler.version="%s"' % compiler_version)
+    conan_flags.append('-s arch=x86_64')
+    conan_flags.append('-s build_type=Release')
+
+    if compiler == 'Visual Studio':
+        conan_flags.append('-s compiler.runtime=MT')
+    elif compiler == 'gcc':
+        conan_flags.append('-s compiler.libcxx=libstdc++11')
+    elif compiler == 'apple-clang':
+        conan_flags.append('-s compiler.libcxx=libc++')
+
+    return conan_flags
+
 def main(argv):
-    if (len(argv) != 6):
-        print('usage: .gitlab-ci.py [stage] [os] [compiler] [compiler_version] [version]')
+    if len(argv) not in [5, 7]:
+        print('usage: .gitlab-ci.py stage os compiler compiler_version [version] [channel]')
+        print('  The version and channel arguments must only be set if stage = deliver')
         return -1
 
     stage = argv[1]
     operating_system = argv[2]
     compiler = argv[3]
     compiler_version = argv[4]
-    version = argv[5]
 
     if not stage in valid_stages:
         print('Invalid stage, possible values: %s' % ', '.join(valid_stages))
@@ -47,22 +64,7 @@ def main(argv):
             os.system('export CXX=g++')
         os.system('conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan')
         os.system('conan user -p %s -r rwth-vr--bintray %s' % (os.environ['CONAN_PASSWORD'], os.environ['CONAN_LOGIN_USERNAME']))
-
-        conan_flags = []
-
-        conan_flags.append('-s compiler="%s"' % compiler)
-        conan_flags.append('-s compiler.version="%s"' % compiler_version)
-        conan_flags.append('-s arch=x86_64')
-        conan_flags.append('-s build_type=Release')
-
-        if compiler == 'Visual Studio':
-            conan_flags.append('-s compiler.runtime=MT')
-        elif compiler == 'gcc':
-            conan_flags.append('-s compiler.libcxx=libstdc++11')
-        elif compiler == 'apple-clang':
-            conan_flags.append('-s compiler.libcxx=libc++')            
-
-        os.system('conan install --build=missing %s ..' % ' '.join(conan_flags))
+        os.system('conan install --build=missing %s ..' % ' '.join(get_conan_flags(compiler, compiler_version)))
 
     elif stage == 'cmake':
         os.chdir('build')
@@ -88,6 +90,22 @@ def main(argv):
         if operating_system == 'OSX':
             os.environ['CTEST_OUTPUT_ON_FAILURE'] = '1'
         os.system('ctest -C Release')
+
+    elif stage == 'deliver':
+        if len(argv) != 7:
+            print('usage: .gitlab-ci.py stage os compiler compiler_version [version] [channel]')
+            print('  The version and channel arguments must be set if stage = deliver')
+            return -1
+        version = argv[5]
+        channel = argv[6]
+
+        if channel not in valid_channels:
+            print('Invalid channel, possible values: %s' % ', '.join(valid_channels))
+            return -1
+        conan_flags = ' '.join(get_conan_flags(compiler, compiler_version))
+        os.system('conan export-pkg . contra/%s@RWTH-VR/%s %s -f' % (version, channel, conan_flags))
+        os.system('conan test ./test_package contra/%s@RWTH-VR/%s %s' % (version, channel, conan_flags))
+        os.system('conan upload contra/%s@RWTH-VR/%s --all --force -r=rwth-vr--bintray ' % (version, channel))
 
 if (__name__ == '__main__'):
     main(sys.argv)

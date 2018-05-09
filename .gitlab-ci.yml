@@ -42,7 +42,7 @@ conan:windows:msvc++14.1:
     - msvc++14.1
     - opengl
   script:
-    - python .gitlab-ci.py conan Windows "Visual Studio" 15 18.05
+    - python .gitlab-ci.py conan Windows "Visual Studio" 15
   <<: *artifacts_definition
     
 cmake:windows:msvc++14.1:
@@ -53,7 +53,7 @@ cmake:windows:msvc++14.1:
   dependencies:
     - conan:windows:msvc++14.1
   script:
-    - python .gitlab-ci.py cmake Windows "Visual Studio" 15 18.05
+    - python .gitlab-ci.py cmake Windows "Visual Studio" 15
   <<: *artifacts_definition
 
 build:windows:msvc++14.1:
@@ -64,7 +64,7 @@ build:windows:msvc++14.1:
   dependencies:
     - cmake:windows:msvc++14.1
   script:
-    - python .gitlab-ci.py build Windows "Visual Studio" 15 18.05
+    - python .gitlab-ci.py build Windows "Visual Studio" 15
   <<: *artifacts_definition
 
 test:windows:msvc++14.1:
@@ -75,7 +75,7 @@ test:windows:msvc++14.1:
   dependencies:
     - build:windows:msvc++14.1
   script:
-    - python .gitlab-ci.py test Windows "Visual Studio" 15 18.05
+    - python .gitlab-ci.py test Windows "Visual Studio" 15
   <<: *artifacts_definition
 
 deliver:windows:msvc++14.1:
@@ -86,9 +86,7 @@ deliver:windows:msvc++14.1:
   dependencies:
     - test:windows:msvc++14.1
   script:
-    - conan export-pkg . contra/18.05@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64 -f
-    - conan test ./test_package contra/18.05@RWTH-VR/develop -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64
-    - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray
+    - python .gitlab-ci.py test Windows "Visual Studio" 15 18.05 develop
   <<: *artifacts_definition
   only:
     - master
@@ -104,7 +102,7 @@ conan:linux:gcc5.3.1:
     - gcc5.3.1
     - opengl
   script:
-    - python .gitlab-ci.py conan Linux gcc 5.3 18.05
+    - python .gitlab-ci.py conan Linux gcc 5.3
   <<: *artifacts_definition
     
 conan:linux:gcc6.3.1:
@@ -113,7 +111,7 @@ conan:linux:gcc6.3.1:
     - gcc6.3.1
     - opengl
   script:
-    - python .gitlab-ci.py conan Linux gcc 6.3 18.05
+    - python .gitlab-ci.py conan Linux gcc 6.3
   <<: *artifacts_definition
 
 cmake:linux:gcc5.3.1:
@@ -124,7 +122,7 @@ cmake:linux:gcc5.3.1:
   dependencies:
     - conan:linux:gcc5.3.1
   script:
-    - python .gitlab-ci.py cmake Linux gcc 5.3 18.05
+    - python .gitlab-ci.py cmake Linux gcc 5.3
   <<: *artifacts_definition
 
 cmake:linux:gcc6.3.1:
@@ -135,7 +133,7 @@ cmake:linux:gcc6.3.1:
   dependencies:
     - conan:linux:gcc6.3.1
   script:
-    - python .gitlab-ci.py cmake Linux gcc 6.3 18.05
+    - python .gitlab-ci.py cmake Linux gcc 6.3
   <<: *artifacts_definition
 
 build:linux:gcc5.3.1:
@@ -146,7 +144,7 @@ build:linux:gcc5.3.1:
   dependencies:
     - cmake:linux:gcc5.3.1
   script:
-    - python .gitlab-ci.py build Linux gcc 5.3 18.05
+    - python .gitlab-ci.py build Linux gcc 5.3
   <<: *artifacts_definition
 
 build:linux:gcc6.3.1:
@@ -157,7 +155,7 @@ build:linux:gcc6.3.1:
   dependencies:
     - cmake:linux:gcc6.3.1
   script:
-    - python .gitlab-ci.py build Linux gcc 6.3 18.05
+    - python .gitlab-ci.py build Linux gcc 6.3
   <<: *artifacts_definition
 
 test:linux:gcc5.3.1:
@@ -168,7 +166,7 @@ test:linux:gcc5.3.1:
   dependencies:
     - build:linux:gcc5.3.1
   script:
-    - python .gitlab-ci.py test Linux gcc 5.3 18.05
+    - python .gitlab-ci.py test Linux gcc 5.3
   <<: *artifacts_definition
 
 test:linux:gcc6.3.1:
@@ -179,7 +177,7 @@ test:linux:gcc6.3.1:
   dependencies:
     - build:linux:gcc6.3.1
   script:
-    - python .gitlab-ci.py test Linux gcc 6.3 18.05
+    - python .gitlab-ci.py test Linux gcc 6.3
   <<: *artifacts_definition
 
 deliver:linux:gcc5.3.1:
@@ -190,9 +188,7 @@ deliver:linux:gcc5.3.1:
   dependencies:
     - test:linux:gcc5.3.1
   script:
-    - conan export-pkg . contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release -f
-    - conan test ./test_package contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
-    - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray
+    - python .gitlab-ci.py test Linux gcc 5.3 18.05 develop
   <<: *artifacts_definition
   only:
     - master
@@ -206,9 +202,7 @@ deliver:linux:gcc6.3.1:
   dependencies:
     - test:linux:gcc6.3.1
   script:
-    - conan export-pkg . contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release -f
-    - conan test ./test_package contra/18.05@RWTH-VR/develop -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
-    - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray
+    - python .gitlab-ci.py test Linux gcc 6.3 18.05 develop
   <<: *artifacts_definition
   only:
     - master
@@ -223,7 +217,7 @@ conan:mac:clang9.1:
   tags:
     - osx
   script:
-    - python .gitlab-ci.py conan OSX apple-clang 9.1 18.05
+    - python .gitlab-ci.py conan OSX apple-clang 9.1
   <<: *artifacts_definition
 
 cmake:mac:clang9.1:
@@ -233,7 +227,7 @@ cmake:mac:clang9.1:
   dependencies:
     - conan:mac:clang9.1
   script:
-    - python .gitlab-ci.py cmake OSX apple-clang 9.1 18.05
+    - python .gitlab-ci.py cmake OSX apple-clang 9.1
   <<: *artifacts_definition
 
 build:mac:clang9.1:
@@ -243,7 +237,7 @@ build:mac:clang9.1:
   dependencies:
     - cmake:mac:clang9.1
   script:
-    - python .gitlab-ci.py build OSX apple-clang 9.1 18.05
+    - python .gitlab-ci.py build OSX apple-clang 9.1
   <<: *artifacts_definition
 
 test:mac:clang9.1:
@@ -253,7 +247,7 @@ test:mac:clang9.1:
   dependencies:
     - build:mac:clang9.1
   script:
-    - python .gitlab-ci.py test OSX apple-clang 9.1 18.05
+    - python .gitlab-ci.py test OSX apple-clang 9.1
   <<: *artifacts_definition
 
 deliver:mac:clang9.1:
@@ -263,9 +257,7 @@ deliver:mac:clang9.1:
   dependencies:
     - test:mac:clang9.1
   script:
-    - conan export-pkg . contra/18.05@RWTH-VR/develop -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ -f
-    - conan test ./test_package contra/18.05@RWTH-VR/develop -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++
-    - conan upload contra/18.05@RWTH-VR/develop --all --force -r=rwth-vr--bintray 
+    - python .gitlab-ci.py deliver OSX apple-clang 9.1 18.05 develop
   <<: *artifacts_definition
   only:
     - master
