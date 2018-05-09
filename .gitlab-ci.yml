@@ -31,6 +31,11 @@ stages:
     paths:
       - build
     expire_in: 1 week
+
+.delivery_branches_template: &delivery_branches
+  - master
+  - stable
+  - "#16_create_conan_package_and_conan_ci_stages"
   
 #-------------------------------------------------------------------------------
 #  Windows
@@ -89,8 +94,7 @@ deliver:windows:msvc++14.1:
     - python .gitlab-ci.py test Windows "Visual Studio" 15 18.05 develop
   <<: *artifacts_definition
   only:
-    - master
-    - stable
+    <<: *delivery_branches
 
 #-------------------------------------------------------------------------------
 #  Linux
@@ -191,8 +195,7 @@ deliver:linux:gcc5.3.1:
     - python .gitlab-ci.py test Linux gcc 5.3 18.05 develop
   <<: *artifacts_definition
   only:
-    - master
-    - stable
+    <<: *delivery_branches
 
 deliver:linux:gcc6.3.1:
   stage: deliver
@@ -205,8 +208,7 @@ deliver:linux:gcc6.3.1:
     - python .gitlab-ci.py test Linux gcc 6.3 18.05 develop
   <<: *artifacts_definition
   only:
-    - master
-    - stable
+    <<: *delivery_branches
 
 #-------------------------------------------------------------------------------
 #  MacOS
@@ -260,5 +262,4 @@ deliver:mac:clang9.1:
     - python .gitlab-ci.py deliver OSX apple-clang 9.1 18.05 develop
   <<: *artifacts_definition
   only:
-    - master
-    - stable
+    <<: *delivery_branches
