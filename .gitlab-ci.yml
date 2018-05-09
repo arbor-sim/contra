@@ -92,7 +92,7 @@ deliver:windows:msvc++14.1:
   dependencies:
     - test:windows:msvc++14.1
   script:
-    - python .gitlab-ci.py test Windows "Visual Studio" 15 18.05 develop
+    - python .gitlab-ci.py deliver Windows "Visual Studio" 15 18.05 develop
   <<: *artifacts_definition
   only:
     *delivery_branches
@@ -193,7 +193,7 @@ deliver:linux:gcc5.3.1:
   dependencies:
     - test:linux:gcc5.3.1
   script:
-    - python .gitlab-ci.py test Linux gcc 5.3 18.05 develop
+    - python .gitlab-ci.py deliver Linux gcc 5.3 18.05 develop
   <<: *artifacts_definition
   only:
     *delivery_branches
@@ -206,7 +206,7 @@ deliver:linux:gcc6.3.1:
   dependencies:
     - test:linux:gcc6.3.1
   script:
-    - python .gitlab-ci.py test Linux gcc 6.3 18.05 develop
+    - python .gitlab-ci.py deliver Linux gcc 6.3 18.05 develop
   <<: *artifacts_definition
   only:
     *delivery_branches
