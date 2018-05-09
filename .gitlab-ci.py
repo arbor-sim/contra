@@ -36,7 +36,7 @@ def get_conan_flags(compiler, compiler_version):
 def main(argv):
     if len(argv) != 5:
         print('usage: .gitlab-ci.py stage os compiler compiler_version')
-        return -1
+        sys.exit(-1)
 
     stage = argv[1]
     operating_system = argv[2]
@@ -45,15 +45,15 @@ def main(argv):
 
     if not stage in valid_stages:
         print('Invalid stage, possible values: %s' % ', '.join(valid_stages))
-        return -1
+        sys.exit(-1)
 
     if not operating_system in valid_os:
         print('Invalid operating system, possible values: %s' % ', '.join(valid_os))
-        return -1
+        sys.exit(-1)
 
     if not compiler in valid_compilers[operating_system]:
         print('Invalid compiler for %s, possible values: %s' % (operating_system, ', '.join(valid_compilers[operating_system])))
-        return -1
+        sys.exit(-1)
 
     if stage == 'conan':
         os.system('mkdir build')
@@ -95,7 +95,7 @@ def main(argv):
         version = os.environ['version']
         if channel not in valid_channels:
             print('Invalid channel: %s possible values: %s' % (channel, ', '.join(valid_channels)))
-            return -1
+            sys.exit(-1)
         conan_flags = ' '.join(get_conan_flags(compiler, compiler_version))
         os.system('conan export-pkg . contra/%s@RWTH-VR/%s %s -f' % (version, channel, conan_flags))
         os.system('conan test ./test_package contra/%s@RWTH-VR/%s %s' % (version, channel, conan_flags))
