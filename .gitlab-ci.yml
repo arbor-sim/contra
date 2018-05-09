@@ -32,8 +32,8 @@ stages:
       - build
     expire_in: 1 week
 
-.delivery_branches_template: &delivery_branches
-  only:
+.delivery_branches_template: 
+  only: &delivery_branches
     - master
     - stable
     - "#16_create_conan_package_and_conan_ci_stages"
