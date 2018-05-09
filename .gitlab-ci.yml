@@ -19,6 +19,10 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
+variables:
+  version: "18.05"
+  channel: "develop"
+
 stages:
   - conan
   - cmake

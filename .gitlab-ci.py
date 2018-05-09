@@ -34,9 +34,8 @@ def get_conan_flags(compiler, compiler_version):
     return conan_flags
 
 def main(argv):
-    if len(argv) not in [5, 7]:
-        print('usage: .gitlab-ci.py stage os compiler compiler_version [version] [channel]')
-        print('  The version and channel arguments must only be set if stage = deliver')
+    if len(argv) != 5:
+        print('usage: .gitlab-ci.py stage os compiler compiler_version')
         return -1
 
     stage = argv[1]
@@ -92,15 +91,10 @@ def main(argv):
         os.system('ctest -C Release')
 
     elif stage == 'deliver':
-        if len(argv) != 7:
-            print('usage: .gitlab-ci.py stage os compiler compiler_version [version] [channel]')
-            print('  The version and channel arguments must be set if stage = deliver')
-            return -1
-        version = argv[5]
-        channel = argv[6]
-
+        channel = os.environ['channel']
+        version = os.environ['version']
         if channel not in valid_channels:
-            print('Invalid channel, possible values: %s' % ', '.join(valid_channels))
+            print('Invalid channel: %s possible values: %s' % (channel, ', '.join(valid_channels)))
             return -1
         conan_flags = ' '.join(get_conan_flags(compiler, compiler_version))
         os.system('conan export-pkg . contra/%s@RWTH-VR/%s %s -f' % (version, channel, conan_flags))
