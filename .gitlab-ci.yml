@@ -19,11 +19,27 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
+variables:
+  version: "18.05"
+  channel: "develop"
+
 stages:
   - conan
   - cmake
   - build
   - test
+  - deliver
+
+.artifacts_template: &artifacts_definition
+  artifacts:
+    paths:
+      - build
+    expire_in: 1 week
+
+.delivery_branches_template: 
+  only: &delivery_branches
+    - master
+    - stable
   
 #-------------------------------------------------------------------------------
 #  Windows
@@ -35,14 +51,8 @@ conan:windows:msvc++14.1:
     - msvc++14.1
     - opengl
   script:
-    - rmdir /s /q build
-    - mkdir build
-    - cd build
-    - conan install --build=missing -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Release -s compiler.runtime=MT -s arch=x86_64 ..
-  artifacts:
-    paths:
-      - build
-    expire_in: 1 week
+    - python .gitlab-ci.py conan Windows "Visual Studio" 15
+  <<: *artifacts_definition
     
 cmake:windows:msvc++14.1:
   stage: cmake
@@ -52,13 +62,8 @@ cmake:windows:msvc++14.1:
   dependencies:
     - conan:windows:msvc++14.1
   script:
-    - cd build
-    - cmake -G "Visual Studio 15 2017 Win64" ..
-  artifacts:
-    untracked: true
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py cmake Windows "Visual Studio" 15
+  <<: *artifacts_definition
 
 build:windows:msvc++14.1:
   stage: build
@@ -68,12 +73,8 @@ build:windows:msvc++14.1:
   dependencies:
     - cmake:windows:msvc++14.1
   script:
-    - cd build
-    - cmake --build . --config Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py build Windows "Visual Studio" 15
+  <<: *artifacts_definition
 
 test:windows:msvc++14.1:
   stage: test
@@ -83,8 +84,21 @@ test:windows:msvc++14.1:
   dependencies:
     - build:windows:msvc++14.1
   script:
-    - cd build
-    - ctest -C Release
+    - python .gitlab-ci.py test Windows "Visual Studio" 15
+  <<: *artifacts_definition
+
+deliver:windows:msvc++14.1:
+  stage: deliver
+  tags:
+    - msvc++14.1
+    - opengl
+  dependencies:
+    - test:windows:msvc++14.1
+  script:
+    - python .gitlab-ci.py deliver Windows "Visual Studio" 15
+  <<: *artifacts_definition
+  only:
+    *delivery_branches
 
 #-------------------------------------------------------------------------------
 #  Linux
@@ -96,15 +110,8 @@ conan:linux:gcc5.3.1:
     - gcc5.3.1
     - opengl
   script:
-    - mkdir build
-    - cd build
-    - export CC=gcc
-    - export CXX=g++
-    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="5.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py conan Linux gcc 5.3
+  <<: *artifacts_definition
     
 conan:linux:gcc6.3.1:
   stage: conan
@@ -112,15 +119,8 @@ conan:linux:gcc6.3.1:
     - gcc6.3.1
     - opengl
   script:
-    - mkdir build
-    - cd build
-    - export CC=gcc
-    - export CXX=g++
-    - conan install .. --build=missing -s compiler="gcc" -s compiler.version="6.3" -s compiler.libcxx="libstdc++11" -s build_type=Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py conan Linux gcc 6.3
+  <<: *artifacts_definition
 
 cmake:linux:gcc5.3.1:
   stage: cmake
@@ -130,13 +130,8 @@ cmake:linux:gcc5.3.1:
   dependencies:
     - conan:linux:gcc5.3.1
   script:
-    - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release
-  artifacts:
-    untracked: true
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py cmake Linux gcc 5.3
+  <<: *artifacts_definition
 
 cmake:linux:gcc6.3.1:
   stage: cmake
@@ -146,13 +141,8 @@ cmake:linux:gcc6.3.1:
   dependencies:
     - conan:linux:gcc6.3.1
   script:
-    - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release
-  artifacts:
-    untracked: true
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py cmake Linux gcc 6.3
+  <<: *artifacts_definition
 
 build:linux:gcc5.3.1:
   stage: build
@@ -162,12 +152,8 @@ build:linux:gcc5.3.1:
   dependencies:
     - cmake:linux:gcc5.3.1
   script:
-    - cd build
-    - make -j8
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py build Linux gcc 5.3
+  <<: *artifacts_definition
 
 build:linux:gcc6.3.1:
   stage: build
@@ -177,12 +163,8 @@ build:linux:gcc6.3.1:
   dependencies:
     - cmake:linux:gcc6.3.1
   script:
-    - cd build
-    - make -j8
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py build Linux gcc 6.3
+  <<: *artifacts_definition
 
 test:linux:gcc5.3.1:
   stage: test
@@ -192,12 +174,8 @@ test:linux:gcc5.3.1:
   dependencies:
     - build:linux:gcc5.3.1
   script:
-    - cd build
-    - ctest -C Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py test Linux gcc 5.3
+  <<: *artifacts_definition
 
 test:linux:gcc6.3.1:
   stage: test
@@ -207,12 +185,34 @@ test:linux:gcc6.3.1:
   dependencies:
     - build:linux:gcc6.3.1
   script:
-    - cd build
-    - ctest -C Release
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py test Linux gcc 6.3
+  <<: *artifacts_definition
+
+deliver:linux:gcc5.3.1:
+  stage: deliver
+  tags:
+    - gcc5.3.1
+    - opengl
+  dependencies:
+    - test:linux:gcc5.3.1
+  script:
+    - python .gitlab-ci.py deliver Linux gcc 5.3
+  <<: *artifacts_definition
+  only:
+    *delivery_branches
+
+deliver:linux:gcc6.3.1:
+  stage: deliver
+  tags:
+    - gcc6.3.1
+    - opengl
+  dependencies:
+    - test:linux:gcc6.3.1
+  script:
+    - python .gitlab-ci.py deliver Linux gcc 6.3
+  <<: *artifacts_definition
+  only:
+    *delivery_branches
 
 #-------------------------------------------------------------------------------
 #  MacOS
@@ -223,15 +223,8 @@ conan:mac:clang9.1:
   tags:
     - osx
   script:
-    - mkdir build
-    - cd build
-    - export CC=gcc
-    - export CXX=g++
-    - conan install .. -s build_type=Release -s os=Macos -s compiler=apple-clang -s compiler.version=9.1 -s compiler.libcxx=libc++ --build=missing
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py conan OSX apple-clang 9.1
+  <<: *artifacts_definition
 
 cmake:mac:clang9.1:
   stage: cmake
@@ -240,13 +233,8 @@ cmake:mac:clang9.1:
   dependencies:
     - conan:mac:clang9.1
   script:
-    - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release
-  artifacts:
-    untracked: true
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py cmake OSX apple-clang 9.1
+  <<: *artifacts_definition
 
 build:mac:clang9.1:
   stage: build
@@ -255,12 +243,8 @@ build:mac:clang9.1:
   dependencies:
     - cmake:mac:clang9.1
   script:
-    - cd build
-    - make -j4
-  artifacts:
-    paths:
-    - build
-    expire_in: 1 week
+    - python .gitlab-ci.py build OSX apple-clang 9.1
+  <<: *artifacts_definition
 
 test:mac:clang9.1:
   stage: test
@@ -269,5 +253,17 @@ test:mac:clang9.1:
   dependencies:
     - build:mac:clang9.1
   script:
-    - cd build
-    - CTEST_OUTPUT_ON_FAILURE=1 ctest -C Release
+    - python .gitlab-ci.py test OSX apple-clang 9.1
+  <<: *artifacts_definition
+
+deliver:mac:clang9.1:
+  stage: deliver
+  tags:
+    - osx
+  dependencies:
+    - test:mac:clang9.1
+  script:
+    - python .gitlab-ci.py deliver OSX apple-clang 9.1
+  <<: *artifacts_definition
+  only:
+    *delivery_branches

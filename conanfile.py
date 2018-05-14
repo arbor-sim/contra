@@ -23,9 +23,12 @@ from conans import ConanFile, CMake
 
 class contra(ConanFile):
     name = "contra"
+    version = "18.05"
     license = "Apache License, Version 2.0"
-    description = """Contra, a lightweigth transport library for conduit data"""
+    description = """Contra, a lightweight transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
+    exports_sources = "src/*"
+    url = "https://devhub.vr.rwth-aachen.de/VR-Group/contra"
 
     requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
                  ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
@@ -46,3 +49,14 @@ class contra(ConanFile):
        self.copy("*.dll", dst="contra/tests", src="bin")
        self.copy("*.so", dst="contra/tests", src="lib")
        self.copy("*.dylib", dst="contra/tests", src="lib")
+
+    def package(self):
+        self.copy("*.hpp", dst="include", src="contra/include")
+        self.copy("*.lib", dst="lib", keep_path=False)
+        self.copy("*.dll", dst="bin", keep_path=False)
+        self.copy("*.so*", dst="lib", keep_path=False)
+        self.copy("*.a", dst="lib", keep_path=False)
+        self.copy("*.dylib", dst="lib", keep_path=False, symlinks=True)
+
+    def package_info(self):
+        self.cpp_info.libs = ["contra"]
