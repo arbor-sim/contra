@@ -70,6 +70,9 @@ def main(argv):
 
         cmake_flags = []
 
+        (pytest_command, error) = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()
+        cmake_flags.append('-DCMAKE_PY_TEST_COMMAND=%s'% (pytest_command))
+        
         if compiler == 'Visual Studio':
             cmake_flags.append('-G "Visual Studio %s %s Win64"' % (compiler_version, visual_studio_version_year_map[compiler_version]))
         else:
