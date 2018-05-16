@@ -62,7 +62,7 @@ cmake:windows:msvc++14.1:
   dependencies:
     - conan:windows:msvc++14.1
   script:
-    - pip install --user pytest
+    - pip install pytest
     - python .gitlab-ci.py cmake Windows "Visual Studio" 15
   <<: *artifacts_definition
 
