@@ -236,7 +236,7 @@ cmake:mac:clang9.1:
   dependencies:
     - conan:mac:clang9.1
   script:
-    - pip install --user pytest
+    - pip install pytest
     - python .gitlab-ci.py cmake OSX apple-clang 9.1
   <<: *artifacts_definition
 
