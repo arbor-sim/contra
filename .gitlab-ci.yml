@@ -62,6 +62,7 @@ cmake:windows:msvc++14.1:
   dependencies:
     - conan:windows:msvc++14.1
   script:
+    - pip install --user pytest
     - python .gitlab-ci.py cmake Windows "Visual Studio" 15
   <<: *artifacts_definition
 
@@ -130,6 +131,7 @@ cmake:linux:gcc5.3.1:
   dependencies:
     - conan:linux:gcc5.3.1
   script:
+    - pip install --user pytest
     - python .gitlab-ci.py cmake Linux gcc 5.3
   <<: *artifacts_definition
 
@@ -141,6 +143,7 @@ cmake:linux:gcc6.3.1:
   dependencies:
     - conan:linux:gcc6.3.1
   script:
+    - pip install --user pytest
     - python .gitlab-ci.py cmake Linux gcc 6.3
   <<: *artifacts_definition
 
@@ -233,6 +236,7 @@ cmake:mac:clang9.1:
   dependencies:
     - conan:mac:clang9.1
   script:
+    - pip install --user pytest
     - python .gitlab-ci.py cmake OSX apple-clang 9.1
   <<: *artifacts_definition
 
