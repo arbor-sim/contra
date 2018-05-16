@@ -73,7 +73,7 @@ def main(argv):
         if compiler == 'Visual Studio':
             pytest_command = subprocess.Popen('where pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
             print('-----------------------------WINDOWS--------------------------')
-            python_path = ("c:\users\vr-admin.rz-win\appdata\roaming\python\python27\Scripts\pytest.exe")
+            python_path = ('c:\\users\\vr-admin.rz-win\\appdata\\roaming\\python\\python27\\Scripts\\pytest.exe')
         else:
             pytest_command = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]  
             print('-----------------------------NOT WINDOWS--------------------------')
