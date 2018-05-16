@@ -81,7 +81,7 @@ def main(argv):
         
         print('-----------------------------PYTESTCMD------------------------------------------------------------------------')
         print(pytest_command)
-        print(python)
+        print(python_path)
     
         cmake_flags.append('-DPY_TEST_COMMAND="%s"' % (pytest_command))
         
