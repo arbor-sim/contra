@@ -70,8 +70,11 @@ def main(argv):
         os.chdir('build')
 
         cmake_flags = []
-
-        pytest_command = subprocess.Popen('where pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
+        if compiler == 'Visual Studio':
+            pytest_command = subprocess.Popen('where pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
+        else:
+            pytest_command = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]  
+        print('-----------------------------------------------------------------------------------------------------')
         print(pytest_command)
     
         cmake_flags.append('-DCMAKE_PY_TEST_COMMAND=%s' % (pytest_command))
