@@ -23,4 +23,4 @@ import pycontra
 
 
 def test_pycontra_greet():
-    assert pycontra.greet() == "G'day2!"
+    assert pycontra.greet() == "G'day!"
