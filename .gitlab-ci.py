@@ -79,7 +79,7 @@ def main(argv):
         print('-----------------------------PYTESTCMD------------------------------------------------------------------------')
         print(pytest_command)
     
-        cmake_flags.append('-DPY_TEST_COMMAND=%s' % (pytest_command))
+        cmake_flags.append('-DPY_TEST_COMMAND="%s"' % (pytest_command))
         
         if compiler == 'Visual Studio':
             cmake_flags.append('-G "Visual Studio %s %s Win64"' % (compiler_version, visual_studio_version_year_map[compiler_version]))
