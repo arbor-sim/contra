@@ -2,6 +2,7 @@
 
 import os
 import sys
+import subprocess
 
 valid_stages = ['conan', 'cmake', 'build', 'test', 'deliver']
 valid_os = ['Windows', 'Linux', 'OSX']
