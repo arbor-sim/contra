@@ -71,7 +71,7 @@ def main(argv):
 
         cmake_flags = []
 
-        (pytest_command, error) = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()
+        (pytest_command, error) = subprocess.Popen('where pytest', stdout=subprocess.PIPE, shell=True).communicate()
         print(error)
         print(pytest_command)
     
