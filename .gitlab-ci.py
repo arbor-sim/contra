@@ -71,7 +71,8 @@ def main(argv):
 
         cmake_flags = []
         if compiler == 'Visual Studio':
-            pytest_command = ('c:\\users\\vr-admin.rz-win\\appdata\\roaming\\python\\python27\\Scripts\\pytest.exe')
+            python_path = subprocess.Popen('where python', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
+            pytest_command = "\\".join(python_path.split('\\')[:-1])+'\\Scripts\\pytest.exe'
         else:
             pytest_command = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]  
     
