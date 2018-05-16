@@ -73,11 +73,15 @@ def main(argv):
         if compiler == 'Visual Studio':
             pytest_command = subprocess.Popen('where pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
             print('-----------------------------WINDOWS--------------------------')
+            python_path = subprocess.Popen('where python', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
         else:
             pytest_command = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]  
             print('-----------------------------NOT WINDOWS--------------------------')
+            python_path = subprocess.Popen('which python', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
+        
         print('-----------------------------PYTESTCMD------------------------------------------------------------------------')
         print(pytest_command)
+        print(python)
     
         cmake_flags.append('-DPY_TEST_COMMAND="%s"' % (pytest_command))
         
