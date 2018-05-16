@@ -72,9 +72,11 @@ def main(argv):
         cmake_flags = []
         if compiler == 'Visual Studio':
             pytest_command = subprocess.Popen('where pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
+            print('-----------------------------WINDOWS--------------------------')
         else:
             pytest_command = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]  
-        print('-----------------------------------------------------------------------------------------------------')
+            print('-----------------------------NOT WINDOWS--------------------------')
+        print('-----------------------------PYTESTCMD------------------------------------------------------------------------')
         print(pytest_command)
     
         cmake_flags.append('-DPY_TEST_COMMAND=%s' % (pytest_command))
