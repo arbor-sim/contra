@@ -75,7 +75,7 @@ def main(argv):
             pytest_command = "\\".join(python_path.split('\\')[:-1])+'\\Scripts\\pytest.exe'
         elif compiler == 'apple-clang':
             python_path = subprocess.Popen('which python', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
-            print(-------------------------------------pythonpath-------------------------------------)
+            print('-------------------------------------pythonpath-------------------------------------')
             print(python_path)
             pytest_command = "/".join(python_path.split('/')[:-1])+'/Scripts/pytest.exe'
         else:
