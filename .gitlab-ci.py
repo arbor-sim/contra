@@ -74,7 +74,7 @@ def main(argv):
             python_path = subprocess.Popen('where python', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
             pytest_command = "\\".join(python_path.split('\\')[:-1])+'\\Scripts\\pytest.exe'
         elif compiler == 'apple-clang':
-            pytest_command = ('/Users/gitlabci/Library/Python/2.7/lib/python/site-packages/pytest')
+            pytest_command = ('/Users/gitlabci/Library/Python/2.7/lib/python/site-packages/pytest.py')
         else:
             pytest_command = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]  
     
