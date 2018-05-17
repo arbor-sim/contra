@@ -26,26 +26,26 @@ def execute(command, arguments):
     return_value = subprocess.call(call_arguments)
     if return_value != 0:
         sys.exit(return_value)
- 
- 
+
+
 def get_conan_flags(compiler, compiler_version):
     conan_flags = []
 
-    conan_flags.append('-s compiler="%s"' % compiler)
-    conan_flags.append('-s compiler.version="%s"' % compiler_version)
-    conan_flags.append('-s arch=x86_64')
-    conan_flags.append('-s build_type=Release')
+    conan_flags.extend(['-s', 'compiler=%s' % compiler])
+    conan_flags.extend(['-s', 'compiler.version=%s' % compiler_version])
+    conan_flags.extend(['-s', 'arch=x86_64'])
+    conan_flags.extend(['-s', 'build_type=Release'])
 
     if compiler == 'Visual Studio':
-        conan_flags.append('-s compiler.runtime=MT')
+        conan_flags.extend(['-s', 'compiler.runtime=MT'])
     elif compiler == 'gcc':
-        conan_flags.append('-s compiler.libcxx=libstdc++11')
+        conan_flags.extend(['-s', 'compiler.libcxx=libstdc++11'])
     elif compiler == 'apple-clang':
-        conan_flags.append('-s compiler.libcxx=libc++')
+        conan_flags.extend(['-s', 'compiler.libcxx=libc++'])
 
     return conan_flags
 
-    
+
 def main(argv):
     if len(argv) != 5:
         print('usage: .gitlab-ci.py stage os compiler compiler_version')
@@ -61,11 +61,13 @@ def main(argv):
         sys.exit(-1)
 
     if not operating_system in valid_os:
-        print('Invalid operating system, possible values: %s' % ', '.join(valid_os))
+        print('Invalid operating system, possible values: %s' %
+              ', '.join(valid_os))
         sys.exit(-1)
 
     if not compiler in valid_compilers[operating_system]:
-        print('Invalid compiler for %s, possible values: %s' % (operating_system, ', '.join(valid_compilers[operating_system])))
+        print('Invalid compiler for %s, possible values: %s' %
+              (operating_system, ', '.join(valid_compilers[operating_system])))
         sys.exit(-1)
 
     if stage == 'conan':
@@ -89,39 +91,41 @@ def main(argv):
     elif stage == 'cmake':
         os.chdir('build')
 
-        cmake_flags = []
+        cmake_flags = ['..']
+        
         if compiler == 'Visual Studio':
-            pytest_command = 'test failure value'
             #pytest_command = subprocess.Popen('pip show pytest', stdout=subprocess.PIPE).communicate()[0].splitlines()[7].replace('Location: ','') + '\\pytest.py'
+            pytest_command = 'Failure value for testing'
         elif compiler == 'apple-clang':
             pytest_command = ('/Users/gitlabci/Library/Python/2.7/lib/python/site-packages/pytest.py')
         else:
             pytest_command = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]  
     
         cmake_flags.append('-DPY_TEST_COMMAND="%s"' % (pytest_command))
-        
+
         if compiler == 'Visual Studio':
-            cmake_flags.append('-G "Visual Studio %s %s Win64"' % (compiler_version, visual_studio_version_year_map[compiler_version]))
+            cmake_flags.extend(['-G', 'Visual Studio %s %s Win64' %
+                                (compiler_version, visual_studio_version_year_map[compiler_version])])
         else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
 
         execute('cmake', cmake_flags)
 
     elif stage == 'build':
-        build_flags = []
+        os.chdir('build')
 
         cmake_build_flags = ['--build', '.']
         if compiler == 'Visual Studio':
             cmake_build_flags.extend(['--config', 'Release'])
 
         execute('cmake', cmake_build_flags)
-        
+
     elif stage == 'test':
         os.chdir('build')
         if operating_system == 'OSX':
             os.environ['CTEST_OUTPUT_ON_FAILURE'] = '1'
-        execute('cmake', ['-C', 'Release'])
-        
+        execute('ctest', ['-C', 'Release'])
+
     elif stage == 'deliver':
         channel = os.environ['channel']
         version = os.environ['version']
@@ -129,23 +133,22 @@ def main(argv):
             print('Invalid channel: %s possible values: %s' %
                   (channel, ', '.join(valid_channels)))
             sys.exit(-1)
-        conan_flags = ' '.join(get_conan_flags(compiler, compiler_version))
+        conan_flags = get_conan_flags(compiler, compiler_version)
 
         conan_export_flags = ['export-pkg', '.',
-                              'contra/%s@RWTH-VR/%s' % (version, channel), '-f']
+                              'conan/%s@RWTH-VR/%s' % (version, channel), '-f']
         conan_export_flags.extend(conan_flags)
         execute('conan', conan_export_flags)
 
-        conan_test_flags = ['test', './test_package', 'contra/%s@RWTH-VR/%s' %
+        conan_test_flags = ['test', './test_package', 'conan/%s@RWTH-VR/%s' %
                             (version, channel)]
         conan_test_flags.extend(conan_flags)
         execute('conan', conan_test_flags)
 
-        conan_upload_flags = ['upload', 'contra/%s@RWTH-VR/%s' % (version, channel),
+        conan_upload_flags = ['upload', 'conan/%s@RWTH-VR/%s' % (version, channel),
                               '--all', '--force', '-r=rwth-vr--bintray']
-        conan_upload_flags.extend(conan_flags)
         execute('conan', conan_upload_flags)
-        
-        
+
+
 if (__name__ == '__main__'):
     main(sys.argv)
