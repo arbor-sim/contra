@@ -69,7 +69,7 @@ def main(argv):
         sys.exit(-1)
 
     if stage == 'conan':
-       execute('mkdir', ['build'])
+        execute('mkdir', ['build'])
         os.chdir('build')
         if operating_system == 'Linux':
             os.environ['CC'] = 'gcc'
