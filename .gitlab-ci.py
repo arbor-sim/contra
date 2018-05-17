@@ -85,21 +85,22 @@ def main(argv):
         else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
 
-        return os.system('cmake %s ..' % ' '.join(cmake_flags))
+        os.system('cmake %s ..' % ' '.join(cmake_flags))
 
     elif stage == 'build':
         build_flags = []
         if compiler == 'Visual Studio':
             build_flags.append('--config Release')
         os.chdir('build')
-        return os.system('cmake --build . %s' % ' '.join(build_flags))
+        os.system('cmake --build . %s' % ' '.join(build_flags))
 
     elif stage == 'test':
         os.chdir('build')
         if operating_system == 'OSX':
             os.environ['CTEST_OUTPUT_ON_FAILURE'] = '1'
-        return os.system('ctest -C Release')
-
+        if os.system('ctest -C Release' != 0):
+            sys.exit(-1)
+        
     elif stage == 'deliver':
         channel = os.environ['channel']
         version = os.environ['version']
