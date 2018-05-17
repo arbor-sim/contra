@@ -71,8 +71,7 @@ def main(argv):
 
         cmake_flags = []
         if compiler == 'Visual Studio':
-            python_path = subprocess.Popen('where python', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
-            pytest_command = "\\".join(python_path.split('\\')[:-1])+'\\Scripts\\pytest.exe'
+            pytest_command = subprocess.Popen('pip show pytest', stdout=subprocess.PIPE).communicate()[0].splitlines()[7].replace('Location: ','') + '\\pytest.py'
         elif compiler == 'apple-clang':
             pytest_command = ('/Users/gitlabci/Library/Python/2.7/lib/python/site-packages/pytest.py')
         else:
