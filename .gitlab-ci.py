@@ -101,8 +101,9 @@ def main(argv):
             pytest_command = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]  
 
         if compiler == 'Visual Studio':
-            cmake_flags.extend(['-G', 'Visual Studio %s %s Win64', '-DPY_TEST_COMMAND="%s"' %
-                                (compiler_version, visual_studio_version_year_map[compiler_version], pytest_command)])
+            cmake_flags.extend(['-G', 'Visual Studio %s %s Win64' %
+                                (compiler_version, visual_studio_version_year_map[compiler_version])])
+            cmake_flags.extend(['-DPY_TEST_COMMAND="%s"' % (pytest_command)])
         else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
             cmake_flags.append('-DPY_TEST_COMMAND="%s"' % (pytest_command))
