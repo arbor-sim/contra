@@ -27,7 +27,8 @@ if(NOT PYTHON_EXECUTABLE)
         CMake will not generate the project without it. ")
 endif()
 
-find_program(PY_TEST_COMMAND py.test pytest
+message("ENV{PY_TEST_DIR} $ENV{PY_TEST_DIR}")
+find_program(PY_TEST_COMMAND py.test pytest pytest.py py.test.py
   PATHS $ENV{PATH} $ENV{PY_TEST_DIR}
 )
 if(NOT PY_TEST_COMMAND)
