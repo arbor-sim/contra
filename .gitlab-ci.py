@@ -92,21 +92,24 @@ def main(argv):
         os.chdir('build')
 
         cmake_flags = ['..']
-        
+
         if compiler == 'Visual Studio':
-            pytest_command = subprocess.Popen('pip show pytest', stdout=subprocess.PIPE).communicate()[0].splitlines()[7].replace('Location: ','') + '\\pytest.py'
+            pytest_dir = subprocess.Popen('pip show pytest', stdout=subprocess.PIPE).communicate()[
+                0].splitlines()[7].replace('Location: ', '')
         elif compiler == 'apple-clang':
-            pytest_command = ('/Users/gitlabci/Library/Python/2.7/lib/python/site-packages/pytest.py')
+            pytest_dir = (
+                '/Users/gitlabci/Library/Python/2.7/lib/python/site-packages')
         else:
-            pytest_command = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]  
+            pytest_dir = subprocess.Popen(
+                'which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
+
+        os.environ['PY_TEST_DIR'] = pytest_dir
 
         if compiler == 'Visual Studio':
             cmake_flags.extend(['-G', 'Visual Studio %s %s Win64' %
                                 (compiler_version, visual_studio_version_year_map[compiler_version])])
-            cmake_flags.extend(['-DPY_TEST_COMMAND="%s"' % (pytest_command)])
         else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
-            cmake_flags.append('-DPY_TEST_COMMAND="%s"' % (pytest_command))
 
         execute('cmake', cmake_flags)
 
