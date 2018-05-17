@@ -55,7 +55,9 @@ include(cppcheck)
 find_package(PythonInterp REQUIRED)
 find_package(PythonLibs REQUIRED)
 
+message("PY_TEST_COMMAND ${PY_TEST_COMMAND}")
 include(py.test)
+message("PY_TEST_COMMAND ${PY_TEST_COMMAND}")
 include(python_module)
 
 conan_or_find_package(boost_interprocess REQUIRED)
