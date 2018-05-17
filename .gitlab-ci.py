@@ -69,14 +69,22 @@ def main(argv):
         sys.exit(-1)
 
     if stage == 'conan':
-        execute('mkdir build')
+       execute('mkdir', ['build'])
         os.chdir('build')
         if operating_system == 'Linux':
-            execute('export CC=gcc')
-            execute('export CXX=g++')
-        execute('conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan')
-        execute('conan user -p %s -r rwth-vr--bintray %s' % (os.environ['CONAN_PASSWORD'], os.environ['CONAN_LOGIN_USERNAME']))
-        execute('conan install --build=missing %s ..' % ' '.join(get_conan_flags(compiler, compiler_version)))
+            os.environ['CC'] = 'gcc'
+            os.environ['CXX'] = 'g++'
+
+        execute('conan',
+                ['remote', 'update', 'rwth-vr--bintray',
+                 'https://api.bintray.com/conan/rwth-vr/conan'])
+        execute('conan', ['user', '-p', os.environ['CONAN_PASSWORD'],
+                          '-r', 'rwth-vr--bintray', os.environ['CONAN_LOGIN_USERNAME']])
+
+        conan_install_flags = ['install', '--build=missing']
+        conan_install_flags.extend(get_conan_flags(compiler, compiler_version))
+        conan_install_flags.append('..')
+        execute('conan', conan_install_flags)
 
     elif stage == 'cmake':
         os.chdir('build')
@@ -97,31 +105,47 @@ def main(argv):
         else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
 
-        execute('cmake %s ..' % ' '.join(cmake_flags))
+        execute('cmake', cmake_flags)
 
     elif stage == 'build':
         build_flags = []
-        if compiler == 'Visual Studio':
-            build_flags.append('--config Release')
-        os.chdir('build')
-        execute('cmake --build . %s' % ' '.join(build_flags))
 
+        cmake_build_flags = ['--build', '.']
+        if compiler == 'Visual Studio':
+            cmake_build_flags.extend(['--config', 'Release'])
+
+        execute('cmake', cmake_build_flags)
+        
     elif stage == 'test':
         os.chdir('build')
         if operating_system == 'OSX':
             os.environ['CTEST_OUTPUT_ON_FAILURE'] = '1'
-        execute('ctest -C Release')
+        execute('cmake', ['-C', 'Release'])
         
     elif stage == 'deliver':
         channel = os.environ['channel']
         version = os.environ['version']
         if channel not in valid_channels:
-            print('Invalid channel: %s possible values: %s' % (channel, ', '.join(valid_channels)))
+            print('Invalid channel: %s possible values: %s' %
+                  (channel, ', '.join(valid_channels)))
             sys.exit(-1)
         conan_flags = ' '.join(get_conan_flags(compiler, compiler_version))
-        execute('conan export-pkg . contra/%s@RWTH-VR/%s %s -f' % (version, channel, conan_flags))
-        execute('conan test ./test_package contra/%s@RWTH-VR/%s %s' % (version, channel, conan_flags))
-        execute('conan upload contra/%s@RWTH-VR/%s --all --force -r=rwth-vr--bintray ' % (version, channel))
 
+        conan_export_flags = ['export-pkg', '.',
+                              'contra/%s@RWTH-VR/%s' % (version, channel), '-f']
+        conan_export_flags.extend(conan_flags)
+        execute('conan', conan_export_flags)
+
+        conan_test_flags = ['test', './test_package', 'contra/%s@RWTH-VR/%s' %
+                            (version, channel)]
+        conan_test_flags.extend(conan_flags)
+        execute('conan', conan_test_flags)
+
+        conan_upload_flags = ['upload', 'contra/%s@RWTH-VR/%s' % (version, channel),
+                              '--all', '--force', '-r=rwth-vr--bintray']
+        conan_upload_flags.extend(conan_flags)
+        execute('conan', conan_upload_flags)
+        
+        
 if (__name__ == '__main__'):
     main(sys.argv)
