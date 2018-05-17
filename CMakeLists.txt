@@ -75,3 +75,4 @@ add_test_cpplint(NAME "contra-tests--cpplint"
     ${ALL_SOURCES} ${ALL_HEADERS}
   )
 
+message("PY_TEST_COMMAND ${PY_TEST_COMMAND}")
