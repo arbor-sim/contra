@@ -112,8 +112,6 @@ def main(argv):
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
             cmake_flags.append('-DPY_TEST_COMMAND="%s"' % (pytest_command))
 
-        print(cmake_flags)
-
         execute('cmake', cmake_flags)
 
     elif stage == 'build':
