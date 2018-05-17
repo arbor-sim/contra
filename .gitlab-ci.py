@@ -98,7 +98,7 @@ def main(argv):
         os.chdir('build')
         if operating_system == 'OSX':
             os.environ['CTEST_OUTPUT_ON_FAILURE'] = '1'
-        if os.system('ctest -C Release' != 0):
+        if os.system('ctest -C Release' != '0'):
             sys.exit(-1)
         
     elif stage == 'deliver':
