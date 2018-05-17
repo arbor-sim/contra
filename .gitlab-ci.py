@@ -71,7 +71,8 @@ def main(argv):
 
         cmake_flags = []
         if compiler == 'Visual Studio':
-            pytest_command = subprocess.Popen('pip show pytest', stdout=subprocess.PIPE).communicate()[0].splitlines()[7].replace('Location: ','') + '\\pytest.py'
+            pytest_command = 'test failure value'
+            #pytest_command = subprocess.Popen('pip show pytest', stdout=subprocess.PIPE).communicate()[0].splitlines()[7].replace('Location: ','') + '\\pytest.py'
         elif compiler == 'apple-clang':
             pytest_command = ('/Users/gitlabci/Library/Python/2.7/lib/python/site-packages/pytest.py')
         else:
@@ -84,20 +85,20 @@ def main(argv):
         else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
 
-        os.system('cmake %s ..' % ' '.join(cmake_flags))
+        return os.system('cmake %s ..' % ' '.join(cmake_flags))
 
     elif stage == 'build':
         build_flags = []
         if compiler == 'Visual Studio':
             build_flags.append('--config Release')
         os.chdir('build')
-        os.system('cmake --build . %s' % ' '.join(build_flags))
+        return os.system('cmake --build . %s' % ' '.join(build_flags))
 
     elif stage == 'test':
         os.chdir('build')
         if operating_system == 'OSX':
             os.environ['CTEST_OUTPUT_ON_FAILURE'] = '1'
-        os.system('ctest -C Release')
+        return os.system('ctest -C Release')
 
     elif stage == 'deliver':
         channel = os.environ['channel']
