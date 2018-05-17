@@ -104,6 +104,10 @@ def main(argv):
                 'which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
 
         os.environ['PY_TEST_DIR'] = pytest_dir
+        if operating_system == 'Windows':
+            execute('dir', [pytest_dir])
+        else:
+            execute('ls', [pytest_dir])
 
         if compiler == 'Visual Studio':
             cmake_flags.extend(['-G', 'Visual Studio %s %s Win64' %
