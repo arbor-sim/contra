@@ -92,17 +92,13 @@ def main(argv):
         os.chdir('build')
 
         cmake_flags = ['..']
-
+        
         if compiler == 'Visual Studio':
-            pytest_command = subprocess.Popen('pip show pytest', stdout=subprocess.PIPE).communicate()[
-                0].splitlines()[7].replace('Location: ', '') + '\\pytest.py'
-            print(pytest_command)
+            pytest_command = subprocess.Popen('pip show pytest', stdout=subprocess.PIPE).communicate()[0].splitlines()[7].replace('Location: ','') + '\\pytest.py'
         elif compiler == 'apple-clang':
-            pytest_command = (
-                '/Users/gitlabci/Library/Python/2.7/lib/python/site-packages/pytest.py')
+            pytest_command = ('/Users/gitlabci/Library/Python/2.7/lib/python/site-packages/pytest.py')
         else:
-            pytest_command = subprocess.Popen(
-                'which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]
+            pytest_command = subprocess.Popen('which pytest', stdout=subprocess.PIPE, shell=True).communicate()[0][:-1]  
 
         if compiler == 'Visual Studio':
             cmake_flags.extend(['-G', 'Visual Studio %s %s Win64' %
