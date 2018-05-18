@@ -22,9 +22,12 @@
 #include "pycontra.hpp"
 
 #include "contra/contra.hpp"
+#include "contra/suppress_warnings.hpp"
 
 namespace pycontra {
 
+SUPPRESS_WARNINGS_BEGIN
 BOOST_PYTHON_MODULE(_pycontra) { def("Greet", contra::Greet); }
+SUPPRESS_WARNINGS_END
 
 }  // namespace pycontra
