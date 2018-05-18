@@ -34,11 +34,12 @@ class contra(ConanFile):
                  ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
                  ("cppcheck/1.82@RWTH-VR/thirdparty"),
                  ("conduit/0.3.1@RWTH-VR/thirdparty"),
-                 ("boost_interprocess/1.66.0@bincrafters/testing"))
+                 ("boost_interprocess/1.66.0@bincrafters/testing"),
+                 ("boost_python/1.66.0@bincrafters/testing"))
     generators = "cmake"
 
     def configure(self):
-        self.options["boost"].header_only = True
+        self.options["boost"].header_only = False
         self.options["boost_python"].python_version = 2.7
         if (self.settings.os == "Windows"):
             self.options["conduit"].shared = False
