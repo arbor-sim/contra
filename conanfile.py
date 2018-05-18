@@ -45,7 +45,7 @@ class contra(ConanFile):
           self.options["boost_python"].shared = False
         else:
           self.options["boost_python"].shared = True
-          self.options["boost"].fPIC = True
+          self.options["boost_python"].fPIC = True
         if (self.settings.os == "Windows"):
             self.options["conduit"].shared = False
 
