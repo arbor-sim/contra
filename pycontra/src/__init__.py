@@ -19,7 +19,5 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
-# from _pycontra import *
+from _pycontra import *
 
-def greet():
-    return "G'day!"

@@ -19,5 +19,12 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-void unused();
-void unused() {}
+#include "pycontra.hpp"
+
+#include "contra/contra.hpp"
+
+namespace pycontra {
+
+BOOST_PYTHON_MODULE(_pycontra) { def("Greet", contra::Greet); }
+
+}  // namespace pycontra
