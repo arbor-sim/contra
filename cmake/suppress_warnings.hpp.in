@@ -40,6 +40,7 @@
   _Pragma("clang diagnostic ignored \"-Wsign-conversion\"")               \
   _Pragma("clang diagnostic ignored \"-Wnewline-eof\"")                   \
   _Pragma("clang diagnostic ignored \"-Wnon-virtual-dtor\"")              \
+  _Pragma("clang diagnostic ignored \"-Wmissing-prototypes\"")            \
     _Pragma("clang diagnostic ignored \"-Wextra-semi\"")
 #define SUPPRESS_WARNINGS_BEGIN_PADDED \
   _Pragma("clang diagnostic push")                                        \
