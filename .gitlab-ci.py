@@ -21,7 +21,7 @@ visual_studio_version_year_map = {
 def execute(command, arguments):
     call_arguments = [command]
     call_arguments.extend(arguments)
-    print('\033[92m$ ' + command + ' ' + ' '.join(arguments) + '\033[0m')
+    print('\033[92m$ ' + command + '\033[0m')
     sys.stdout.flush()
     return_value = subprocess.call(call_arguments)
     if return_value != 0:
