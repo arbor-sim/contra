@@ -59,22 +59,23 @@ def main(argv):
               (operating_system, ', '.join(valid_compilers[operating_system])))
         sys.exit(-1)
 
+    if operating_system == 'Linux':
+        os.environ['CC'] = 'gcc'
+        os.environ['CXX'] = 'g++'
+    elif operating_system == 'macOS' and compiler == 'gcc':
+        if compiler_version == '5':
+            os.environ['CC'] = 'gcc-5'
+            os.environ['CXX'] = 'g++-5'
+        elif compiler_version == '6':
+            os.environ['CC'] = 'gcc-6'
+            os.environ['CXX'] = 'g++-6'
+        elif compiler_version == '7':
+            os.environ['CC'] = 'gcc-7'
+            os.environ['CXX'] = 'g++-7'
+
     if stage == 'conan':
         os.system('mkdir build')
         os.chdir('build')
-        if operating_system == 'Linux':
-            os.system('export CC=gcc')
-            os.system('export CXX=g++')
-        elif operating_system == 'macOS' and compiler == 'gcc':
-            if compiler_version == '5':
-                os.environ['CC'] = 'gcc-5'
-                os.environ['CXX'] = 'g++-5'
-            elif compiler_version == '6':
-                os.environ['CC'] = 'gcc-6'
-                os.environ['CXX'] = 'g++-6'
-            elif compiler_version == '7':
-                os.environ['CC'] = 'gcc-7'
-                os.environ['CXX'] = 'g++-7'
 
         os.system(
             'conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan')
