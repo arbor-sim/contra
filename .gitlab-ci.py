@@ -65,6 +65,17 @@ def main(argv):
         if operating_system == 'Linux':
             os.system('export CC=gcc')
             os.system('export CXX=g++')
+        elif operating_system == 'macOS' and compiler == 'gcc':
+            if compiler_version == '5':
+                os.environ['CC'] = 'gcc-5'
+                os.environ['CXX'] = 'g++-5'
+            elif compiler_version == '6':
+                os.environ['CC'] = 'gcc-6'
+                os.environ['CXX'] = 'g++-6'
+            elif compiler_version == '7':
+                os.environ['CC'] = 'gcc-7'
+                os.environ['CXX'] = 'g++-7'
+
         os.system(
             'conan remote update rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan')
         os.system('conan user -p %s -r rwth-vr--bintray %s' %
