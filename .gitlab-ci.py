@@ -70,6 +70,8 @@ def main(argv):
               (operating_system, ', '.join(valid_compilers[operating_system])))
         sys.exit(-1)
 
+    print(os.environ['PATH'])
+
     if stage == 'conan':
         execute('mkdir', ['build'])
         os.chdir('build')
