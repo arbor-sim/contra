@@ -100,6 +100,8 @@ def main(argv):
 
         cmake_flags = ['..']
 
+        execute('pip', ['install', '--user', 'pytest'])
+
         if compiler == 'Visual Studio':
             pytest_dir = subprocess.Popen('pip show pytest', stdout=subprocess.PIPE).communicate()[
                 0].splitlines()[7].replace('Location: ', '')
