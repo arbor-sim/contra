@@ -72,8 +72,8 @@ def main(argv):
 
     if operating_system == 'Windows':
         path_list = os.environ['PATH'].split(';')
-        path_list.remove('C:\\Python27\\')
-        path_list.remove('C:\\Python27\\Scripts')
+        path_list.insert(0, 'C:\\Python27_64\\')
+        path_list.insert(1, 'C:\\Python27_64\\Scripts')
         os.environ['PATH'] = ';'.join(path_list)
         print(os.environ['PATH'])
 
