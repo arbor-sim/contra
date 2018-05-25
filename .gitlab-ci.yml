@@ -19,27 +19,27 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
-# variables:
-#   version: "18.05"
-#   channel: "develop"
+variables:
+  version: "18.05"
+  channel: "develop"
 
-# stages:
-#   - conan
-#   - cmake
-#   - build
-#   - test
-#   - deliver
+stages:
+  - conan
+  - cmake
+  - build
+  - test
+  - deliver
 
-# .artifacts_template: &artifacts_definition
-#   artifacts:
-#     paths:
-#       - build
-#     expire_in: 1 week
+.artifacts_template: &artifacts_definition
+  artifacts:
+    paths:
+      - build
+    expire_in: 1 week
 
-# .delivery_branches_template: 
-#   only: &delivery_branches
-#     - master
-#     - stable
+.delivery_branches_template: 
+  only: &delivery_branches
+    - master
+    - stable
   
 # #-------------------------------------------------------------------------------
 # #  Windows
