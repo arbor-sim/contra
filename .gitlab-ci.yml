@@ -253,7 +253,6 @@ test:mac:clang9.1:
   dependencies:
     - build:mac:clang9.1
   script:
-    - ./build/contra/tests/contra_tests
     - python .gitlab-ci.py test OSX apple-clang 9.1
   <<: *artifacts_definition
 
