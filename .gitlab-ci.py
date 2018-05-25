@@ -121,6 +121,8 @@ def main(argv):
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
 
         execute('cmake', cmake_flags)
+        execute('otool', ['-D', './pycontra/pycontra/_pycontra.so'])
+        execute('otool', ['-L', './pycontra/pycontra/_pycontra.so'])
 
     elif stage == 'build':
         os.chdir('build')
