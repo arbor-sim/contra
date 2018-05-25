@@ -134,7 +134,7 @@ def main(argv):
 
     elif stage == 'test':
         os.chdir('build')
-        execute('./contra/tests/contra_tests')
+        execute('./contra/tests/contra_tests', [])
         if operating_system == 'OSX':
             os.environ['CTEST_OUTPUT_ON_FAILURE'] = '1'
         execute('ctest', ['-C', 'Release', '-V'])
