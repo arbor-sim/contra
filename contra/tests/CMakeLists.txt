@@ -33,7 +33,7 @@ target_include_directories(contra_tests
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
   )
-set(CONTRA_TEST_ARGUMENTS ""
+set(CONTRA_TEST_ARGUMENTS "-s"
   CACHE STRING
   "Arguments, e.g., tags, that are passed to contra_tests executable."
   )
