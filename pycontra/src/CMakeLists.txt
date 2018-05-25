@@ -38,8 +38,3 @@ add_python_module(
     ${CONAN_OR_CMAKE_boost_python}
   OUTPUT_DIRECTORY ${PYCONTRA_OUTPUT_DIR}
   )
-
-  set_target_properties(_pycontra PROPERTIES 
-  INSTALL_RPATH ${CONAN_LIB_DIRS_CONDUIT}
-  BUILD_WITH_INSTALL_RPATH TRUE
-  )
