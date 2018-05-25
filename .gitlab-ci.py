@@ -132,6 +132,7 @@ def main(argv):
         execute('cmake', cmake_build_flags)
         execute('otool', ['-D', './pycontra/pycontra/_pycontra.so'])
         execute('otool', ['-L', './pycontra/pycontra/_pycontra.so'])
+        execute('otool', ['-l', './pycontra/pycontra/_pycontra.so'])
 
     elif stage == 'test':
         os.chdir('build')
