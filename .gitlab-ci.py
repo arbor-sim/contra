@@ -78,6 +78,7 @@ def main(argv):
         print(os.environ['PATH'])
 
     if stage == 'conan':
+        execute('conan', ['remove', 'conduit*', '-f'])
         execute('mkdir', ['build'])
         os.chdir('build')
         if operating_system == 'Linux':
