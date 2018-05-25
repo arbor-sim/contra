@@ -25,7 +25,6 @@ project(contra)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_STANDARD 17)
-cmake_policy(SET CMP0060 NEW)
 
 if (MSVC)
   foreach(flag_var
@@ -61,6 +60,8 @@ include(python_module)
 
 conan_or_find_package(boost_interprocess REQUIRED)
 conan_or_find_package(boost_python REQUIRED)
+
+message("CMAKE_SKIP_RPATH ${CMAKE_SKIP_RPATH}")
 
 add_subdirectory(contra)
 add_subdirectory(helper_apps)
