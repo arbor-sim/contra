@@ -88,9 +88,7 @@ void SharedMemoryTransport::Send(const Packet& packet) {
 }
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
-  std::cout << "Before aquiring lock" << std::endl;
   ScopedLock lock(mutex_);
-  std::cout << "After aquiring lock" << std::endl;
   std::vector<Packet> received_packets{packet_storage_->begin(),
                                        packet_storage_->end()};
   packet_storage_->clear();
