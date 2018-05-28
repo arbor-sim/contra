@@ -50,6 +50,11 @@ class contra(ConanFile):
        self.copy("*.so", dst="contra/tests", src="lib")
        self.copy("*.dylib", dst="contra/tests", src="lib")
 
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure(source_folder = '.')
+        cmake.build()
+
     def package(self):
         self.copy("*.hpp", dst="include", src="contra/include")
         self.copy("*.lib", dst="lib", keep_path=False)
