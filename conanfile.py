@@ -27,7 +27,7 @@ class contra(ConanFile):
     license = "Apache License, Version 2.0"
     description = """Contra, a lightweight transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
-    exports_sources = "src/*"
+    exports_sources = "*"
     url = "https://devhub.vr.rwth-aachen.de/VR-Group/contra"
 
     requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
