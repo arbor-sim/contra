@@ -30,6 +30,7 @@
 namespace boost {
 namespace interprocess {
 namespace ipcdetail {
+// cppcheck-suppress unusedFunction
 inline void get_shared_dir(
     std::string& shared_dir) {  // NOLINT runtime/references
   shared_dir = ".";
