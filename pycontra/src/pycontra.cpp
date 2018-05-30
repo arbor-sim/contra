@@ -28,11 +28,23 @@
 
 namespace pycontra {
 
+conduit::Node AnyNode() {
+  conduit::Node node;
+  node["A/B/C"] = 3.1415;
+  node["A/B/D"] = 4.124;
+  node["A/E"] = 42.0;
+  return node;
+}
+
+extern template void expose<contra::Relay<contra::FileTransport>>();
+
 SUPPRESS_WARNINGS_BEGIN
 // cppcheck-suppress unusedFunction
 BOOST_PYTHON_MODULE(_pycontra) {
   def("Greet", contra::Greet);
   expose<contra::Relay<contra::FileTransport>>();
+  def("AnyNode", &AnyNode);
+  class_<conduit::Node>("Node");
 }
 SUPPRESS_WARNINGS_END
 

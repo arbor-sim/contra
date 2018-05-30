@@ -27,12 +27,21 @@
 
 namespace pycontra {
 
+boost::python::list FileTransportRelayReceive(
+    contra::Relay<contra::FileTransport>* relay) {
+  boost::python::list ret_val;
+  for (const auto& node : relay->Receive()) {
+    ret_val.append(node);
+  }
+  return ret_val;
+}
+
 template <>
 void expose<contra::Relay<contra::FileTransport>>() {
   class_<contra::Relay<contra::FileTransport>, boost::noncopyable>(
       "FileTransportRelay", init<const std::string&>())
       .def("Send", &contra::Relay<contra::FileTransport>::Send)
-      .def("Receive", &contra::Relay<contra::FileTransport>::Receive);
+      .def("Receive", &FileTransportRelayReceive);
 }
 
 }  // namespace pycontra

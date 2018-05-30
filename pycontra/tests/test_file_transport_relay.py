@@ -25,3 +25,6 @@ import pycontra
 def test_file_transport_relay():
     sender = pycontra.FileTransportRelay("relay_file_transport.contra")
     receiver = pycontra.FileTransportRelay("relay_file_transport.contra")
+    sender.Send(pycontra.AnyNode())
+    nodes = receiver.Receive()
+    assert len(nodes) == 1
