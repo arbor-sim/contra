@@ -28,6 +28,7 @@
 
 namespace pycontra {
 
+SUPPRESS_WARNINGS_BEGIN
 conduit::Node AnyNode() {
   conduit::Node node;
   node["A/B/C"] = 3.1415;
@@ -35,6 +36,7 @@ conduit::Node AnyNode() {
   node["A/E"] = 42.0;
   return node;
 }
+SUPPRESS_WARNINGS_END
 
 extern template void expose<contra::Relay<contra::FileTransport>>();
 
