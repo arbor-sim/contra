@@ -23,10 +23,12 @@
 
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
+#include "contra/suppress_warnings.hpp"
 #include "pycontra.hpp"
 
 namespace pycontra {
 
+SUPPRESS_WARNINGS_BEGIN
 boost::python::list FileTransportRelayReceive(
     contra::Relay<contra::FileTransport>* relay) {
   boost::python::list ret_val;
@@ -35,6 +37,7 @@ boost::python::list FileTransportRelayReceive(
   }
   return ret_val;
 }
+SUPPRESS_WARNINGS_END
 
 template <>
 void expose<contra::Relay<contra::FileTransport>>() {
