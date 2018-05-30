@@ -19,21 +19,20 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#include "pycontra.hpp"
+#include <string>
 
-#include "contra/contra.hpp"
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
-#include "contra/suppress_warnings.hpp"
+#include "pycontra.hpp"
 
 namespace pycontra {
 
-SUPPRESS_WARNINGS_BEGIN
-// cppcheck-suppress unusedFunction
-BOOST_PYTHON_MODULE(_pycontra) {
-  def("Greet", contra::Greet);
-  expose<contra::Relay<contra::FileTransport>>();
+template <>
+void expose<contra::Relay<contra::FileTransport>>() {
+  class_<contra::Relay<contra::FileTransport>, boost::noncopyable>(
+      "FileTransportRelay", init<const std::string&>())
+      .def("Send", &contra::Relay<contra::FileTransport>::Send)
+      .def("Receive", &contra::Relay<contra::FileTransport>::Receive);
 }
-SUPPRESS_WARNINGS_END
 
 }  // namespace pycontra
