@@ -20,11 +20,16 @@
 # -------------------------------------------------------------------------------
 
 import pycontra
-
+import os
 
 def test_file_transport_relay():
+    os.listdir('.')
     sender = pycontra.FileTransportRelay("relay_file_transport.contra")
+    os.listdir('.')
     receiver = pycontra.FileTransportRelay("relay_file_transport.contra")
+    os.listdir('.')
     sender.Send(pycontra.AnyNode())
+    os.listdir('.')
     nodes = receiver.Receive()
+    os.listdir('.')
     assert len(nodes) == 1
