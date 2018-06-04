@@ -32,4 +32,4 @@ def test_file_transport_relay():
     print(os.listdir('.'))
     nodes = receiver.Receive()
     print(os.listdir('.'))
-    assert len(nodes) == 0
+    assert len(nodes) == 1
