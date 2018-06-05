@@ -19,38 +19,32 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#include "pycontra.hpp"
+#include <string>
 
-#include "contra/contra.hpp"
-#include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
 #include "contra/shared_memory_transport.hpp"
 #include "contra/suppress_warnings.hpp"
+#include "pycontra.hpp"
 
 namespace pycontra {
 
 SUPPRESS_WARNINGS_BEGIN
-conduit::Node AnyNode() {
-  conduit::Node node;
-  node["A/B/C"] = 3.1415;
-  node["A/B/D"] = 4.124;
-  node["A/E"] = 42.0;
-  return node;
+boost::python::list SharedMemoryTransportRelayReceive(
+    contra::Relay<contra::SharedMemoryTransport>* relay) {
+  boost::python::list ret_val;
+  for (const auto& node : relay->Receive()) {
+    ret_val.append(node);
+  }
+  return ret_val;
 }
 SUPPRESS_WARNINGS_END
 
-extern template void expose<contra::Relay<contra::FileTransport>>();
-extern template void expose<contra::Relay<contra::SharedMemoryTransport>>();
-
-SUPPRESS_WARNINGS_BEGIN
-// cppcheck-suppress unusedFunction
-BOOST_PYTHON_MODULE(_pycontra) {
-  def("Greet", contra::Greet);
-  expose<contra::Relay<contra::FileTransport>>();
-  expose<contra::Relay<contra::SharedMemoryTransport>>();
-  def("AnyNode", &AnyNode);
-  class_<conduit::Node>("Node");
+template <>
+void expose<contra::Relay<contra::SharedMemoryTransport>>() {
+  class_<contra::Relay<contra::SharedMemoryTransport>, boost::noncopyable>(
+      "SharedMemoryTransportRelay")
+      .def("Send", &contra::Relay<contra::SharedMemoryTransport>::Send)
+      .def("Receive", &SharedMemoryTransportRelayReceive);
 }
-SUPPRESS_WARNINGS_END
 
 }  // namespace pycontra
