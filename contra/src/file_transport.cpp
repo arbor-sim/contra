@@ -67,6 +67,7 @@ std::vector<Packet> FileTransport::Receive() {
   std::ifstream stream(filename_, std::fstream::binary);
 
   if (!ReadAndCheckSignature(&stream)) {
+    std::cerr << "Failed to verify signature!" << std::endl;
     return {};
   }
 
