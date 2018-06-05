@@ -80,9 +80,8 @@ std::vector<Packet> FileTransport::Receive() {
 bool FileTransport::ReadAndCheckSignature(std::ifstream* stream) const {
   std::vector<char> signature_buffer(kSignatureLength + 1, 0x00);
   stream->read(signature_buffer.data(), kSignatureLength);
-  std::cerr << "Got: " << std::string(signature_buffer.data()) << std::endl;
-  std::cerr << "Expected: " << std::string(kSignature) << std::endl;
-  return std::string(signature_buffer.data()) == std::string(kSignature);
+  return std::string(signature_buffer.data()) ==
+         std::string(kSignature, kSignature + kSignatureLength);
 }
 
 std::string FileTransport::ReadSchema(std::ifstream* stream) const {
