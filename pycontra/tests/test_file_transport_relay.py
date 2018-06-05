@@ -22,6 +22,10 @@
 import pycontra
 import os
 
+def dump_file_content():
+    with open('relay_file_transport.contra', 'r') as file:
+        print(file.read())
+
 def test_file_transport_relay():
     print(os.listdir('.'))
     sender = pycontra.FileTransportRelay("relay_file_transport.contra")
@@ -30,6 +34,8 @@ def test_file_transport_relay():
     print(os.listdir('.'))
     sender.Send(pycontra.AnyNode())
     print(os.listdir('.'))
+    dump_file_content()
     nodes = receiver.Receive()
     print(os.listdir('.'))
+    dump_file_content()
     assert len(nodes) == 1
