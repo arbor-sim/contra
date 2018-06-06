@@ -36,6 +36,7 @@ function(ADD_PYTHON_MODULE)
   target_include_directories(${ADD_PYTHON_MODULE_NAME}
     PRIVATE ${Boost_INCLUDE_DIRS}
     PRIVATE ${PYTHON_INCLUDE_DIRS}
+    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/include
     ${ADD_PYTHON_MODULE_INCLUDE_DIRECTORIES}
     )
 
@@ -46,7 +47,7 @@ function(ADD_PYTHON_MODULE)
     )
 
   set_warning_levels_RWTH(${ADD_PYTHON_MODULE_NAME}
-    SUPPRESS_WARNINGS_HEADER ${CMAKE_CURRENT_BINARY_DIR}/include/pyniv/suppress_warnings.hpp
+    SUPPRESS_WARNINGS_HEADER ${CMAKE_CURRENT_BINARY_DIR}/include/pycontra/suppress_warnings.hpp
     )
   
    

@@ -22,7 +22,7 @@
 #ifndef PYCONTRA_SRC_PYCONTRA_HPP_
 #define PYCONTRA_SRC_PYCONTRA_HPP_
 
-#include "contra/suppress_warnings.hpp"
+#include "pycontra/suppress_warnings.hpp"
 SUPPRESS_WARNINGS_BEGIN
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #if __GNUC__ >= 7

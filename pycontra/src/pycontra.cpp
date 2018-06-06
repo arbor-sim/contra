@@ -25,7 +25,7 @@
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
 #include "contra/shared_memory_transport.hpp"
-#include "contra/suppress_warnings.hpp"
+#include "pycontra/suppress_warnings.hpp"
 
 namespace pycontra {
 

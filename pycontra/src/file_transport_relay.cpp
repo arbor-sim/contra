@@ -23,8 +23,8 @@
 
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
-#include "contra/suppress_warnings.hpp"
 #include "pycontra.hpp"
+#include "pycontra/suppress_warnings.hpp"
 
 namespace pycontra {
 
