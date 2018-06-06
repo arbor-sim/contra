@@ -48,9 +48,10 @@ class contra(ConanFile):
         self.copy("*.dll", dst="contra/tests/Debug", src="bin")
         self.copy("*.dll", dst="contra/tests/Release", src="bin")
         self.copy("*.dll", dst="contra/tests", src="bin")
+        self.copy("*.dll", dst="pycontra/pycontra", src="bin")
         self.copy("*.so", dst="contra/tests", src="lib")
         self.copy("*.dylib", dst="contra/tests", src="lib")
-        self.copy("*.dylib", dst="contra/pycontra/pycontra", src="lib")
+        self.copy("*.dylib", dst="pycontra/pycontra", src="lib")
 
     def package(self):
         self.copy("*.hpp", dst="include", src="contra/include")
