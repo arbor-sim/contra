@@ -42,7 +42,7 @@ class contra(ConanFile):
     def configure(self):
         self.options["boost"].header_only = False
         self.options["boost_python"].python_version = 2.7
-        self.options["conduit"].shared = True
+        self.options["conduit"].shared = False
 
     def imports(self):
         self.copy("*.dll", dst="contra/tests/Debug", src="bin")
