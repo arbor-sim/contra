@@ -34,6 +34,7 @@ set(WARNING_LEVELS_RWTH_CLANG
   -Wno-exit-time-destructors
   -Wno-global-constructors
   -Wno-float-equal
+  -Wno-shadow-field-in-constructor
 )
 
 set(WARNING_LEVELS_RWTH_GCC
