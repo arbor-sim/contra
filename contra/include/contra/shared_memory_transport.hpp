@@ -53,8 +53,13 @@ class SharedMemoryTransport {
   using ManagedSharedMemory = boost::interprocess::managed_shared_memory;
 #endif
   using SegmentManager = ManagedSharedMemory::segment_manager;
-  using Allocator = boost::interprocess::allocator<Packet, SegmentManager>;
-  using PacketStorage = std::vector<Packet, Allocator>;
+
+  using SchemaAllocator = boost::interprocess::allocator<char, SegmentManager>;
+  using DataAllocator = boost::interprocess::allocator<uint8_t, SegmentManager>;
+  using InternalPacket = BasicPacket<SchemaAllocator, DataAllocator>;
+  using PacketAllocator =
+      boost::interprocess::allocator<InternalPacket, SegmentManager>;
+  using PacketStorage = std::vector<InternalPacket, PacketAllocator>;
 
   using NamedMutex = boost::interprocess::named_mutex;
   using ScopedLock = boost::interprocess::scoped_lock<NamedMutex>;
