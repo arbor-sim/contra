@@ -85,7 +85,6 @@ std::size_t SharedMemoryTransport::GetFreeSize() const {
 
 void SharedMemoryTransport::Send(const Packet& packet) {
   ScopedLock lock(mutex_);
-  std::cout << "Before push: " << packet_storage_->size() << std::endl;
   InternalPacket internal_packet{
       packet.schema.begin(),
       packet.schema.end(),
@@ -95,23 +94,14 @@ void SharedMemoryTransport::Send(const Packet& packet) {
       DataAllocator{segment_.get_segment_manager()}};
 
   packet_storage_->push_back(internal_packet);
-  std::cout << "Before push: " << packet_storage_->size() << std::endl;
 }  // namespace contra
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
   ScopedLock lock(mutex_);
-  std::cout << "Before receive: " << packet_storage_->size() << std::endl;
-  std::cout << "                " << packet_storage_->data() << std::endl;
-
   std::vector<Packet> received_packets;
   received_packets.reserve(packet_storage_->size());
 
   for (const auto& internal_packet : *packet_storage_) {
-    // std::cout << "Packet {" << std::endl;
-    // std::cout << "    schema: " << internal_packet.schema << std::endl;
-    // std::cout << "    data:   [" << internal_packet.data.size() << ""
-    //           << std::endl;
-    // std::cout << "}" << std::endl;
     received_packets.push_back(internal_packet);
   }
   packet_storage_->clear();
