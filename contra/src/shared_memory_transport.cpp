@@ -83,17 +83,17 @@ std::size_t SharedMemoryTransport::GetFreeSize() const {
   return segment_.get_free_memory();
 }
 
-void SharedMemoryTransport::Send(const Packet& packet) {
+void SharedMemoryTransport::Send(const Packet&) {
   ScopedLock lock(mutex_);
-  InternalPacket internal_packet{
-      packet.schema.begin(),
-      packet.schema.end(),
-      SchemaAllocator{segment_.get_segment_manager()},
-      packet.data.begin(),
-      packet.data.end(),
-      DataAllocator{segment_.get_segment_manager()}};
+  // InternalPacket internal_packet{
+  //     packet.schema.begin(),
+  //     packet.schema.end(),
+  //     SchemaAllocator{segment_.get_segment_manager()},
+  //     packet.data.begin(),
+  //     packet.data.end(),
+  //     DataAllocator{segment_.get_segment_manager()}};
 
-  packet_storage_->push_back(internal_packet);
+  // packet_storage_->push_back(internal_packet);
 }  // namespace contra
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
