@@ -22,67 +22,15 @@
 #ifndef CONTRA_INCLUDE_CONTRA_PACKET_HPP_
 #define CONTRA_INCLUDE_CONTRA_PACKET_HPP_
 
-#include <memory>
 #include <string>
-#include <type_traits>
-#include <utility>
 #include <vector>
 
 namespace contra {
 
-template <typename SchemaAllocator = std::allocator<char>,
-          typename DataAllocator = std::allocator<uint8_t>>
-struct BasicPacket {
-  using SchemaString =
-      std::basic_string<char, std::char_traits<char>, SchemaAllocator>;
-  using DataVector = std::vector<uint8_t, DataAllocator>;
-
-  template <typename T = int,
-            typename = std::enable_if_t<
-                std::is_default_constructible<SchemaAllocator>::value &&
-                    std::is_default_constructible<DataAllocator>::value,
-                T>>
-  BasicPacket() {}  // = default does not compile on MSVC
-
-  template <typename T = int, typename OtherSchemaAllocator,
-            typename OtherDataAllocator,
-            typename = std::enable_if_t<
-                std::is_default_constructible<SchemaAllocator>::value &&
-                    std::is_default_constructible<DataAllocator>::value,
-                T>>
-  BasicPacket(
-      const BasicPacket<OtherSchemaAllocator, OtherDataAllocator>& other)
-      : schema(other.schema.begin(), other.schema.end()),
-        data(other.data.begin(), other.data.end()) {}
-
-  BasicPacket(const SchemaAllocator& schema_allocator,
-              const DataAllocator& data_allocator)
-      : schema(schema_allocator), data(data_allocator) {}
-
-  template <typename SchemaIterator, typename DataIterator>
-  BasicPacket(SchemaIterator&& schema_begin, SchemaIterator&& schema_end,
-              const SchemaAllocator& schema_allocator,
-              DataIterator&& data_begin, DataIterator&& data_end,
-              const DataAllocator& data_allocator)
-      : schema(std::forward<SchemaIterator>(schema_begin),
-               std::forward<SchemaIterator>(schema_end), schema_allocator),
-        data(std::forward<DataIterator>(data_begin),
-             std::forward<DataIterator>(data_end), data_allocator) {}
-
-  template <typename T = int,
-            typename = std::enable_if_t<
-                std::is_default_constructible<SchemaAllocator>::value &&
-                    std::is_default_constructible<DataAllocator>::value,
-                T>>
-  BasicPacket(const SchemaString& schema, const DataVector& data)
-      : schema{std::forward<const SchemaString&>(schema)},
-        data{std::forward<const DataVector&>(data)} {}
-
-  SchemaString schema;
-  DataVector data;
+struct Packet {
+  std::string schema;
+  std::vector<uint8_t> data;
 };
-
-using Packet = BasicPacket<>;
 
 }  // namespace contra
 

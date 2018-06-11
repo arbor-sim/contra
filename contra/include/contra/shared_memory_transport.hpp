@@ -56,7 +56,12 @@ class SharedMemoryTransport {
 
   using SchemaAllocator = boost::interprocess::allocator<char, SegmentManager>;
   using DataAllocator = boost::interprocess::allocator<uint8_t, SegmentManager>;
-  using InternalPacket = BasicPacket<SchemaAllocator, DataAllocator>;
+  struct InternalPacket {
+    using Schema = std::vector<char, SchemaAllocator>;
+    using Data = std::vector<uint8_t, DataAllocator>;
+    Schema schema;
+    Data data;
+  };
   using PacketAllocator =
       boost::interprocess::allocator<InternalPacket, SegmentManager>;
   using PacketStorage = std::vector<InternalPacket, PacketAllocator>;
