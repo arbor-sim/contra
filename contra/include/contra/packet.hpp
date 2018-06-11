@@ -37,15 +37,19 @@ struct BasicPacket {
       std::basic_string<char, std::char_traits<char>, SchemaAllocator>;
   using DataVector = std::vector<uint8_t, DataAllocator>;
 
-  template <typename = std::enable_if_t<
-                std::is_default_constructible<SchemaAllocator>::value &&
-                std::is_default_constructible<DataAllocator>::value>>
-  BasicPacket() {}  // = default does not compile on MSVC
-
-  template <typename OtherSchemaAllocator, typename OtherDataAllocator,
+  template <typename T = int,
             typename = std::enable_if_t<
                 std::is_default_constructible<SchemaAllocator>::value &&
-                std::is_default_constructible<DataAllocator>::value>>
+                    std::is_default_constructible<DataAllocator>::value,
+                T>>
+  BasicPacket() {}  // = default does not compile on MSVC
+
+  template <typename T = int, typename OtherSchemaAllocator,
+            typename OtherDataAllocator,
+            typename = std::enable_if_t<
+                std::is_default_constructible<SchemaAllocator>::value &&
+                    std::is_default_constructible<DataAllocator>::value,
+                T>>
   BasicPacket(
       const BasicPacket<OtherSchemaAllocator, OtherDataAllocator>& other)
       : schema(other.schema.begin(), other.schema.end()),
@@ -65,9 +69,11 @@ struct BasicPacket {
         data(std::forward<DataIterator>(data_begin),
              std::forward<DataIterator>(data_end), data_allocator) {}
 
-  template <typename = std::enable_if_t<
+  template <typename T = int,
+            typename = std::enable_if_t<
                 std::is_default_constructible<SchemaAllocator>::value &&
-                std::is_default_constructible<DataAllocator>::value>>
+                    std::is_default_constructible<DataAllocator>::value,
+                T>>
   BasicPacket(const SchemaString& schema, const DataVector& data)
       : schema{std::forward<const SchemaString&>(schema)},
         data{std::forward<const DataVector&>(data)} {}
