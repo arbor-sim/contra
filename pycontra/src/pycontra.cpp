@@ -49,7 +49,7 @@ BOOST_PYTHON_MODULE(_pycontra) {
   expose<contra::Relay<contra::FileTransport>>();
   expose<contra::Relay<contra::SharedMemoryTransport>>();
   def("AnyNode", &AnyNode);
-  class_<conduit::Node>("Node");
+  class_<conduit::Node>("Node").def("Update", &conduit::Node::update);
 }
 SUPPRESS_WARNINGS_END
 
