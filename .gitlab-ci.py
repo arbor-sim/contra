@@ -70,7 +70,6 @@ def main(argv):
               (operating_system, ', '.join(valid_compilers[operating_system])))
         sys.exit(-1)
 
-
     if operating_system == 'Windows':
         path_list = os.environ['PATH'].split(';')
         path_list.insert(0, 'C:\\Python27_64\\')
@@ -107,7 +106,6 @@ def main(argv):
         conan_install_flags.append('..')
         execute('conan', conan_install_flags)
 
-
     elif stage == 'cmake':
         os.chdir('build')
 
@@ -115,10 +113,10 @@ def main(argv):
 
         execute('pip', ['install', '--user', 'pytest'])
 
-        if compiler == 'Visual Studio':
+        if operating_system == 'Windows':
             pytest_dir = subprocess.Popen('pip show pytest', stdout=subprocess.PIPE).communicate()[
                 0].splitlines()[7].replace('Location: ', '')
-        elif compiler == 'apple-clang':
+        elif operating_system == 'macOS':
             pytest_dir = (
                 '/Users/gitlabci/Library/Python/2.7/lib/python/site-packages')
         else:
@@ -173,7 +171,6 @@ def main(argv):
         conan_upload_flags = ['upload', 'conan/%s@RWTH-VR/%s' % (version, channel),
                               '--all', '--force', '-r=rwth-vr--bintray']
         execute('conan', conan_upload_flags)
-
 
 
 if (__name__ == '__main__'):
