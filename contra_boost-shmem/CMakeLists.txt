@@ -20,28 +20,30 @@
 #-------------------------------------------------------------------------------
 
 file(GLOB CONTRA_SOURCES src/*.cpp)
-file(GLOB CONTRA_HEADERS include/contra/*.hpp)
+file(GLOB CONTRA_HEADERS include/contra_boost-shmem/*.hpp)
 
-rwthvr_add_library(NAME contra
+rwthvr_add_library(NAME contra_boost-shmem
   SOURCES ${CONTRA_SOURCES}
   HEADERS ${CONTRA_HEADERS}
-  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra/suppress_warnings.hpp"
+  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra_boost-shmem/suppress_warnings.hpp"
   )
-generate_export_header(contra
+generate_export_header(contra_boost-shmem
   EXPORT_FILE_NAME
-  "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp"
+  "${CMAKE_CURRENT_BINARY_DIR}/include/contra_boost-shmem/export.hpp"
   )
   
-target_include_directories(contra
+target_include_directories(contra_boost-shmem
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
   )
   
-target_link_libraries(contra
+target_link_libraries(contra_boost-shmem
+  PUBLIC contra
+  PUBLIC ${CONAN_OR_CMAKE_boost_interprocess}
   PUBLIC ${CONAN_OR_CMAKE_conduit}
   )
 
-target_compile_options(contra
+target_compile_options(contra_boost-shmem
   PRIVATE -fPIC
   )
 
