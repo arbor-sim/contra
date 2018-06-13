@@ -19,18 +19,56 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_TESTS_UTILITIES_TEST_DATA_HPP_
-#define CONTRA_TESTS_UTILITIES_TEST_DATA_HPP_
-
-#include "contra/packet.hpp"
+#include "contra/test_utilities/conduit_data.hpp"
 
 namespace test_utilities {
 
-static const contra::Packet ANY_PACKET{{"any string"}, {1, 2, 4, 3, 5, 6}};
-static const contra::Packet ANOTHER_PACKET{{"another string"},
-                                           {22, 23, 24, 26, 25}};
-static const contra::Packet THIRD_PACKET{{"third string"}, {36, 38, 37}};
+conduit::Node AnyNode() {
+  conduit::Node node;
+  node["A/B/C"] = 3.1415;
+  node["A/B/D"] = 4.124;
+  node["A/E"] = 42.0;
+  return node;
+}
+
+conduit::Node AnotherNode() {
+  conduit::Node node;
+  node["A/B/C"] = 2.0 * 3.1415;
+  node["A/B/D"] = 3.0 * 4.124;
+  node["A/E"] = 4.0 * 42.0;
+  return node;
+}
+
+conduit::Node AnyUpdate() {
+  conduit::Node node;
+  node["A/B/F"] = 2.0 * 3.1415;
+  node["A/B/G"] = 3.0 * 4.124;
+  node["A/H"] = 4.0 * 42.0;
+  return node;
+}
+
+conduit::Node UpdatedNode() {
+  conduit::Node node;
+  node["A/B/C"] = 3.1415;
+  node["A/B/D"] = 4.124;
+  node["A/E"] = 42.0;
+  node["A/B/F"] = 2.0 * 3.1415;
+  node["A/B/G"] = 3.0 * 4.124;
+  node["A/H"] = 4.0 * 42.0;
+  return node;
+}
+
+conduit::Node UpdatedNodeAllZeros() {
+  conduit::Node node;
+  node["A/B/C"] = 0.0;
+  node["A/B/D"] = 0.0;
+  node["A/E"] = 0.0;
+  node["A/B/F"] = 0.0;
+  node["A/B/G"] = 0.0;
+  node["A/H"] = 0.0;
+  return node;
+}
+
+conduit::Node ADifferentNode() { return AnyUpdate(); }
 
 }  // namespace test_utilities
-
-#endif  // CONTRA_TESTS_UTILITIES_TEST_DATA_HPP_

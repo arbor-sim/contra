@@ -2,9 +2,9 @@
 // contra -- a lightweigth transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
-// Virtual Reality & Immersive Visualisation Group.
+// Virtual Reality & Immersive Visualization Group.
 //------------------------------------------------------------------------------
-//                                 License
+//                                  License
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,55 +19,45 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_TESTS_UTILITIES_PACKET_MATCHER_HPP_
-#define CONTRA_TESTS_UTILITIES_PACKET_MATCHER_HPP_
+#ifndef TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_NODE_MATCHER_HPP_
+#define TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_NODE_MATCHER_HPP_
 
-#include <iomanip>
-#include <iostream>
-#include <sstream>
 #include <string>
 
 #include "catch/catch.hpp"
 
-#include "contra/packet.hpp"
+#include "conduit/conduit_node.hpp"
 
 namespace Catch {
 template <>
-struct StringMaker<contra::Packet> {
-  static std::string convert(const contra::Packet& packet) {
-    std::stringstream str;
-    str << packet.schema << '\n';
-    for (auto c : packet.data) {
-      str << std::setfill('0') << std::setw(2) << std::hex << uint16_t{c}
-          << ' ';
-    }
-    str << '\n';
-    return str.str();
+struct StringMaker<conduit::Node> {
+  static std::string convert(const conduit::Node& node) {
+    return node.to_json();
   }
 };
 
 namespace Matchers {
 
-class PacketEquals : public Catch::MatcherBase<contra::Packet> {
+class ConduitNodeEquals : public Catch::MatcherBase<conduit::Node> {
  public:
-  explicit PacketEquals(const contra::Packet& packet) : packet_{packet} {}
-  bool match(const contra::Packet& other) const override {
-    const std::string others = StringMaker<contra::Packet>::convert(other);
-    const std::string mine = StringMaker<contra::Packet>::convert(packet_);
+  explicit ConduitNodeEquals(const conduit::Node& node) : node_{node} {}
+  bool match(const conduit::Node& other) const override {
+    const std::string others = StringMaker<conduit::Node>::convert(other);
+    const std::string mine = StringMaker<conduit::Node>::convert(node_);
+
     return Catch::Matchers::Equals(others).match(mine);
   }
   std::string describe() const override {
-    return Catch::Matchers::Equals(
-               StringMaker<contra::Packet>::convert(packet_))
+    return Catch::Matchers::Equals(StringMaker<conduit::Node>::convert(node_))
         .describe();
   }
 
  private:
-  const contra::Packet packet_;
+  const conduit::Node& node_;
 };
 
-inline PacketEquals Equals(const contra::Packet& packet) {
-  return PacketEquals(packet);
+inline ConduitNodeEquals Equals(const conduit::Node& node) {
+  return ConduitNodeEquals(node);
 }
 
 }  // namespace Matchers
@@ -76,4 +66,4 @@ inline PacketEquals Equals(const contra::Packet& packet) {
 
 using Catch::Matchers::Equals;
 
-#endif  // CONTRA_TESTS_UTILITIES_PACKET_MATCHER_HPP_
+#endif  // TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_NODE_MATCHER_HPP_

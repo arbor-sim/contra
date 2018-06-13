@@ -19,8 +19,8 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_TESTS_UTILITIES_CONDUIT_SCHEMA_HPP_
-#define CONTRA_TESTS_UTILITIES_CONDUIT_SCHEMA_HPP_
+#ifndef TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_SCHEMA_HPP_
+#define TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_SCHEMA_HPP_
 
 #include <sstream>
 #include <string>
@@ -58,4 +58,4 @@ inline void RemoveNextIndicator(std::stringstream* s) {
 }  // namespace conduit_schema
 }  // namespace test_utilities
 
-#endif  // CONTRA_TESTS_UTILITIES_CONDUIT_SCHEMA_HPP_
+#endif  // TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_SCHEMA_HPP_

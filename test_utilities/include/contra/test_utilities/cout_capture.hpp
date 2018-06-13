@@ -19,8 +19,8 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_TESTS_UTILITIES_COUT_CAPTURE_HPP_
-#define CONTRA_TESTS_UTILITIES_COUT_CAPTURE_HPP_
+#ifndef TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_COUT_CAPTURE_HPP_
+#define TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_COUT_CAPTURE_HPP_
 
 #include <iostream>
 #include <sstream>
@@ -62,4 +62,4 @@ struct StringMaker<test_utilities::CoutCapture> {
 
 }  // namespace Catch
 
-#endif  // CONTRA_TESTS_UTILITIES_COUT_CAPTURE_HPP_
+#endif  // TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_COUT_CAPTURE_HPP_

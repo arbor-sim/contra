@@ -27,8 +27,8 @@
 #include "contra/file_transport.hpp"
 #include "contra/packet.hpp"
 
-#include "utilities/packet_matcher.hpp"
-#include "utilities/test_data.hpp"
+#include "contra/test_utilities/packet_matcher.hpp"
+#include "contra/test_utilities/test_data.hpp"
 
 TEST_CASE("make sure that the involved size types have equal size",
           "[contra][contra::FileTransport]") {

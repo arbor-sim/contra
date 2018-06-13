@@ -55,6 +55,7 @@ include(cppcheck)
 conan_or_find_package(boost_interprocess REQUIRED)
 
 add_subdirectory(contra)
+add_subdirectory(test_utilities)
 add_subdirectory(helper_apps)
 
 get_property(ALL_SOURCES GLOBAL PROPERTY RWTHVR_ALL_SOURCES)
