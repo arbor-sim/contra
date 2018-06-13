@@ -19,7 +19,7 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#include "contra/shared_memory_transport.hpp"
+#include "contra_boost-shmem/shared_memory_transport.hpp"
 
 #include <algorithm>
 #include <iostream>

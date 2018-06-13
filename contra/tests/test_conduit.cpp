@@ -27,9 +27,9 @@
 
 #include "conduit/conduit_node.hpp"
 
-#include "utilities/conduit_data.hpp"
-#include "utilities/conduit_node_matcher.hpp"
-#include "utilities/conduit_schema.hpp"
+#include "contra/test_utilities/conduit_data.hpp"
+#include "contra/test_utilities/conduit_node_matcher.hpp"
+#include "contra/test_utilities/conduit_schema.hpp"
 
 namespace conduit {
 

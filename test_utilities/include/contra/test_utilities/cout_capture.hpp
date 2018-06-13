@@ -19,18 +19,47 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_TESTS_UTILITIES_TEST_DATA_HPP_
-#define CONTRA_TESTS_UTILITIES_TEST_DATA_HPP_
+#ifndef TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_COUT_CAPTURE_HPP_
+#define TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_COUT_CAPTURE_HPP_
 
-#include "contra/packet.hpp"
+#include <iostream>
+#include <sstream>
+#include <string>
+
+#include "contra_tests/suppress_warnings.hpp"
+SUPPRESS_WARNINGS_BEGIN
+#include "catch/catch.hpp"
+SUPPRESS_WARNINGS_END
 
 namespace test_utilities {
 
-static const contra::Packet ANY_PACKET{{"any string"}, {1, 2, 4, 3, 5, 6}};
-static const contra::Packet ANOTHER_PACKET{{"another string"},
-                                           {22, 23, 24, 26, 25}};
-static const contra::Packet THIRD_PACKET{{"third string"}, {36, 38, 37}};
+class CoutCapture {
+ public:
+  CoutCapture() { original_rdbuf_ = std::cout.rdbuf(cout_stream_.rdbuf()); }
+  ~CoutCapture() { std::cout.rdbuf(original_rdbuf_); }
+
+  bool operator==(const std::string &other) const {
+    return cout_stream_.str() == other;
+  }
+
+  std::string ToString() const { return "\"" + cout_stream_.str() + "\""; }
+
+ private:
+  std::streambuf *original_rdbuf_;
+  std::stringstream cout_stream_;
+};
 
 }  // namespace test_utilities
 
-#endif  // CONTRA_TESTS_UTILITIES_TEST_DATA_HPP_
+namespace Catch {
+
+template <>
+struct StringMaker<test_utilities::CoutCapture> {
+  static std::string convert(const test_utilities::CoutCapture &cout_capture) {
+    return cout_capture.ToString();
+  }
+};
+
+}  // namespace Catch
+
+#endif  // TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_COUT_CAPTURE_HPP_

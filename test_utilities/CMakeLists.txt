@@ -19,31 +19,25 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
-file(GLOB_RECURSE CONTRA_TEST_SOURCES *.cpp)
-file(GLOB_RECURSE CONTRA_TEST_HEADERS *.hpp)
+file(GLOB TESTING_SOURCES src/*.cpp)
+file(GLOB TESTING_HEADERS include/contra/test_utilities/*.hpp)
 
-rwthvr_add_executable(
-  NAME contra_tests
-  SOURCES ${CONTRA_TEST_SOURCES} 
-  HEADERS ${CONTRA_TEST_HEADERS}
-  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra_tests/suppress_warnings.hpp"
+rwthvr_add_library(NAME test_utilities
+  SOURCES ${TESTING_SOURCES}
+  HEADERS ${TESTING_HEADERS}
+  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra/test_utilities/suppress_warnings.hpp"
+  )
+generate_export_header(test_utilities
+  EXPORT_FILE_NAME
+  "${CMAKE_CURRENT_BINARY_DIR}/include/contra/test_utilities/export.hpp"
   )
   
-target_include_directories(contra_tests
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+target_include_directories(test_utilities
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
   )
-set(CONTRA_TEST_ARGUMENTS ""
-  CACHE STRING
-  "Arguments, e.g., tags, that are passed to contra_tests executable."
-  )
-add_test(NAME contra_tests
-  COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS}
-  )
-set_tests_properties(contra_tests PROPERTIES TIMEOUT 2.0)
 
-target_link_libraries(contra_tests
-  PRIVATE contra
-  PRIVATE test_utilities
-  PRIVATE ${CONAN_OR_CMAKE_catch}
+target_link_libraries(test_utilities
+  PUBLIC ${CONAN_OR_CMAKE_conduit}
+  PUBLIC ${CONAN_OR_CMAKE_catch}
   )

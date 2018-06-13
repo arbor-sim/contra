@@ -24,7 +24,7 @@ SUPPRESS_WARNINGS_BEGIN
 #include "catch/catch.hpp"
 SUPPRESS_WARNINGS_END
 #include "contra/contra.hpp"
-#include "utilities/cout_capture.hpp"
+#include "contra/test_utilities/cout_capture.hpp"
 
 SCENARIO("call Greet() and check output", "[contra]") {
   test_utilities::CoutCapture capture;

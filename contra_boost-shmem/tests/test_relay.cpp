@@ -23,6 +23,7 @@
 
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
+#include "contra_boost-shmem/shared_memory_transport.hpp"
 
 #include "contra/test_utilities/conduit_data.hpp"
 #include "contra/test_utilities/conduit_node_matcher.hpp"
@@ -37,7 +38,9 @@
   REQUIRE(received_nodes.size() == 1);                                       \
   REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
 
-SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
-  RELAY_TRANSPORT_TEST(contra::FileTransport, "relay_file_transport.contra",
-                       "relay_file_transport.contra");
+
+SCENARIO("Data gets transported via SharedMemoryTransport",
+         "[contra][contra::Relay]") {
+  RELAY_TRANSPORT_TEST(contra::SharedMemoryTransport, "contraTestRelay",
+                       "contraTestRelay");
 }

@@ -19,8 +19,8 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_TESTS_UTILITIES_CONDUIT_DATA_HPP_
-#define CONTRA_TESTS_UTILITIES_CONDUIT_DATA_HPP_
+#ifndef TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_DATA_HPP_
+#define TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_DATA_HPP_
 
 #include "conduit/conduit_node.hpp"
 
@@ -52,4 +52,4 @@ static const double ANY_VALUE{4.123};
 
 }  // namespace test_utilities
 
-#endif  // CONTRA_TESTS_UTILITIES_CONDUIT_DATA_HPP_
+#endif  // TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_DATA_HPP_

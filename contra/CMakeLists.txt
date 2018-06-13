@@ -38,7 +38,6 @@ target_include_directories(contra
   )
   
 target_link_libraries(contra
-  PUBLIC ${CONAN_OR_CMAKE_boost_interprocess}
   PUBLIC ${CONAN_OR_CMAKE_conduit}
   )
 

@@ -19,8 +19,8 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_INCLUDE_CONTRA_SHARED_MEMORY_TRANSPORT_HPP_
-#define CONTRA_INCLUDE_CONTRA_SHARED_MEMORY_TRANSPORT_HPP_
+#ifndef CONTRA_BOOST_SHMEM_INCLUDE_CONTRA_BOOST_SHMEM_SHARED_MEMORY_TRANSPORT_HPP_
+#define CONTRA_BOOST_SHMEM_INCLUDE_CONTRA_BOOST_SHMEM_SHARED_MEMORY_TRANSPORT_HPP_
 
 #include <string>
 #include <vector>
@@ -101,4 +101,4 @@ class SharedMemoryTransport {
 
 }  // namespace contra
 
-#endif  // CONTRA_INCLUDE_CONTRA_SHARED_MEMORY_TRANSPORT_HPP_
+#endif  // CONTRA_BOOST_SHMEM_INCLUDE_CONTRA_BOOST_SHMEM_SHARED_MEMORY_TRANSPORT_HPP_

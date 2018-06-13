@@ -24,6 +24,7 @@ add_executable(contra-shared-memory
   )
 target_link_libraries(contra-shared-memory
   contra
+  contra_boost-shmem
   )
 
 
