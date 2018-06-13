@@ -26,10 +26,10 @@
 
 #include "catch/catch.hpp"
 
-#include "contra/shared_memory_transport.hpp"
+#include "contra_boost-shmem/shared_memory_transport.hpp"
 
-#include "utilities/packet_matcher.hpp"
-#include "utilities/test_data.hpp"
+#include "contra/test_utilities/packet_matcher.hpp"
+#include "contra/test_utilities/test_data.hpp"
 
 namespace {
 

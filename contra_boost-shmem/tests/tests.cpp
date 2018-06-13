@@ -19,47 +19,8 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_TESTS_UTILITIES_COUT_CAPTURE_HPP_
-#define CONTRA_TESTS_UTILITIES_COUT_CAPTURE_HPP_
-
-#include <iostream>
-#include <sstream>
-#include <string>
-
-#include "contra_tests/suppress_warnings.hpp"
+#include "contra_boost-shmem_tests/suppress_warnings.hpp"
 SUPPRESS_WARNINGS_BEGIN
+#define CATCH_CONFIG_MAIN
 #include "catch/catch.hpp"
 SUPPRESS_WARNINGS_END
-
-namespace test_utilities {
-
-class CoutCapture {
- public:
-  CoutCapture() { original_rdbuf_ = std::cout.rdbuf(cout_stream_.rdbuf()); }
-  ~CoutCapture() { std::cout.rdbuf(original_rdbuf_); }
-
-  bool operator==(const std::string &other) const {
-    return cout_stream_.str() == other;
-  }
-
-  std::string ToString() const { return "\"" + cout_stream_.str() + "\""; }
-
- private:
-  std::streambuf *original_rdbuf_;
-  std::stringstream cout_stream_;
-};
-
-}  // namespace test_utilities
-
-namespace Catch {
-
-template <>
-struct StringMaker<test_utilities::CoutCapture> {
-  static std::string convert(const test_utilities::CoutCapture &cout_capture) {
-    return cout_capture.ToString();
-  }
-};
-
-}  // namespace Catch
-
-#endif  // CONTRA_TESTS_UTILITIES_COUT_CAPTURE_HPP_

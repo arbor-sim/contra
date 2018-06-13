@@ -28,7 +28,7 @@ class contra(ConanFile):
     license = "Apache License, Version 2.0"
     description = """Contra, a lightweight transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
-    exports_sources = "src/*"
+    exports_sources = "*"
     url = "https://devhub.vr.rwth-aachen.de/VR-Group/contra"
 
     requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
@@ -52,6 +52,11 @@ class contra(ConanFile):
         self.copy("*.so", dst="contra/tests", src="lib")
         self.copy("*.dylib", dst="contra/tests", src="lib")
         self.copy("*.dylib", dst="pycontra/pycontra", src="lib")
+
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure(source_folder = '.')
+        cmake.build()
 
     def package(self):
         self.copy("*.hpp", dst="include", src="contra/include")

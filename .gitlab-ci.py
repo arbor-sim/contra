@@ -5,11 +5,11 @@ import sys
 import subprocess
 
 valid_stages = ['conan', 'cmake', 'build', 'test', 'deliver']
-valid_os = ['Windows', 'Linux', 'OSX']
+valid_os = ['Windows', 'Linux', 'macOS']
 valid_compilers = {
     'Windows': ['Visual Studio'],
     'Linux': ['gcc'],
-    'OSX': ['apple-clang', 'gcc']
+    'macOS': ['apple-clang', 'gcc']
 }
 valid_channels = ['develop', 'stable']
 
@@ -70,20 +70,31 @@ def main(argv):
               (operating_system, ', '.join(valid_compilers[operating_system])))
         sys.exit(-1)
 
+
     if operating_system == 'Windows':
         path_list = os.environ['PATH'].split(';')
         path_list.insert(0, 'C:\\Python27_64\\')
         path_list.insert(1, 'C:\\Python27_64\\Scripts')
         os.environ['PATH'] = ';'.join(path_list)
         print(os.environ['PATH'])
+    elif operating_system == 'Linux':
+        os.environ['CC'] = 'gcc'
+        os.environ['CXX'] = 'g++'
+    elif operating_system == 'macOS' and compiler == 'gcc':
+        if compiler_version == '5':
+            os.environ['CC'] = 'gcc-5'
+            os.environ['CXX'] = 'g++-5'
+        elif compiler_version == '6':
+            os.environ['CC'] = 'gcc-6'
+            os.environ['CXX'] = 'g++-6'
+        elif compiler_version == '7':
+            os.environ['CC'] = 'gcc-7'
+            os.environ['CXX'] = 'g++-7'
 
     if stage == 'conan':
         execute('conan', ['remove', 'conduit*', '-f'])
         execute('mkdir', ['build'])
         os.chdir('build')
-        if operating_system == 'Linux':
-            os.environ['CC'] = 'gcc'
-            os.environ['CXX'] = 'g++'
 
         execute('conan',
                 ['remote', 'update', 'rwth-vr--bintray',
@@ -95,6 +106,7 @@ def main(argv):
         conan_install_flags.extend(get_conan_flags(compiler, compiler_version))
         conan_install_flags.append('..')
         execute('conan', conan_install_flags)
+
 
     elif stage == 'cmake':
         os.chdir('build')
@@ -118,6 +130,7 @@ def main(argv):
         if compiler == 'Visual Studio':
             cmake_flags.extend(['-G', 'Visual Studio %s %s Win64' %
                                 (compiler_version, visual_studio_version_year_map[compiler_version])])
+
         else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
 
@@ -134,7 +147,7 @@ def main(argv):
 
     elif stage == 'test':
         os.chdir('build')
-        if operating_system == 'OSX':
+        if operating_system == 'macOS':
             os.environ['CTEST_OUTPUT_ON_FAILURE'] = '1'
         execute('ctest', ['-C', 'Release', '-V'])
 
@@ -160,6 +173,7 @@ def main(argv):
         conan_upload_flags = ['upload', 'conan/%s@RWTH-VR/%s' % (version, channel),
                               '--all', '--force', '-r=rwth-vr--bintray']
         execute('conan', conan_upload_flags)
+
 
 
 if (__name__ == '__main__'):

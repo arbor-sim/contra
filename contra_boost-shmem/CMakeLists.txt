@@ -19,31 +19,32 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
-file(GLOB_RECURSE CONTRA_TEST_SOURCES *.cpp)
-file(GLOB_RECURSE CONTRA_TEST_HEADERS *.hpp)
+file(GLOB CONTRA_SOURCES src/*.cpp)
+file(GLOB CONTRA_HEADERS include/contra_boost-shmem/*.hpp)
 
-rwthvr_add_executable(
-  NAME contra_tests
-  SOURCES ${CONTRA_TEST_SOURCES} 
-  HEADERS ${CONTRA_TEST_HEADERS}
-  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra_tests/suppress_warnings.hpp"
+rwthvr_add_library(NAME contra_boost-shmem
+  SOURCES ${CONTRA_SOURCES}
+  HEADERS ${CONTRA_HEADERS}
+  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra_boost-shmem/suppress_warnings.hpp"
+  )
+generate_export_header(contra_boost-shmem
+  EXPORT_FILE_NAME
+  "${CMAKE_CURRENT_BINARY_DIR}/include/contra_boost-shmem/export.hpp"
   )
   
-target_include_directories(contra_tests
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+target_include_directories(contra_boost-shmem
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
   )
-set(CONTRA_TESTS_ARGUMENTS ""
-  CACHE STRING
-  "Arguments, e.g., tags, that are passed to contra_tests executable."
+  
+target_link_libraries(contra_boost-shmem
+  PUBLIC contra
+  PUBLIC ${CONAN_OR_CMAKE_boost_interprocess}
+  PUBLIC ${CONAN_OR_CMAKE_conduit}
   )
-add_test(NAME contra_tests
-  COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS}
-  )
-set_tests_properties(contra_tests PROPERTIES TIMEOUT 2.0)
 
-target_link_libraries(contra_tests
-  PRIVATE contra
-  PRIVATE test_utilities
-  PRIVATE ${CONAN_OR_CMAKE_catch}
+target_compile_options(contra_boost-shmem
+  PRIVATE -fPIC
   )
+
+add_subdirectory(tests)
