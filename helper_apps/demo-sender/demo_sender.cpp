@@ -22,7 +22,7 @@
 #include <string>
 
 #include "contra/relay.hpp"
-#include "contra/shared_memory_transport.hpp"
+#include "contra_boost-shmem/shared_memory_transport.hpp"
 
 int main() {
   conduit::Node n;

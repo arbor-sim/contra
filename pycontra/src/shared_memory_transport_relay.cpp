@@ -22,9 +22,9 @@
 #include <string>
 
 #include "contra/relay.hpp"
-#include "contra/shared_memory_transport.hpp"
-#include "pycontra/suppress_warnings.hpp"
+#include "contra_boost-shmem/shared_memory_transport.hpp"
 #include "pycontra.hpp"
+#include "pycontra/suppress_warnings.hpp"
 
 namespace pycontra {
 

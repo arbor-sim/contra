@@ -24,6 +24,7 @@ add_executable(contra-demo-sender
   )
 target_link_libraries(contra-demo-sender
   contra
+  contra_boost-shmem
   )
 
 
