@@ -42,6 +42,10 @@ class contra(ConanFile):
     def configure(self):
         self.options["boost"].header_only = False
         self.options["boost_python"].python_version = 2.7
+        if (self.settings.os == "Windows"):
+            self.options["boost_python"].shared = False
+        else:
+            self.options["boost_python"].shared = True
         self.options["conduit"].shared = False
 
     def imports(self):
@@ -55,7 +59,7 @@ class contra(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(source_folder = '.')
+        cmake.configure(source_folder='.')
         cmake.build()
 
     def package(self):
