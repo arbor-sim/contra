@@ -21,8 +21,8 @@
 
 #include <string>
 #include <thread>
+#include "contra/boost-shmem/shared_memory_transport.hpp"
 #include "contra/relay.hpp"
-#include "contra_boost-shmem/shared_memory_transport.hpp"
 
 int main() {
   contra::Relay<contra::SharedMemoryTransport> relay;

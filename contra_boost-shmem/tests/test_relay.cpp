@@ -23,7 +23,7 @@
 
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
-#include "contra_boost-shmem/shared_memory_transport.hpp"
+#include "contra/boost-shmem/shared_memory_transport.hpp"
 
 #include "contra/test_utilities/conduit_data.hpp"
 #include "contra/test_utilities/conduit_node_matcher.hpp"

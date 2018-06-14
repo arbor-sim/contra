@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include "contra_boost-shmem/shared_memory_transport.hpp"
+#include "contra/boost-shmem/shared_memory_transport.hpp"
 
 void Destroy() {
   contra::SharedMemoryTransport access;
