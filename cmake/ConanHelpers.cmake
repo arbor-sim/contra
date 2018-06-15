@@ -28,7 +28,7 @@ conan_cmake_run(CONANFILE conanfile.py
 
 find_file(CONAN_COMMAND
   NAMES conan conan.exe
-  PATHS $ENV{PATH} $ENV{CONAN_DIR}
+  PATHS ENV PATH ENV CONAN_DIR
 )
 if(CONAN_COMMAND)
   option(USE_CONAN "Use conan for dependency managment." ON)
