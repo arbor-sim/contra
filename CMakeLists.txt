@@ -19,7 +19,7 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
-cmake_minimum_required(VERSION 3.8.2)
+cmake_minimum_required(VERSION 3.6.0)
 
 project(contra)
 
