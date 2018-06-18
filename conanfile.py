@@ -1,9 +1,9 @@
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # contra -- a lightweigth transport library for conduit data
 #
 # Copyright (c) 2018 RWTH Aachen University, Germany,
 # Virtual Reality & Immersive Visualization Group.
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 #                                  License
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,9 +17,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 
 from conans import ConanFile, CMake
+
 
 class contra(ConanFile):
     name = "contra"
@@ -31,28 +32,28 @@ class contra(ConanFile):
     url = "https://devhub.vr.rwth-aachen.de/VR-Group/contra"
 
     requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
-                 ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
-                 ("cppcheck/1.82@RWTH-VR/thirdparty"),
-                 ("conduit/0.3.1@RWTH-VR/thirdparty"),
-                 ("boost_interprocess/1.66.0@bincrafters/testing"))
+                ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
+                ("cppcheck/1.82@RWTH-VR/thirdparty"),
+                ("conduit/0.3.1@RWTH-VR/thirdparty"),
+                ("boost_interprocess/1.66.0@bincrafters/testing"))
     generators = "cmake"
 
     def configure(self):
-        self.options["boost"].header_only = True
+        self.options["boost"].header_only = False
         self.options["boost_python"].python_version = 2.7
         if (self.settings.os == "Windows"):
             self.options["conduit"].shared = False
 
     def imports(self):
-       self.copy("*.dll", dst="contra/tests/Debug", src="bin")
-       self.copy("*.dll", dst="contra/tests/Release", src="bin")
-       self.copy("*.dll", dst="contra/tests", src="bin")
-       self.copy("*.so", dst="contra/tests", src="lib")
-       self.copy("*.dylib", dst="contra/tests", src="lib")
+        self.copy("*.dll", dst="contra/tests/Debug", src="bin")
+        self.copy("*.dll", dst="contra/tests/Release", src="bin")
+        self.copy("*.dll", dst="contra/tests", src="bin")
+        self.copy("*.so", dst="contra/tests", src="lib")
+        self.copy("*.dylib", dst="contra/tests", src="lib")
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(source_folder = '.')
+        cmake.configure(source_folder='.')
         cmake.build()
 
     def package(self):
