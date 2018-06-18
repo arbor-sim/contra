@@ -64,6 +64,7 @@ class contra(ConanFile):
 
     def package(self):
         self.copy("*.hpp", dst="include", src="contra/include")
+        self.copy("*.hpp", dst="include", src="contra_boost-shmem/include")
         self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so*", dst="lib", keep_path=False)
