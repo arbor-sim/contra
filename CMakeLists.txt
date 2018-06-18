@@ -19,7 +19,7 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
-cmake_minimum_required(VERSION 3.8.2)
+cmake_minimum_required(VERSION 3.6.0)
 
 project(contra)
 
@@ -55,7 +55,10 @@ include(cppcheck)
 conan_or_find_package(boost_interprocess REQUIRED)
 
 add_subdirectory(contra)
+add_subdirectory(contra_boost-shmem)
 add_subdirectory(helper_apps)
+add_subdirectory(test_utilities)
+
 
 get_property(ALL_SOURCES GLOBAL PROPERTY RWTHVR_ALL_SOURCES)
 get_property(ALL_HEADERS GLOBAL PROPERTY RWTHVR_ALL_HEADERS)
