@@ -45,60 +45,60 @@ stages:
 #  Windows
 #-------------------------------------------------------------------------------
 
-# conan:windows:msvc++14.1:
-#   stage: conan
-#   tags:
-#     - msvc++14.1
-#     - opengl
-#   script:
-#     - python .gitlab-ci.py conan Windows "Visual Studio" 15
-#   <<: *artifacts_definition
+conan:windows:msvc++14.1:
+  stage: conan
+  tags:
+    - msvc++14.1
+    - opengl
+  script:
+    - python .gitlab-ci.py conan Windows "Visual Studio" 15
+  <<: *artifacts_definition
     
-# cmake:windows:msvc++14.1:
-#   stage: cmake
-#   tags:
-#     - msvc++14.1
-#     - opengl
-#   dependencies:
-#     - conan:windows:msvc++14.1
-#   script:
-#     - python .gitlab-ci.py cmake Windows "Visual Studio" 15
-#   <<: *artifacts_definition
+cmake:windows:msvc++14.1:
+  stage: cmake
+  tags:
+    - msvc++14.1
+    - opengl
+  dependencies:
+    - conan:windows:msvc++14.1
+  script:
+    - python .gitlab-ci.py cmake Windows "Visual Studio" 15
+  <<: *artifacts_definition
 
-# build:windows:msvc++14.1:
-#   stage: build
-#   tags:
-#     - msvc++14.1
-#     - opengl
-#   dependencies:
-#     - cmake:windows:msvc++14.1
-#   script:
-#     - python .gitlab-ci.py build Windows "Visual Studio" 15
-#   <<: *artifacts_definition
+build:windows:msvc++14.1:
+  stage: build
+  tags:
+    - msvc++14.1
+    - opengl
+  dependencies:
+    - cmake:windows:msvc++14.1
+  script:
+    - python .gitlab-ci.py build Windows "Visual Studio" 15
+  <<: *artifacts_definition
 
-# test:windows:msvc++14.1:
-#   stage: test
-#   tags:
-#     - msvc++14.1
-#     - opengl
-#   dependencies:
-#     - build:windows:msvc++14.1
-#   script:
-#     - python .gitlab-ci.py test Windows "Visual Studio" 15
-#   <<: *artifacts_definition
+test:windows:msvc++14.1:
+  stage: test
+  tags:
+    - msvc++14.1
+    - opengl
+  dependencies:
+    - build:windows:msvc++14.1
+  script:
+    - python .gitlab-ci.py test Windows "Visual Studio" 15
+  <<: *artifacts_definition
 
-# deliver:windows:msvc++14.1:
-#   stage: deliver
-#   tags:
-#     - msvc++14.1
-#     - opengl
-#   dependencies:
-#     - test:windows:msvc++14.1
-#   script:
-#     - python .gitlab-ci.py deliver Windows "Visual Studio" 15
-#   <<: *artifacts_definition
-#   only:
-#     *delivery_branches
+deliver:windows:msvc++14.1:
+  stage: deliver
+  tags:
+    - msvc++14.1
+    - opengl
+  dependencies:
+    - test:windows:msvc++14.1
+  script:
+    - python .gitlab-ci.py deliver Windows "Visual Studio" 15
+  <<: *artifacts_definition
+  only:
+    *delivery_branches
 
 #-------------------------------------------------------------------------------
 #  Linux
