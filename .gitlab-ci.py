@@ -39,7 +39,7 @@ def get_conan_flags(compiler, compiler_version):
     if compiler == 'Visual Studio':
         conan_flags.extend(['-s', 'compiler.runtime=MT'])
     elif compiler == 'gcc':
-        conan_flags.extend(['-s', 'compiler.libcxx=libstdc++11'])
+        conan_flags.extend(['-s', 'compiler.libcxx=libstdc++'])
     elif compiler == 'apple-clang':
         conan_flags.extend(['-s', 'compiler.libcxx=libc++'])
 
