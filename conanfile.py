@@ -41,6 +41,7 @@ class contra(ConanFile):
 
     def configure(self):
         self.options["boost"].header_only = False
+        self.options["boost"].shared = True
         self.options["boost_python"].python_version = 2.7
         if (self.settings.os == "Windows"):
             self.options["boost_python"].shared = False
