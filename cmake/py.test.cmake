@@ -28,7 +28,7 @@ if(NOT PYTHON_EXECUTABLE)
 endif()
 
 find_program(PY_TEST_COMMAND py.test pytest pytest.py py.test.py
-  PATHS $ENV{PATH} $ENV{PY_TEST_DIR}
+  PATHS ENV PATH ENV PY_TEST_DIR
 )
 if(NOT PY_TEST_COMMAND)
   message(SEND_ERROR
