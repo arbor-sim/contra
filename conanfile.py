@@ -72,4 +72,4 @@ class contra(ConanFile):
         self.copy("*.dylib", dst="lib", keep_path=False, symlinks=True)
 
     def package_info(self):
-        self.cpp_info.libs = ["contra"]
+        self.cpp_info.libs = ["contra", "contra_boost-shmem"]
