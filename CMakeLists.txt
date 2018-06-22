@@ -25,6 +25,7 @@ project(contra)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_SKIP_RPATH OFF)
 
 if (MSVC)
   foreach(flag_var
