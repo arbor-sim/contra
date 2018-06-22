@@ -61,6 +61,8 @@ include(python_module)
 conan_or_find_package(boost_interprocess REQUIRED)
 conan_or_find_package(boost_python REQUIRED)
 
+set(CMAKE_SKIP_RPATH OFF)
+
 add_subdirectory(contra)
 add_subdirectory(contra_boost-shmem)
 add_subdirectory(helper_apps)
