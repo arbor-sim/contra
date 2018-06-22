@@ -55,8 +55,10 @@ class contra(ConanFile):
         self.copy("*.dll", dst="contra/tests", src="bin")
         self.copy("*.dll", dst="pycontra/pycontra", src="bin")
         self.copy("*.so", dst="contra/tests", src="lib")
-        self.copy("*.dylib", dst="contra/tests", src="lib")
-        self.copy("*.dylib", dst="pycontra/pycontra", src="lib")
+        self.copy("*.dylib", dst="contra/tests",
+                  keep_path=False)
+        self.copy("*.dylib", dst="pycontra/pycontra",
+                  keep_path=False)
 
     def build(self):
         cmake = CMake(self)
