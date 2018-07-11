@@ -159,16 +159,16 @@ def main(argv):
         conan_flags = get_conan_flags(compiler, compiler_version)
 
         conan_export_flags = ['export-pkg', '.',
-                              'conan/%s@RWTH-VR/%s' % (version, channel), '-f']
+                              'contra/%s@RWTH-VR/%s' % (version, channel), '-f']
         conan_export_flags.extend(conan_flags)
         execute('conan', conan_export_flags)
 
-        conan_test_flags = ['test', './test_package', 'conan/%s@RWTH-VR/%s' %
+        conan_test_flags = ['test', './test_package', 'contra/%s@RWTH-VR/%s' %
                             (version, channel)]
         conan_test_flags.extend(conan_flags)
         execute('conan', conan_test_flags)
 
-        conan_upload_flags = ['upload', 'conan/%s@RWTH-VR/%s' % (version, channel),
+        conan_upload_flags = ['upload', 'contra/%s@RWTH-VR/%s' % (version, channel),
                               '--all', '--force', '-r=rwth-vr--bintray']
         execute('conan', conan_upload_flags)
 
