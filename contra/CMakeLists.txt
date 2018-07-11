@@ -27,6 +27,12 @@ rwthvr_add_library(NAME contra
   HEADERS ${CONTRA_HEADERS}
   SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra/suppress_warnings.hpp"
   )
+
+if (CMAKE_C_COMPILER_ID MATCHES "GNU" AND
+    CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  target_compile_options(contra PRIVATE "-fPIC")
+endif ()
+
 generate_export_header(contra
   EXPORT_FILE_NAME
   "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp"

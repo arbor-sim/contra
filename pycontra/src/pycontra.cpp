@@ -19,28 +19,38 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#include "catch/catch.hpp"
+#include "pycontra.hpp"
 
+#include "contra/contra.hpp"
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
 #include "contra/boost-shmem/shared_memory_transport.hpp"
+#include "pycontra/suppress_warnings.hpp"
 
-#include "contra/test_utilities/conduit_data.hpp"
-#include "contra/test_utilities/conduit_node_matcher.hpp"
+namespace pycontra {
 
-#define RELAY_TRANSPORT_TEST(transport_type, sender_params, receiver_params) \
-  contra::Relay<transport_type> sender{sender_params};                       \
-  contra::Relay<transport_type> receiver{receiver_params};                   \
-                                                                             \
-  sender.Send(test_utilities::ANY_NODE);                                     \
-  const auto received_nodes = receiver.Receive();                            \
-                                                                             \
-  REQUIRE(received_nodes.size() == 1);                                       \
-  REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
-
-
-SCENARIO("Data gets transported via SharedMemoryTransport",
-         "[contra][contra::Relay]") {
-  RELAY_TRANSPORT_TEST(contra::SharedMemoryTransport, "contraTestRelay",
-                       "contraTestRelay");
+SUPPRESS_WARNINGS_BEGIN
+conduit::Node AnyNode() {
+  conduit::Node node;
+  node["A/B/C"] = 3.1415;
+  node["A/B/D"] = 4.124;
+  node["A/E"] = 42.0;
+  return node;
 }
+SUPPRESS_WARNINGS_END
+
+extern template void expose<contra::Relay<contra::FileTransport>>();
+extern template void expose<contra::Relay<contra::SharedMemoryTransport>>();
+
+SUPPRESS_WARNINGS_BEGIN
+// cppcheck-suppress unusedFunction
+BOOST_PYTHON_MODULE(_pycontra) {
+  def("Greet", contra::Greet);
+  expose<contra::Relay<contra::FileTransport>>();
+  expose<contra::Relay<contra::SharedMemoryTransport>>();
+  def("AnyNode", &AnyNode);
+  class_<conduit::Node>("Node").def("Update", &conduit::Node::update);
+}
+SUPPRESS_WARNINGS_END
+
+}  // namespace pycontra

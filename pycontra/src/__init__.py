@@ -2,7 +2,7 @@
 # contra -- a lightweigth transport library for conduit data
 #
 # Copyright (c) 2018 RWTH Aachen University, Germany,
-# Virtual Reality & Immersive Visualization Group.
+# Virtual Reality & Immersive Visualisation Group.
 #-------------------------------------------------------------------------------
 #                                  License
 #
@@ -19,31 +19,5 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
-file(GLOB_RECURSE CONTRA_TEST_SOURCES *.cpp)
-file(GLOB_RECURSE CONTRA_TEST_HEADERS *.hpp)
+from _pycontra import *
 
-rwthvr_add_executable(
-  NAME contra_tests
-  SOURCES ${CONTRA_TEST_SOURCES} 
-  HEADERS ${CONTRA_TEST_HEADERS}
-  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra_tests/suppress_warnings.hpp"
-  )
-  
-target_include_directories(contra_tests
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
-  PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
-  )
-set(CONTRA_TESTS_ARGUMENTS ""
-  CACHE STRING
-  "Arguments, e.g., tags, that are passed to contra_tests executable."
-  )
-add_test(NAME contra_tests
-  COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS}
-  )
-set_tests_properties(contra_tests PROPERTIES TIMEOUT 2.0)
-
-target_link_libraries(contra_tests
-  PRIVATE contra
-  PRIVATE test_utilities
-  PRIVATE ${CONAN_OR_CMAKE_catch}
-  )

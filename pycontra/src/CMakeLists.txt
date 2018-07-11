@@ -19,31 +19,22 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
-file(GLOB_RECURSE CONTRA_TEST_SOURCES *.cpp)
-file(GLOB_RECURSE CONTRA_TEST_HEADERS *.hpp)
+file(GLOB SOURCES *.cpp)
+file(GLOB HEADERS *.hpp)
+file(GLOB PYTHON_SOURCES *.py)
 
-rwthvr_add_executable(
-  NAME contra_tests
-  SOURCES ${CONTRA_TEST_SOURCES} 
-  HEADERS ${CONTRA_TEST_HEADERS}
-  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra_tests/suppress_warnings.hpp"
+set(PYCONTRA_OUTPUT_DIR
+  ${CMAKE_CURRENT_BINARY_DIR}/../pycontra
+  CACHE PATH "Output path for pycontra python module"
   )
-  
-target_include_directories(contra_tests
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
-  PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
-  )
-set(CONTRA_TESTS_ARGUMENTS ""
-  CACHE STRING
-  "Arguments, e.g., tags, that are passed to contra_tests executable."
-  )
-add_test(NAME contra_tests
-  COMMAND contra_tests ${CONTRA_TESTS_ARGUMENTS}
-  )
-set_tests_properties(contra_tests PROPERTIES TIMEOUT 2.0)
 
-target_link_libraries(contra_tests
-  PRIVATE contra
-  PRIVATE test_utilities
-  PRIVATE ${CONAN_OR_CMAKE_catch}
+add_python_module(
+  NAME _pycontra
+  SOURCES ${SOURCES}
+  HEADERS ${HEADERS}
+  PYTHON_SOURCES ${PYTHON_SOURCES}
+  INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
+  LINK_LIBRARIES contra contra_boost-shmem
+    ${CONAN_OR_CMAKE_boost_python}
+  OUTPUT_DIRECTORY ${PYCONTRA_OUTPUT_DIR}
   )

@@ -19,12 +19,20 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
-#define CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
+#include <string>
+#include <thread>
+#include "contra/boost-shmem/shared_memory_transport.hpp"
+#include "contra/relay.hpp"
 
-namespace contra {
+int main() {
+  contra::Relay<contra::SharedMemoryTransport> relay;
+  std::vector<conduit::Node> data;
+  do {
+    data = relay.Receive();
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+  } while (data.size() == 0);
 
-char const* Greet();
+  std::cout << data[0]["foo/bar"].to_double();
+
+  return EXIT_SUCCESS;
 }
-
-#endif  // CONTRA_INCLUDE_CONTRA_CONTRA_HPP_

@@ -25,6 +25,6 @@
 
 namespace contra {
 
-void Greet() { std::cout << "Hello World!"; }
+char const* Greet() { return "G'day!"; }
 
 }  // namespace contra

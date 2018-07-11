@@ -25,11 +25,11 @@ file(GLOB CONTRA_HEADERS include/contra_boost-shmem/*.hpp)
 rwthvr_add_library(NAME contra_boost-shmem
   SOURCES ${CONTRA_SOURCES}
   HEADERS ${CONTRA_HEADERS}
-  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra_boost-shmem/suppress_warnings.hpp"
+  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra/boost-shmem/suppress_warnings.hpp"
   )
 generate_export_header(contra_boost-shmem
   EXPORT_FILE_NAME
-  "${CMAKE_CURRENT_BINARY_DIR}/include/contra_boost-shmem/export.hpp"
+  "${CMAKE_CURRENT_BINARY_DIR}/include/contra/boost-shmem/export.hpp"
   )
   
 target_include_directories(contra_boost-shmem

@@ -19,6 +19,13 @@
 # limitations under the License.
 #------------------------------------------------------------------------------
 
-add_subdirectory(release-shared-memory)
-add_subdirectory(demo-sender)
-add_subdirectory(demo-receiver)
+add_executable(contra-demo-sender
+  demo_sender.cpp
+  )
+target_link_libraries(contra-demo-sender
+  contra
+  contra_boost-shmem
+  )
+
+
+

@@ -2,9 +2,9 @@
 // contra -- a lightweigth transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
-// Virtual Reality & Immersive Visualization Group.
+// Virtual Reality & Immersive Visualisation Group.
 //------------------------------------------------------------------------------
-//                                  License
+//                                 License
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +19,32 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
-#define CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
+#include <string>
 
-namespace contra {
+#include "contra/boost-shmem/shared_memory_transport.hpp"
+#include "contra/relay.hpp"
+#include "pycontra.hpp"
+#include "pycontra/suppress_warnings.hpp"
 
-char const* Greet();
+namespace pycontra {
+
+SUPPRESS_WARNINGS_BEGIN
+boost::python::list SharedMemoryTransportRelayReceive(
+    contra::Relay<contra::SharedMemoryTransport>* relay) {
+  boost::python::list ret_val;
+  for (const auto& node : relay->Receive()) {
+    ret_val.append(node);
+  }
+  return ret_val;
+}
+SUPPRESS_WARNINGS_END
+
+template <>
+void expose<contra::Relay<contra::SharedMemoryTransport>>() {
+  class_<contra::Relay<contra::SharedMemoryTransport>, boost::noncopyable>(
+      "SharedMemoryTransportRelay")
+      .def("Send", &contra::Relay<contra::SharedMemoryTransport>::Send)
+      .def("Receive", &SharedMemoryTransportRelayReceive);
 }
 
-#endif  // CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
+}  // namespace pycontra

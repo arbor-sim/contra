@@ -52,11 +52,19 @@ include(cpplint)
 conan_or_find_package(cppcheck REQUIRED)
 include(cppcheck)
 
+find_package(PythonInterp REQUIRED)
+find_package(PythonLibs REQUIRED)
+
+include(py.test)
+include(python_module)
+
 conan_or_find_package(boost_interprocess REQUIRED)
+conan_or_find_package(boost_python REQUIRED)
 
 add_subdirectory(contra)
 add_subdirectory(contra_boost-shmem)
 add_subdirectory(helper_apps)
+add_subdirectory(pycontra)
 add_subdirectory(test_utilities)
 
 

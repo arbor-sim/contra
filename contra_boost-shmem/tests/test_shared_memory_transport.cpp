@@ -26,7 +26,7 @@
 
 #include "catch/catch.hpp"
 
-#include "contra_boost-shmem/shared_memory_transport.hpp"
+#include "contra/boost-shmem/shared_memory_transport.hpp"
 
 #include "contra/test_utilities/packet_matcher.hpp"
 #include "contra/test_utilities/test_data.hpp"
@@ -39,6 +39,8 @@ const std::vector<contra::Packet> NONEMPTY_PACKET_LIST{contra::Packet()};
 
 SCENARIO("Packet shared memory creation",
          "[contra][contra::SharedMemoryTransport]") {
+  contra::SharedMemoryTransport::Destroy();
+
   GIVEN("A shared memory segment") {
     contra::SharedMemoryTransport segment;
 
@@ -61,6 +63,8 @@ SCENARIO("Packet shared memory creation",
 
 SCENARIO("Packet shared memory access",
          "[contra][contra::SharedMemoryTransport]") {
+  contra::SharedMemoryTransport::Destroy();
+
   GIVEN("A shared memory segment") {
     contra::SharedMemoryTransport segment_create;
 
@@ -72,6 +76,8 @@ SCENARIO("Packet shared memory access",
 
 SCENARIO("Data gets transported through shared memory",
          "[contra][contra::SharedMemoryTransport]") {
+  contra::SharedMemoryTransport::Destroy();
+
   GIVEN("A shared memory segment and access") {
     contra::SharedMemoryTransport segment_create;
     contra::SharedMemoryTransport segment_access;
@@ -141,6 +147,8 @@ constexpr bool we_reach_this_before_timeout = true;
 
 SCENARIO("Synchronization across separate threads does not accidently block",
          "[niv][niv::RelaySharedMemory]") {
+  contra::SharedMemoryTransport::Destroy();
+
   GIVEN("a pair of shared memory transports") {
     contra::SharedMemoryTransport segment_create;
     contra::SharedMemoryTransport segment_access;

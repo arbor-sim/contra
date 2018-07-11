@@ -19,7 +19,7 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#include "contra_boost-shmem/shared_memory_transport.hpp"
+#include "contra/boost-shmem/shared_memory_transport.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -30,6 +30,7 @@
 namespace boost {
 namespace interprocess {
 namespace ipcdetail {
+// cppcheck-suppress unusedFunction
 inline void get_shared_dir(
     std::string& shared_dir) {  // NOLINT runtime/references
   shared_dir = ".";
@@ -58,7 +59,7 @@ SharedMemoryTransport::FindOrConstructPacketStorage() {
       segment_.find<PacketStorage>(PacketStorageName()).first;
   if (storage == nullptr) {
     storage = segment_.construct<PacketStorage>(PacketStorageName())(
-        Allocator(segment_.get_segment_manager()));
+        PacketAllocator(segment_.get_segment_manager()));
   }
   return storage;
 }
@@ -84,13 +85,26 @@ std::size_t SharedMemoryTransport::GetFreeSize() const {
 
 void SharedMemoryTransport::Send(const Packet& packet) {
   ScopedLock lock(mutex_);
-  packet_storage_->push_back(packet);
-}
+
+  InternalPacket internal_packet{
+      {packet.schema.begin(), packet.schema.end(),
+       SchemaAllocator{segment_.get_segment_manager()}},
+      {packet.data.begin(), packet.data.end(),
+       DataAllocator{segment_.get_segment_manager()}}};
+
+  packet_storage_->push_back(internal_packet);
+}  // namespace contra
 
 std::vector<Packet> SharedMemoryTransport::Receive() {
   ScopedLock lock(mutex_);
-  std::vector<Packet> received_packets{packet_storage_->begin(),
-                                       packet_storage_->end()};
+  std::vector<Packet> received_packets;
+  received_packets.reserve(packet_storage_->size());
+
+  for (const auto& internal_packet : *packet_storage_) {
+    received_packets.push_back(
+        {{internal_packet.schema.begin(), internal_packet.schema.end()},
+         {internal_packet.data.begin(), internal_packet.data.end()}});
+  }
   packet_storage_->clear();
   return received_packets;
 }

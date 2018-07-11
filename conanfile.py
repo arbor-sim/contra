@@ -35,21 +35,28 @@ class contra(ConanFile):
                 ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
                 ("cppcheck/1.82@RWTH-VR/thirdparty"),
                 ("conduit/0.3.1@RWTH-VR/thirdparty"),
-                ("boost_interprocess/1.66.0@bincrafters/testing"))
+                ("boost_interprocess/1.66.0@bincrafters/testing"),
+                ("boost_python/1.66.0@bincrafters/testing"))
     generators = "cmake"
 
     def configure(self):
         self.options["boost"].header_only = False
+        self.options["boost"].shared = True
         self.options["boost_python"].python_version = 2.7
         if (self.settings.os == "Windows"):
-            self.options["conduit"].shared = False
+            self.options["boost_python"].shared = False
+        else:
+            self.options["boost_python"].shared = True
+        self.options["conduit"].shared = False
 
     def imports(self):
         self.copy("*.dll", dst="contra/tests/Debug", src="bin")
         self.copy("*.dll", dst="contra/tests/Release", src="bin")
         self.copy("*.dll", dst="contra/tests", src="bin")
+        self.copy("*.dll", dst="pycontra/pycontra", src="bin")
         self.copy("*.so", dst="contra/tests", src="lib")
         self.copy("*.dylib", dst="contra/tests", src="lib")
+        self.copy("*.dylib", dst="pycontra/pycontra", src="lib")
 
     def build(self):
         cmake = CMake(self)
@@ -66,4 +73,4 @@ class contra(ConanFile):
         self.copy("*.dylib", dst="lib", keep_path=False, symlinks=True)
 
     def package_info(self):
-        self.cpp_info.libs = ["contra"]
+        self.cpp_info.libs = ["contra", "contra_boost-shmem"]

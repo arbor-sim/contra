@@ -19,15 +19,15 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
+#include <string>
+
 #include "contra_tests/suppress_warnings.hpp"
 SUPPRESS_WARNINGS_BEGIN
 #include "catch/catch.hpp"
 SUPPRESS_WARNINGS_END
 #include "contra/contra.hpp"
-#include "contra/test_utilities/cout_capture.hpp"
 
 SCENARIO("call Greet() and check output", "[contra]") {
-  test_utilities::CoutCapture capture;
-  contra::Greet();
-  REQUIRE(capture.ToString() == "\"Hello World!\"");
+  std::string hello{contra::Greet()};
+  REQUIRE(hello == "G'day!");
 }

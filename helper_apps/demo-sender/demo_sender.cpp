@@ -19,12 +19,17 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
-#define CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
+#include <string>
 
-namespace contra {
+#include "contra/boost-shmem/shared_memory_transport.hpp"
+#include "contra/relay.hpp"
 
-char const* Greet();
+int main() {
+  conduit::Node n;
+  n["foo/bar"] = 3.14;
+  contra::Relay<contra::SharedMemoryTransport> relay;
+  for (int i = 0; i < 5; ++i) {
+    relay.Send(n);
+  }
+  return EXIT_SUCCESS;
 }
-
-#endif  // CONTRA_INCLUDE_CONTRA_CONTRA_HPP_

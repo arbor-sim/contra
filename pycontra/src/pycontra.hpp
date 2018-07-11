@@ -2,9 +2,9 @@
 // contra -- a lightweigth transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
-// Virtual Reality & Immersive Visualization Group.
+// Virtual Reality & Immersive Visualisation Group.
 //------------------------------------------------------------------------------
-//                                  License
+//                                 License
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +19,34 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
-#define CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
+#ifndef PYCONTRA_SRC_PYCONTRA_HPP_
+#define PYCONTRA_SRC_PYCONTRA_HPP_
 
-namespace contra {
+#include "pycontra/suppress_warnings.hpp"
+SUPPRESS_WARNINGS_BEGIN
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#if __GNUC__ >= 7
+#pragma GCC diagnostic ignored "-Wregister"
+#endif
+#include "boost/python.hpp"
+SUPPRESS_WARNINGS_END
 
-char const* Greet();
-}
+using boost::noncopyable;
+using boost::python::args;
+using boost::python::bases;
+using boost::python::class_;
+using boost::python::def;
+using boost::python::init;
+using boost::python::no_init;
+using boost::python::pure_virtual;
+using boost::python::scope;
+using boost::python::wrapper;
 
-#endif  // CONTRA_INCLUDE_CONTRA_CONTRA_HPP_
+namespace pycontra {
+
+template <typename T>
+void expose();
+
+}  // namespace pycontra
+
+#endif  // PYCONTRA_SRC_PYCONTRA_HPP_
