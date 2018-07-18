@@ -47,6 +47,13 @@ def get_conan_flags(compiler, compiler_version):
     return conan_flags
 
 
+def escape_environment_variable(operating_system, variable_name):
+    if operating_system == 'Windows':
+        return '%' + variable_name + '%'
+    else:
+        return '$' + variable_name
+
+
 def main(argv):
     if len(argv) != 5:
         print('usage: .gitlab-ci.py stage os compiler compiler_version')
@@ -99,8 +106,8 @@ def main(argv):
         execute('conan',
                 ['remote', 'update', 'rwth-vr--bintray',
                  'https://api.bintray.com/conan/rwth-vr/conan'])
-        execute('conan', ['user', '-p', '$CONAN_PASSWORD',
-                          '-r', 'rwth-vr--bintray', '$CONAN_LOGIN_USERNAME'])
+        execute('conan', ['user', '-p', escape_environment_variable(operating_system, 'CONAN_PASSWORD'),
+                          '-r', 'rwth-vr--bintray', escape_environment_variable(operating_system, 'CONAN_LOGIN_USERNAME')])
 
         conan_install_flags = ['install', '--build=missing']
         conan_install_flags.extend(get_conan_flags(compiler, compiler_version))
