@@ -21,9 +21,10 @@ visual_studio_version_year_map = {
 def execute(command, arguments):
     call_arguments = [command]
     call_arguments.extend(arguments)
-    print('\033[92m$ ' + command + '\033[0m')
+    full_command = ' '.join(call_arguments)
+    print('\033[92m$ ' + full_command + '\033[0m')
     sys.stdout.flush()
-    return_value = subprocess.call(' '.join(call_arguments), shell=True)
+    return_value = subprocess.call(full_command, shell=True)
     if return_value != 0:
         sys.exit(return_value)
 
@@ -98,8 +99,8 @@ def main(argv):
         execute('conan',
                 ['remote', 'update', 'rwth-vr--bintray',
                  'https://api.bintray.com/conan/rwth-vr/conan'])
-        execute('conan', ['user', '-p', os.environ['CONAN_PASSWORD'],
-                          '-r', 'rwth-vr--bintray', os.environ['CONAN_LOGIN_USERNAME']])
+        execute('conan', ['user', '-p', '$CONAN_PASSWORD',
+                          '-r', 'rwth-vr--bintray', '$CONAN_LOGIN_USERNAME'])
 
         conan_install_flags = ['install', '--build=missing']
         conan_install_flags.extend(get_conan_flags(compiler, compiler_version))
