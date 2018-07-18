@@ -72,7 +72,7 @@ get_property(ALL_SOURCES GLOBAL PROPERTY RWTHVR_ALL_SOURCES)
 get_property(ALL_HEADERS GLOBAL PROPERTY RWTHVR_ALL_HEADERS)
 
 add_test_cppcheck(NAME "contra-tests--cppcheck"
-    ${ALL_SOURCES}
+    ${ALL_SOURCES} ${ALL_HEADERS}
   )
   
 add_test_cpplint(NAME "contra-tests--cpplint"
