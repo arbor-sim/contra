@@ -20,7 +20,7 @@ visual_studio_version_year_map = {
 
 def execute(command, arguments):
     call_arguments = [command]
-    call_arguments.extend(arguments)
+    call_arguments.extend(map(lambda x: '"' + x '"', arguments))
     full_command = ' '.join(call_arguments)
     print('\033[92m$ ' + full_command + '\033[0m')
     sys.stdout.flush()
