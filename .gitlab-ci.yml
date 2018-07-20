@@ -226,29 +226,35 @@ conan:mac:clang9.1:
     - python .gitlab-ci.py conan macOS apple-clang 9.1
   <<: *artifacts_definition
 
-# conan:mac:gcc5:
-#   stage: conan
-#   tags:
-#     - osx
-#   script:
-#     - python .gitlab-ci.py conan macOS gcc 5
-#   <<: *artifacts_definition
+conan:mac:gcc5:
+  stage: conan
+  tags:
+    - osx
+  only:
+    - schedules
+  script:
+    - python .gitlab-ci.py conan macOS gcc 5
+  <<: *artifacts_definition
 
-# conan:mac:gcc6:
-#   stage: conan
-#   tags:
-#     - osx
-#   script:
-#     - python .gitlab-ci.py conan macOS gcc 6
-#   <<: *artifacts_definition
+conan:mac:gcc6:
+  stage: conan
+  tags:
+    - osx
+  only:
+    - schedules
+  script:
+    - python .gitlab-ci.py conan macOS gcc 6
+  <<: *artifacts_definition
 
-# conan:mac:gcc7:
-#   stage: conan
-#   tags:
-#     - osx
-#   script:
-#     - python .gitlab-ci.py conan macOS gcc 7
-#   <<: *artifacts_definition
+conan:mac:gcc7:
+  stage: conan
+  tags:
+    - osx
+  only:
+    - schedules
+  script:
+    - python .gitlab-ci.py conan macOS gcc 7
+  <<: *artifacts_definition
 
 cmake:mac:clang9.1:
   stage: cmake
@@ -260,35 +266,41 @@ cmake:mac:clang9.1:
     - python .gitlab-ci.py cmake macOS apple-clang 9.1
   <<: *artifacts_definition
 
-# cmake:mac:gcc5:
-#   stage: cmake
-#   tags:
-#     - osx
-#   dependencies:
-#     - conan:mac:gcc5
-#   script:
-#     - python .gitlab-ci.py cmake macOS gcc 5
-#   <<: *artifacts_definition
+cmake:mac:gcc5:
+  stage: cmake
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - conan:mac:gcc5
+  script:
+    - python .gitlab-ci.py cmake macOS gcc 5
+  <<: *artifacts_definition
 
-# cmake:mac:gcc6:
-#   stage: cmake
-#   tags:
-#     - osx
-#   dependencies:
-#     - conan:mac:gcc6
-#   script:
-#     - python .gitlab-ci.py cmake macOS gcc 6
-#   <<: *artifacts_definition
+cmake:mac:gcc6:
+  stage: cmake
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - conan:mac:gcc6
+  script:
+    - python .gitlab-ci.py cmake macOS gcc 6
+  <<: *artifacts_definition
 
-# cmake:mac:gcc7:
-#   stage: cmake
-#   tags:
-#     - osx
-#   dependencies:
-#     - conan:mac:gcc7
-#   script:
-#     - python .gitlab-ci.py cmake macOS gcc 7
-#   <<: *artifacts_definition
+cmake:mac:gcc7:
+  stage: cmake
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - conan:mac:gcc7
+  script:
+    - python .gitlab-ci.py cmake macOS gcc 7
+  <<: *artifacts_definition
 
 build:mac:clang9.1:
   stage: build
@@ -300,35 +312,41 @@ build:mac:clang9.1:
     - python .gitlab-ci.py build macOS apple-clang 9.1
   <<: *artifacts_definition
 
-# build:mac:gcc5:
-#   stage: build
-#   tags:
-#     - osx
-#   dependencies:
-#     - cmake:mac:gcc5
-#   script:
-#     - python .gitlab-ci.py build macOS gcc 5
-#   <<: *artifacts_definition
+build:mac:gcc5:
+  stage: build
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - cmake:mac:gcc5
+  script:
+    - python .gitlab-ci.py build macOS gcc 5
+  <<: *artifacts_definition
 
-# build:mac:gcc6:
-#   stage: build
-#   tags:
-#     - osx
-#   dependencies:
-#     - cmake:mac:gcc6
-#   script:
-#     - python .gitlab-ci.py build macOS gcc 6
-#   <<: *artifacts_definition
+build:mac:gcc6:
+  stage: build
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - cmake:mac:gcc6
+  script:
+    - python .gitlab-ci.py build macOS gcc 6
+  <<: *artifacts_definition
 
-# build:mac:gcc7:
-#   stage: build
-#   tags:
-#     - osx
-#   dependencies:
-#     - cmake:mac:gcc7
-#   script:
-#     - python .gitlab-ci.py build macOS gcc 7
-#   <<: *artifacts_definition
+build:mac:gcc7:
+  stage: build
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - cmake:mac:gcc7
+  script:
+    - python .gitlab-ci.py build macOS gcc 7
+  <<: *artifacts_definition
 
 test:mac:clang9.1:
   stage: test
@@ -340,35 +358,41 @@ test:mac:clang9.1:
     - python .gitlab-ci.py test macOS apple-clang 9.1
   <<: *artifacts_definition
 
-# test:mac:gcc5:
-#   stage: test
-#   tags:
-#     - osx
-#   dependencies:
-#     - build:mac:gcc5
-#   script:
-#     - python .gitlab-ci.py test macOS gcc 5
-#   <<: *artifacts_definition
+test:mac:gcc5:
+  stage: test
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - build:mac:gcc5
+  script:
+    - python .gitlab-ci.py test macOS gcc 5
+  <<: *artifacts_definition
 
-# test:mac:gcc6:
-#   stage: test
-#   tags:
-#     - osx
-#   dependencies:
-#     - build:mac:gcc6
-#   script:
-#     - python .gitlab-ci.py test macOS gcc 6
-#   <<: *artifacts_definition
+test:mac:gcc6:
+  stage: test
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - build:mac:gcc6
+  script:
+    - python .gitlab-ci.py test macOS gcc 6
+  <<: *artifacts_definition
 
-# test:mac:gcc7:
-#   stage: test
-#   tags:
-#     - osx
-#   dependencies:
-#     - build:mac:gcc7
-#   script:
-#     - python .gitlab-ci.py test macOS gcc 7
-#   <<: *artifacts_definition
+test:mac:gcc7:
+  stage: test
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - build:mac:gcc7
+  script:
+    - python .gitlab-ci.py test macOS gcc 7
+  <<: *artifacts_definition
 
 deliver:mac:clang9.1:
   stage: deliver
@@ -382,38 +406,44 @@ deliver:mac:clang9.1:
   only:
     *delivery_branches
 
-# deliver:mac:gcc5:
-#   stage: deliver
-#   tags:
-#     - osx
-#   dependencies:
-#     - test:mac:gcc5
-#   script:
-#     - python .gitlab-ci.py deliver macOS gcc 5
-#   <<: *artifacts_definition
-#   only:
-#     *delivery_branches
+deliver:mac:gcc5:
+  stage: deliver
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - test:mac:gcc5
+  script:
+    - python .gitlab-ci.py deliver macOS gcc 5
+  <<: *artifacts_definition
+  only:
+    *delivery_branches
 
-# deliver:mac:gcc6:
-#   stage: deliver
-#   tags:
-#     - osx
-#   dependencies:
-#     - test:mac:gcc6
-#   script:
-#     - python .gitlab-ci.py deliver macOS gcc 6
-#   <<: *artifacts_definition
-#   only:
-#     *delivery_branches
+deliver:mac:gcc6:
+  stage: deliver
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - test:mac:gcc6
+  script:
+    - python .gitlab-ci.py deliver macOS gcc 6
+  <<: *artifacts_definition
+  only:
+    *delivery_branches
 
-# deliver:mac:gcc7:
-#   stage: deliver
-#   tags:
-#     - osx
-#   dependencies:
-#     - test:mac:gcc7
-#   script:
-#     - python .gitlab-ci.py deliver macOS gcc 7
-#   <<: *artifacts_definition
-#   only:
-#     *delivery_branches
+deliver:mac:gcc7:
+  stage: deliver
+  tags:
+    - osx
+  only:
+    - schedules
+  dependencies:
+    - test:mac:gcc7
+  script:
+    - python .gitlab-ci.py deliver macOS gcc 7
+  <<: *artifacts_definition
+  only:
+    *delivery_branches
