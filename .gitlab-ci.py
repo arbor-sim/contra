@@ -49,7 +49,7 @@ def get_conan_flags(operating_system, compiler, compiler_version):
     elif operating_system == "Linux":
         conan_flags.extend(['-s', 'os=Linux'])
     elif operating_system == "macOS":
-        conan_flags.extend(['-s', 'os=OSX'])
+        conan_flags.extend(['-s', 'os=Macos'])
 
     return conan_flags
 
