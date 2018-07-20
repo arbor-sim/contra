@@ -19,6 +19,8 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
+include(get_target_include_directories)
+
 set(CPPCHECK_COMMAND NOTFOUND)
 find_program(CPPCHECK_COMMAND NAMES cppcheck cppcheck.exe 
     PATHS ${CONAN_BIN_DIRS_CPPCHECK} ${CONAN_BIN_DIRS_CPPCHECK_RELEASE} 
@@ -35,7 +37,7 @@ else()
   message(STATUS "Use cppcheck from: ${CPPCHECK_COMMAND}")
 endif()
 
-set(CPPCHECK_ARGUMENTS --enable=warning,performance,portability,missingInclude,unusedFunction,style --error-exitcode=1 --quiet --verbose)
+set(CPPCHECK_ARGUMENTS --enable=warning,performance,portability,missingInclude,style --suppress=missingIncludeSystem --error-exitcode=1)
 if(MSVC)
   list(APPEND CPPCHECK_ARGUMENTS --template=vs)
 elseif(CLANG)
@@ -46,11 +48,21 @@ endif()
 
 function(ADD_TEST_CPPCHECK)
   set(options)
-  set(oneValueArgs NAME)
+  set(oneValueArgs TARGET)
   set(multiValueArgs)
   cmake_parse_arguments(ARGS
     "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-  add_test(NAME ${ARGS_NAME}
-    COMMAND "${CPPCHECK_COMMAND}" ${CPPCHECK_ARGUMENTS} ${ARGS_UNPARSED_ARGUMENTS})
+    get_target_property(SOURCES ${ARGS_TARGET} SOURCES)
+    get_target_include_directories(INCLUDE_DIRECTORIES TARGET ${ARGS_TARGET})
+    message("SOURCES ${SOURCES}")
+
+    set(INCLUDE_DIRECTORIES_PARAMETERS "")
+    foreach(VAL ${INCLUDE_DIRECTORIES})
+      set(INCLUDE_DIRECTORIES_PARAMETERS ${INCLUDE_DIRECTORIES_PARAMETERS};-I;${VAL})
+    endforeach(VAL ${INCLUDE_DIRECTORIES})
+    message("INCLUDE_DIRECTORIES_PARAMETERS ${INCLUDE_DIRECTORIES_PARAMETERS}")
+
+  add_test(NAME "${ARGS_TARGET}--cppcheck"
+    COMMAND "${CPPCHECK_COMMAND}" ${CPPCHECK_ARGUMENTS} ${SOURCES} ${INCLUDE_DIRECTORIES_PARAMETERS})
   set_tests_properties(${ARGS_NAME} PROPERTIES TIMEOUT 20.0)
 endfunction()
