@@ -40,7 +40,6 @@ stages:
   only: &delivery_branches
     - master
     - stable
-    - feature/#37_Fix_pipeline_for_mac_and_linux
   
 #-------------------------------------------------------------------------------
 #  Windows
