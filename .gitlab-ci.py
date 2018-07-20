@@ -176,11 +176,11 @@ def main(argv):
 
         if operating_system == 'Linux':
             if compiler_version[:1] == '5':
-                conan_test_flags = ['-e', 'CXX=/opt/rh/devtoolset-4/root/usr/bin/c++',
-                                    '-e', 'CC=/opt/rh/devtoolset-4/root/usr/bin/cc']
+                conan_test_flags.extend(['-e', 'CXX=/opt/rh/devtoolset-4/root/usr/bin/c++',
+                                         '-e', 'CC=/opt/rh/devtoolset-4/root/usr/bin/cc'])
             elif compiler_version[:1] == '6':
-                conan_test_flags = ['-e', 'CXX=/opt/rh/devtoolset-6/root/usr/bin/c++',
-                                    '-e', 'CC=/opt/rh/devtoolset-6/root/usr/bin/cc']
+                conan_test_flags.extend(['-e', 'CXX=/opt/rh/devtoolset-6/root/usr/bin/c++',
+                                         '-e', 'CC=/opt/rh/devtoolset-6/root/usr/bin/cc'])
 
         conan_test_flags.extend(conan_flags)
         execute('conan', conan_test_flags)
