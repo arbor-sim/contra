@@ -21,7 +21,7 @@
 
 variables:
   version: "18.07"
-  channel: "develop"
+  channel: "stable"
 
 stages:
   - conan
