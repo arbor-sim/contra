@@ -181,7 +181,7 @@ def main(argv):
         execute('conan', conan_export_flags)
 
         conan_test_flags = ['test', './test_package', 'contra/%s@RWTH-VR/%s' %
-                            (version, channel)]
+                            (version, channel), '--build=missing']
 
         if operating_system == 'Linux':
             if compiler_version[:1] == '5':
