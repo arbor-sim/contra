@@ -29,7 +29,7 @@ def execute(command, arguments):
         sys.exit(return_value)
 
 
-def get_conan_flags(compiler, compiler_version):
+def get_conan_flags(operating_system, compiler, compiler_version):
     conan_flags = []
 
     conan_flags.extend(['-s', 'compiler=%s' % compiler])
@@ -43,6 +43,13 @@ def get_conan_flags(compiler, compiler_version):
         conan_flags.extend(['-s', 'compiler.libcxx=libstdc++'])
     elif compiler == 'apple-clang':
         conan_flags.extend(['-s', 'compiler.libcxx=libc++'])
+
+    if operating_system == "Windows":
+        conan_flags.extend(['-s', 'os=Windows'])
+    elif operating_system == "Linux":
+        conan_flags.extend(['-s', 'os=Linux'])
+    elif operating_system == "macOS":
+        conan_flags.extend(['-s', 'os=Macos'])
 
     return conan_flags
 
@@ -110,7 +117,8 @@ def main(argv):
                           '-r', 'rwth-vr--bintray', escape_environment_variable(operating_system, 'CONAN_LOGIN_USERNAME')])
 
         conan_install_flags = ['install', '--build=missing']
-        conan_install_flags.extend(get_conan_flags(compiler, compiler_version))
+        conan_install_flags.extend(get_conan_flags(
+            operating_system, compiler, compiler_version))
         conan_install_flags.append('..')
         execute('conan', conan_install_flags)
 
@@ -164,7 +172,8 @@ def main(argv):
             print('Invalid channel: %s possible values: %s' %
                   (channel, ', '.join(valid_channels)))
             sys.exit(-1)
-        conan_flags = get_conan_flags(compiler, compiler_version)
+        conan_flags = get_conan_flags(
+            operating_system, compiler, compiler_version)
 
         conan_export_flags = ['export-pkg', '.',
                               'contra/%s@RWTH-VR/%s' % (version, channel), '-f']
@@ -172,15 +181,15 @@ def main(argv):
         execute('conan', conan_export_flags)
 
         conan_test_flags = ['test', './test_package', 'contra/%s@RWTH-VR/%s' %
-                            (version, channel)]
+                            (version, channel), '--build=missing']
 
         if operating_system == 'Linux':
             if compiler_version[:1] == '5':
-                conan_test_flags = ['-e', 'CXX=/opt/rh/devtoolset-4/root/usr/bin/c++',
-                                    '-e', 'CC=/opt/rh/devtoolset-4/root/usr/bin/cc']
+                conan_test_flags.extend(['-e', 'CXX=/opt/rh/devtoolset-4/root/usr/bin/c++',
+                                         '-e', 'CC=/opt/rh/devtoolset-4/root/usr/bin/cc'])
             elif compiler_version[:1] == '6':
-                conan_test_flags = ['-e', 'CXX=/opt/rh/devtoolset-6/root/usr/bin/c++',
-                                    '-e', 'CC=/opt/rh/devtoolset-6/root/usr/bin/cc']
+                conan_test_flags.extend(['-e', 'CXX=/opt/rh/devtoolset-6/root/usr/bin/c++',
+                                         '-e', 'CC=/opt/rh/devtoolset-6/root/usr/bin/cc'])
 
         conan_test_flags.extend(conan_flags)
         execute('conan', conan_test_flags)
