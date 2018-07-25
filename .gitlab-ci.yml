@@ -20,8 +20,8 @@
 #-------------------------------------------------------------------------------
 
 variables:
-  version: "18.05"
-  channel: "develop"
+  version: "18.07"
+  channel: "stable"
 
 stages:
   - conan
