@@ -61,11 +61,11 @@ include(python_module)
 conan_or_find_package(boost_interprocess REQUIRED)
 conan_or_find_package(boost_python REQUIRED)
 
-option(WITH_BOOST_SHMEM "build with boost shared memory transport layer"
+option(WITH_TRANSPORT_BOOST_SHARED_MEMORY "build with boost shared memory transport layer"
        [OFF])
 
 add_subdirectory(contra)
-if (WITH_BOOST_SHMEM)
+if (WITH_TRANSPORT_BOOST_SHARED_MEMORY)
   add_subdirectory(contra_boost-shmem)
 endif()
 add_subdirectory(helper_apps)
