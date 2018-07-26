@@ -62,7 +62,7 @@ conan_or_find_package(boost_interprocess REQUIRED)
 conan_or_find_package(boost_python REQUIRED)
 
 option(WITH_TRANSPORT_BOOST_SHARED_MEMORY "build with boost shared memory transport layer"
-       [ON])
+       ON)
 
 add_subdirectory(contra)
 if (WITH_TRANSPORT_BOOST_SHARED_MEMORY)
