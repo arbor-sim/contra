@@ -60,7 +60,7 @@ class contra(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(source_folder='.')
+        cmake.configure(args=WITH_TRANSPORT_BOOST_SHARED_MEMORY, source_folder='.')
         cmake.build()
 
     def package(self):
