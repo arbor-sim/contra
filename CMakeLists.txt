@@ -66,9 +66,10 @@ option(WITH_TRANSPORT_BOOST_SHARED_MEMORY "build with boost shared memory transp
 
 add_subdirectory(contra)
 if (WITH_TRANSPORT_BOOST_SHARED_MEMORY)
+  add_compile_definitions(WITH_BOOST_SHARED_MEMORY_TRANSPORT)
   add_subdirectory(contra_boost-shmem)
+  add_subdirectory(helper_apps)
 endif()
-add_subdirectory(helper_apps)
 add_subdirectory(pycontra)
 add_subdirectory(test_utilities)
 
