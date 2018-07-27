@@ -33,19 +33,14 @@ class contra(ConanFile):
     options = {"with_transport_boost_shared_memory": [True, False]}
     default_options = "with_transport_boost_shared_memory=True"
     
-    if (options.with_transport_boost_shared_memory):
-      requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
-                  ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
-                  ("cppcheck/1.84@RWTH-VR/thirdparty"),
-                  ("conduit/0.3.1@RWTH-VR/thirdparty"),
-                  ("boost_interprocess/1.66.0@bincrafters/testing"),
-                  ("boost_python/1.66.0@bincrafters/testing"))
-    else:
-      requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
-                    ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
-                    ("cppcheck/1.84@RWTH-VR/thirdparty"),
-                    ("conduit/0.3.1@RWTH-VR/thirdparty"),
-                    ("boost_python/1.66.0@bincrafters/testing"))
+
+    requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
+                ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
+                ("cppcheck/1.84@RWTH-VR/thirdparty"),
+                ("conduit/0.3.1@RWTH-VR/thirdparty"),
+                ("boost_interprocess/1.66.0@bincrafters/testing"),
+                ("boost_python/1.66.0@bincrafters/testing"))
+
     generators = "cmake"
 
     def configure(self):
