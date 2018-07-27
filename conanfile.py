@@ -32,17 +32,19 @@ class contra(ConanFile):
     url = "https://devhub.vr.rwth-aachen.de/VR-Group/contra"
     options = {"with_transport_boost_shared_memory": [True, False]}
     default_options = "with_transport_boost_shared_memory=True"
-    
-
-    requires = (("catch/1.12.0@RWTH-VR/thirdparty"),
-                ("cpplint/e8ffd7c@RWTH-VR/thirdparty"),
-                ("cppcheck/1.84@RWTH-VR/thirdparty"),
-                ("conduit/0.3.1@RWTH-VR/thirdparty"),
-                ("boost_interprocess/1.66.0@bincrafters/testing"),
-                ("boost_python/1.66.0@bincrafters/testing"))
 
     generators = "cmake"
-
+    
+    def requirements(self):
+        self.requires("catch/1.12.0@RWTH-VR/thirdparty")
+        self.requires("cpplint/e8ffd7c@RWTH-VR/thirdparty")
+        self.requires("cppcheck/1.84@RWTH-VR/thirdparty")
+        self.requires("conduit/0.3.1@RWTH-VR/thirdparty")
+        self.requires("boost_python/1.66.0@bincrafters/testing")
+        if (self.options.with_transport_boost_shared_memory):
+           self.requires("boost_interprocess/1.66.0@bincrafters/testing")
+        
+         
     def configure(self):
         self.options["boost"].header_only = False
         self.options["boost"].shared = True
@@ -65,15 +67,16 @@ class contra(ConanFile):
     def build(self):
         cmake = CMake(self)
         if (self.options.with_transport_boost_shared_memory):
-          cmake.configure(defs='-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON', source_folder='.')
+            cmake.configure(defs='-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON', source_folder='.')
         else:
-           cmake.configure(source_folder='.')
+            cmake.configure(source_folder='.')
         cmake.build()
 
     def package(self):
         self.copy("*.hpp", dst="include", src="contra/include")
         if (self.options.with_transport_boost_shared_memory):
-          self.copy("*.hpp", dst="include", src="contra_boost-shmem/include")
+            self.copy("*.hpp", dst="include", src="contra_boost-shmem/include")
+            
         self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so*", dst="lib", keep_path=False)
@@ -82,6 +85,6 @@ class contra(ConanFile):
 
     def package_info(self):
       if (self.options.with_transport_boost_shared_memory):
-        self.cpp_info.libs = ["contra", "contra_boost-shmem"]
+          self.cpp_info.libs = ["contra", "contra_boost-shmem"]
       else:
-         self.cpp_info.libs = ["contra"]
+          self.cpp_info.libs = ["contra"]
