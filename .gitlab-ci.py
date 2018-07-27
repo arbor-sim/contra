@@ -147,8 +147,6 @@ def main(argv):
 
         else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
-        
-        cmake_flags.append('-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=OFF') 
 
         execute('cmake', cmake_flags)
 
