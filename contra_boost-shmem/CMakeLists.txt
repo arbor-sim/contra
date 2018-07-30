@@ -43,10 +43,10 @@ target_link_libraries(contra_boost-shmem
   PUBLIC ${CONAN_OR_CMAKE_conduit}
   )
 
-if (not MSVC)
+if (NOT MSVC)
   target_compile_options(contra_boost-shmem
     PRIVATE -fPIC
     )
-endif (not MSVC)
+endif (NOT MSVC)
 
 add_subdirectory(tests)

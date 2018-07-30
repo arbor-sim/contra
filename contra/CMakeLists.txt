@@ -47,10 +47,10 @@ target_link_libraries(contra
   PUBLIC ${CONAN_OR_CMAKE_conduit}
   )
 
-if (not MSVC)
+if (NOT MSVC)
   target_compile_options(contra
     PRIVATE -fPIC
     )
-endif (not MSVC)
+endif (NOT MSVC)
 
 add_subdirectory(tests)
