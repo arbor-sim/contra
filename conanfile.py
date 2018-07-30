@@ -30,8 +30,8 @@ class contra(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "*"
     url = "https://devhub.vr.rwth-aachen.de/VR-Group/contra"
-    options = {"with_transport_boost_shared_memory": [True, False]}
-    default_options = "with_transport_boost_shared_memory=True"
+    options = {"with_transport_boost_shared_memory": [True, False], "with_transport_zeromq": [True, False]}
+    default_options = "with_transport_boost_shared_memory=True", "with_transport_zeromq=True"
 
     generators = "cmake"
     
@@ -43,6 +43,8 @@ class contra(ConanFile):
         self.requires("boost_python/1.66.0@bincrafters/testing")
         if (self.options.with_transport_boost_shared_memory):
             self.requires("boost_interprocess/1.66.0@bincrafters/testing")
+        if (self.options.with_transport_boost_shared_memory):
+            self.requires("zmq/4.2.2@bincrafters/stable")
         
          
     def configure(self):
@@ -75,8 +77,9 @@ class contra(ConanFile):
     def package(self):
         self.copy("*.hpp", dst="include", src="contra/include")
         if (self.options.with_transport_boost_shared_memory):
-            self.copy("*.hpp", dst="include", src="contra_boost-shmem/include")
-            
+            self.copy("*.hpp", dst="include", src="contra/boost-shmem/include")
+        if (self.options.with_transport_zeromq):
+            self.copy("*.hpp", dst="include", src="contra/zmq/include")
         self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so*", dst="lib", keep_path=False)
@@ -84,7 +87,11 @@ class contra(ConanFile):
         self.copy("*.dylib", dst="lib", keep_path=False, symlinks=True)
 
     def package_info(self):
-        if (self.options.with_transport_boost_shared_memory):
-            self.cpp_info.libs = ["contra", "contra_boost-shmem"]
+        if (self.options.with_transport_boost_shared_memory) and (self.options.with_transport_zeromq):
+            self.cpp_info.libs = ["contra", "contra_boost-shmem", "contra_zmq"]
+        elif not(self.options.with_transport_zeromq):
+            self.cpp_info.libs = ["contra",  "contra_boost-shmem"]
+        elif not(self.options.with_transport_boost_shared_memory):
+            self.cpp_info.libs = ["contra",  "contra_zmq"]
         else:
             self.cpp_info.libs = ["contra"]
