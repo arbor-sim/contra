@@ -42,7 +42,7 @@ class contra(ConanFile):
         self.requires("conduit/0.3.1@RWTH-VR/thirdparty")
         self.requires("boost_python/1.66.0@bincrafters/testing")
         if (self.options.with_transport_boost_shared_memory):
-           self.requires("boost_interprocess/1.66.0@bincrafters/testing")
+            self.requires("boost_interprocess/1.66.0@bincrafters/testing")
         
          
     def configure(self):
@@ -84,7 +84,7 @@ class contra(ConanFile):
         self.copy("*.dylib", dst="lib", keep_path=False, symlinks=True)
 
     def package_info(self):
-      if (self.options.with_transport_boost_shared_memory):
-          self.cpp_info.libs = ["contra", "contra_boost-shmem"]
-      else:
-          self.cpp_info.libs = ["contra"]
+        if (self.options.with_transport_boost_shared_memory):
+            self.cpp_info.libs = ["contra", "contra_boost-shmem"]
+        else:
+            self.cpp_info.libs = ["contra"]
