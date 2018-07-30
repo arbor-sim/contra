@@ -44,7 +44,7 @@ class contra(ConanFile):
         if (self.options.with_transport_boost_shared_memory):
             self.requires("boost_interprocess/1.66.0@bincrafters/testing")
         if (self.options.with_transport_boost_shared_memory):
-            self.requires("zmq/4.2.2@bincrafters/stable")
+            self.requires("libzmq/4.1.5@memsharded/stable ")
         
          
     def configure(self):
