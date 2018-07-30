@@ -39,7 +39,7 @@ target_include_directories(contra_zmq
   
 target_link_libraries(contra_zmq
   PUBLIC contra
-  PUBLIC ${CONAN_OR_CMAKE_libzmq}
+  PUBLIC ${CONAN_OR_CMAKE_cppzmq}
   PUBLIC ${CONAN_OR_CMAKE_conduit}
   )
 

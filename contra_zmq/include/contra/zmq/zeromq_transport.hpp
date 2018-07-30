@@ -25,6 +25,7 @@
 #include "contra/packet.hpp"
 #include "zmq.hpp"
 
+
 namespace contra {}  // namespace contra
 
 #endif  // CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
