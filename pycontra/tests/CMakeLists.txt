@@ -19,9 +19,13 @@
 # limitations under the License.
 #-------------------------------------------------------------------------------
 
-file(GLOB PYCONTRA_TEST_SOURCES **/*.py)
+file(GLOB PYCONTRA_TEST_SOURCES *.py)
+
+if(NOT WITH_TRANSPORT_BOOST_SHARED_MEMORY)
+  list(REMOVE_ITEM PYCONTRA_TEST_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/test_shared_memory_transport_relay.py")
+endif()
 
 add_test_py_test(NAME test_pycontra
-  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${PYCONTRA_TEST_SOURCES}
   PYTHONPATH "${PYCONTRA_OUTPUT_DIR}/.."
 )

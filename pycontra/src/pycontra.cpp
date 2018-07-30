@@ -24,7 +24,11 @@
 #include "contra/contra.hpp"
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
+
+#ifdef WITH_BOOST_SHARED_MEMORY_TRANSPORT
 #include "contra/boost-shmem/shared_memory_transport.hpp"
+#endif  // WITH_BOOST_SHARED_MEMORY_TRANSPORT
+
 #include "pycontra/suppress_warnings.hpp"
 
 namespace pycontra {
@@ -40,14 +44,18 @@ conduit::Node AnyNode() {
 SUPPRESS_WARNINGS_END
 
 extern template void expose<contra::Relay<contra::FileTransport>>();
+#ifdef WITH_BOOST_SHARED_MEMORY_TRANSPORT
 extern template void expose<contra::Relay<contra::SharedMemoryTransport>>();
+#endif  // WITH_BOOST_SHARED_MEMORY_TRANSPORT
 
 SUPPRESS_WARNINGS_BEGIN
 // cppcheck-suppress unusedFunction
 BOOST_PYTHON_MODULE(_pycontra) {
   def("Greet", contra::Greet);
   expose<contra::Relay<contra::FileTransport>>();
+#ifdef WITH_BOOST_SHARED_MEMORY_TRANSPORT
   expose<contra::Relay<contra::SharedMemoryTransport>>();
+#endif  // WITH_BOOST_SHARED_MEMORY_TRANSPORT
   def("AnyNode", &AnyNode);
   class_<conduit::Node>("Node").def("Update", &conduit::Node::update);
 }

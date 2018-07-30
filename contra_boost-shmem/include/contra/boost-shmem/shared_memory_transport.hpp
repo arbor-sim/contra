@@ -26,7 +26,7 @@
 #include <vector>
 
 #include "contra/packet.hpp"
-#include "contra/suppress_warnings.hpp"
+#include "contra/boost-shmem/suppress_warnings.hpp"
 
 #ifdef _WIN32
 #define BOOST_INTERPROCESS_SHARED_DIR_FUNC
