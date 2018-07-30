@@ -20,7 +20,7 @@
 #-------------------------------------------------------------------------------
 
 file(GLOB CONTRA_SOURCES src/*.cpp)
-file(GLOB CONTRA_HEADERS include/contra_boost-shmem/*.hpp)
+file(GLOB CONTRA_HEADERS include/contra/boost-shmem/*.hpp)
 
 rwthvr_add_library(NAME contra_boost-shmem
   SOURCES ${CONTRA_SOURCES}
