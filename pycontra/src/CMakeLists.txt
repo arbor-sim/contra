@@ -23,18 +23,35 @@ file(GLOB SOURCES *.cpp)
 file(GLOB HEADERS *.hpp)
 file(GLOB PYTHON_SOURCES *.py)
 
+if(NOT WITH_TRANSPORT_BOOST_SHARED_MEMORY)
+  list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/shared_memory_transport_relay.cpp")
+endif()
+
 set(PYCONTRA_OUTPUT_DIR
   ${CMAKE_CURRENT_BINARY_DIR}/../pycontra
   CACHE PATH "Output path for pycontra python module"
   )
-
-add_python_module(
-  NAME _pycontra
-  SOURCES ${SOURCES}
-  HEADERS ${HEADERS}
-  PYTHON_SOURCES ${PYTHON_SOURCES}
-  INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
-  LINK_LIBRARIES contra contra_boost-shmem
-    ${CONAN_OR_CMAKE_boost_python}
-  OUTPUT_DIRECTORY ${PYCONTRA_OUTPUT_DIR}
-  )
+  
+if(WITH_TRANSPORT_BOOST_SHARED_MEMORY)
+  add_python_module(
+    NAME _pycontra
+    SOURCES ${SOURCES}
+    HEADERS ${HEADERS}
+    PYTHON_SOURCES ${PYTHON_SOURCES}
+     INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
+    LINK_LIBRARIES contra contra_boost-shmem
+      ${CONAN_OR_CMAKE_boost_python}
+    OUTPUT_DIRECTORY ${PYCONTRA_OUTPUT_DIR}
+    )
+else()
+  add_python_module(
+    NAME _pycontra
+    SOURCES ${SOURCES}
+    HEADERS ${HEADERS}
+    PYTHON_SOURCES ${PYTHON_SOURCES}
+     INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
+    LINK_LIBRARIES contra
+      ${CONAN_OR_CMAKE_boost_python}
+    OUTPUT_DIRECTORY ${PYCONTRA_OUTPUT_DIR}
+    )
+endif()

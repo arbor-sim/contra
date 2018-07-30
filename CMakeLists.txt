@@ -61,9 +61,15 @@ include(python_module)
 conan_or_find_package(boost_interprocess REQUIRED)
 conan_or_find_package(boost_python REQUIRED)
 
+option(WITH_TRANSPORT_BOOST_SHARED_MEMORY "build with boost shared memory transport layer"
+       OFF)
+
 add_subdirectory(contra)
-add_subdirectory(contra_boost-shmem)
-add_subdirectory(helper_apps)
+if (WITH_TRANSPORT_BOOST_SHARED_MEMORY)
+  add_definitions(-DWITH_BOOST_SHARED_MEMORY_TRANSPORT="true")
+  add_subdirectory(contra_boost-shmem)
+  add_subdirectory(helper_apps)
+endif()
 add_subdirectory(pycontra)
 add_subdirectory(test_utilities)
 
