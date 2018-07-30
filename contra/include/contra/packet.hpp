@@ -22,6 +22,7 @@
 #ifndef CONTRA_INCLUDE_CONTRA_PACKET_HPP_
 #define CONTRA_INCLUDE_CONTRA_PACKET_HPP_
 
+#include <cstdint>
 #include <string>
 #include <vector>
 

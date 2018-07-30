@@ -22,6 +22,8 @@
 file(GLOB TESTING_SOURCES src/*.cpp)
 file(GLOB TESTING_HEADERS include/contra/test_utilities/*.hpp)
 
+set(CMAKE_CXX_STANDARD 14)
+
 rwthvr_add_library(NAME test_utilities
   SOURCES ${TESTING_SOURCES}
   HEADERS ${TESTING_HEADERS}
