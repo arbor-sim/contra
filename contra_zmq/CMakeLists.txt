@@ -20,7 +20,7 @@
 #-------------------------------------------------------------------------------
 
 file(GLOB CONTRA_SOURCES src/*.cpp)
-file(GLOB CONTRA_HEADERS include/contra_zmq/*.hpp)
+file(GLOB CONTRA_HEADERS include/contra/zmq/*.hpp)
 
 rwthvr_add_library(NAME contra_zmq
   SOURCES ${CONTRA_SOURCES}
@@ -39,7 +39,7 @@ target_include_directories(contra_zmq
   
 target_link_libraries(contra_zmq
   PUBLIC contra
-  PUBLIC ${CONAN_OR_CMAKE_zeromq}
+  PUBLIC ${CONAN_OR_CMAKE_zmq}
   PUBLIC ${CONAN_OR_CMAKE_conduit}
   )
 

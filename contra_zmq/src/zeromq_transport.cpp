@@ -20,6 +20,10 @@
 //------------------------------------------------------------------------------
 
 #include "contra/zmq/zeromq_transport.hpp"
+#include "zhelpers.h"
+#include "zmq.h"
+
+namespace contra {
 
 
-namespace contra {}  // namespace contra
+}  // namespace contra
