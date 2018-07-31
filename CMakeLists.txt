@@ -68,11 +68,13 @@ option(WITH_TRANSPORT_BOOST_SHARED_MEMORY
 add_subdirectory(contra)
 add_subdirectory(pycontra)
 add_subdirectory(test_utilities)
+
 if (WITH_TRANSPORT_ZEROMQ)
   conan_or_find_package(cppzmq REQUIRED)
   add_definitions(-DWITH_ZEROMQ_TRANSPORT="true")
   add_subdirectory(contra_zmq)
 endif()
+
 if (WITH_TRANSPORT_BOOST_SHARED_MEMORY)
   conan_or_find_package(boost_interprocess REQUIRED)
   add_definitions(-DWITH_BOOST_SHARED_MEMORY_TRANSPORT="true")
