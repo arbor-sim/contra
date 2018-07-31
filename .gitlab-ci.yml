@@ -280,6 +280,14 @@ conan:mac:clang9.1:
   script:
     - python .gitlab-ci.py conan macOS apple-clang 9.1
   <<: *artifacts_definition
+  
+conan:mac:gcc7:
+  stage: conan
+  tags:
+    - osx
+  script:
+    - python .gitlab-ci.py conan macOS gcc 7
+  <<: *artifacts_definition
 
 cmake:mac:clang9.1:
   stage: cmake
@@ -289,6 +297,16 @@ cmake:mac:clang9.1:
     - conan:mac:clang9.1
   script:
     - python .gitlab-ci.py cmake macOS apple-clang 9.1
+  <<: *artifacts_definition
+  
+cmake:mac:gcc7:
+  stage: cmake
+  tags:
+    - osx
+  dependencies:
+    - conan:mac:gcc7
+  script:
+    - python .gitlab-ci.py cmake macOS gcc 7
   <<: *artifacts_definition
 
 build:mac:clang9.1:
@@ -300,6 +318,16 @@ build:mac:clang9.1:
   script:
     - python .gitlab-ci.py build macOS apple-clang 9.1
   <<: *artifacts_definition
+  
+build:mac:gcc7:
+  stage: build
+  tags:
+    - osx
+  dependencies:
+    - cmake:mac:gcc7
+  script:
+    - python .gitlab-ci.py build macOS gcc 7
+  <<: *artifacts_definition
 
 test:mac:clang9.1:
   stage: test
@@ -309,6 +337,16 @@ test:mac:clang9.1:
     - build:mac:clang9.1
   script:
     - python .gitlab-ci.py test macOS apple-clang 9.1
+  <<: *artifacts_definition
+  
+test:mac:gcc7:
+  stage: test
+  tags:
+    - osx
+  dependencies:
+    - build:mac:gcc7
+  script:
+    - python .gitlab-ci.py test macOS gcc 7
   <<: *artifacts_definition
 
 #deliver:mac:clang9.1:
