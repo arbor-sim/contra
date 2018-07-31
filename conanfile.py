@@ -68,8 +68,12 @@ class contra(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        if (self.options.with_transport_boost_shared_memory):
+        if (self.options.with_transport_boost_shared_memory) and (self.options.with_transport_zeromq):
+            cmake.configure(defs='-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON -DWITH_TRANSPORT_ZEROMQ=ON', source_folder='.')
+        elif (self.options.with_transport_boost_shared_memory):
             cmake.configure(defs='-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON', source_folder='.')
+        elif (self.options.with_transport_zeromq):
+            cmake.configure(defs='-DWITH_TRANSPORT_ZEROMQ=ON', source_folder='.')
         else:
             cmake.configure(source_folder='.')
         cmake.build()
