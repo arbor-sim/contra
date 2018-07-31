@@ -19,12 +19,17 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
-#define CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
+#include <vector>
 
-#include "contra/packet.hpp"
-#include "zmq.hpp"
+#include "catch/catch.hpp"
 
-namespace contra {}  // namespace contra
+#include "contra/test_utilities/packet_matcher.hpp"
+#include "contra/test_utilities/test_data.hpp"
 
-#endif  // CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
+namespace {
+
+const std::vector<contra::Packet> NONEMPTY_PACKET_LIST{contra::Packet()};
+
+}  // namespace
+
+SCENARIO("Initial test", "[contra][contra::]") { REQUIRE(true); }

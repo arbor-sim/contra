@@ -38,7 +38,7 @@ set(CONTRA_TEST_ARGUMENTS ""
   "Arguments, e.g., tags, that are passed to contra_zmq_tests executable."
   )
 add_test(NAME contra_zmq_tests
-  COMMAND contra_zmq_tests_ ${CONTRA_TESTS_ARGUMENTS}
+  COMMAND contra_zmq_tests ${CONTRA_TESTS_ARGUMENTS}
   )
 set_tests_properties(contra_zmq_tests PROPERTIES TIMEOUT 2.0)
 
