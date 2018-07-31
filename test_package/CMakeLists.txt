@@ -1,6 +1,8 @@
 project(contra-test-package)
 cmake_minimum_required(VERSION 2.8)
 
+set(CMAKE_CXX_STANDARD 14)
+
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 CONAN_BASIC_SETUP(TARGETS KEEP_RPATHS)
 

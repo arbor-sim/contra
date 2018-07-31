@@ -76,10 +76,14 @@ class contra(ConanFile):
 
     def package(self):
         self.copy("*.hpp", dst="include", src="contra/include")
+        self.copy("*.hpp", dst="include", src="build/contra/include")
         if (self.options.with_transport_boost_shared_memory):
             self.copy("*.hpp", dst="include", src="contra/boost-shmem/include")
+            self.copy("*.hpp", dst="include", src="build/contra_boost-shmem/include")
         if (self.options.with_transport_zeromq):
             self.copy("*.hpp", dst="include", src="contra/zmq/include")
+            self.copy("*.hpp", dst="include", src="build/zmq/include")
+
         self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so*", dst="lib", keep_path=False)

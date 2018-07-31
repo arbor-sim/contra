@@ -192,6 +192,9 @@ def main(argv):
             elif compiler_version[:1] == '6':
                 conan_test_flags.extend(['-e', 'CXX=/opt/rh/devtoolset-6/root/usr/bin/c++',
                                          '-e', 'CC=/opt/rh/devtoolset-6/root/usr/bin/cc'])
+            elif compiler_version[:1] == '7':
+                conan_test_flags.extend(['-e', 'CXX=/opt/rh/devtoolset-7/root/usr/bin/c++',
+                                         '-e', 'CC=/opt/rh/devtoolset-7/root/usr/bin/cc'])
 
         conan_test_flags.extend(conan_flags)
         execute('conan', conan_test_flags)
