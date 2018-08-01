@@ -34,12 +34,12 @@ class ZMQTransport {
  public:
   enum class Type { SERVER, CLIENT };
 
-  ZMQTransport(Type t, std::string adress);
-  ZMQTransport(const ZMQTransport&) = default;
-  ZMQTransport(ZMQTransport&&) = default;
+  ZMQTransport(const Type t, const std::string adress);
+  ZMQTransport(const ZMQTransport&) = delete;
+  ZMQTransport(ZMQTransport&&) = delete;
   ~ZMQTransport() = default;
-  ZMQTransport& operator=(const ZMQTransport&) = default;
-  ZMQTransport& operator=(ZMQTransport&&) = default;
+  ZMQTransport& operator=(const ZMQTransport&) = delete;
+  ZMQTransport& operator=(ZMQTransport&&) = delete;
 
   void Send(const Packet& packet);
   std::vector<Packet> Receive();

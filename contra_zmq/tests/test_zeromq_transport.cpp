@@ -34,80 +34,16 @@
 
 #include "zmq.hpp"
 
-namespace {
-
-const std::vector<contra::Packet> NONEMPTY_PACKET_LIST{contra::Packet()};
-
-void CreateServer() {
-  zmq::context_t context(1);
-  zmq::socket_t socket(context, ZMQ_DEALER);
-  // socket.setsockopt(ZMQ_IMMEDIATE, 1);
-  socket.bind("tcp://*:5555");
-  auto packet = test_utilities::ANY_PACKET;
-  auto packet2 = test_utilities::ANOTHER_PACKET;
-
-  while (true) {
-    zmq::message_t request;
-    socket.recv(&request);
-    if (std::string("shutdown").compare(static_cast<char*>(request.data())) ==
-        0) {
-      return;
-    }
-
-    zmq::message_t reply(sizeof(test_utilities::ANY_PACKET));
-    memcpy(reply.data(), &packet, sizeof(test_utilities::ANY_PACKET));
-    socket.send(reply);
-  }
-}
-
-contra::Packet AskForPacket() {
-  zmq::context_t context(1);
-  zmq::socket_t socket(context, ZMQ_DEALER);
-  socket.connect("tcp://localhost:5555");
-
-  zmq::message_t request(5);
-  memcpy(request.data(), "Hello", 5);
-  socket.send(request);
-
-  zmq::message_t received_reply;
-  contra::Packet p1;
-  while (true) {
-    if (!socket.recv(&received_reply, ZMQ_DONTWAIT)) {
-    } else {
-      p1 = *static_cast<contra::Packet*>(received_reply.data());
-      received_reply.rebuild();
-      break;
+SCENARIO("Server and client creation ", "[contra][contra::ZMQTransport]") {
+  WHEN("the Client is created before the server") {
+    THEN("it does not throw an error") {
+      REQUIRE_NOTHROW(contra::ZMQTransport(contra::ZMQTransport::Type::CLIENT,
+                                           "tcp://localhost:5555"));
+      REQUIRE_NOTHROW(contra::ZMQTransport(contra::ZMQTransport::Type::SERVER,
+                                           "tcp://*:5555"));
     }
   }
-
-  return p1;
 }
-
-void ShutDown() {
-  zmq::context_t context(1);
-  zmq::socket_t socket(context, ZMQ_DEALER);
-  socket.connect("tcp://localhost:5555");
-
-  zmq::message_t request(9);
-  memcpy(request.data(), "shutdown", 9);
-  socket.send(request);
-}
-
-}  // namespace
-
-// SCENARIO("INTEST SERVER/CLIENT ", "[contra][contra::]") {
-//  GIVEN("A Server that Sends out packets upon requests") {
-//    std::thread t1(CreateServer);
-//    WHEN("A Client asks for a package") {
-//      THEN("the recieved packet matches the send one") {
-//        auto packet = AskForPacket();
-//        REQUIRE_THAT(packet, Equals(test_utilities::ANY_PACKET));
-//      }
-//    }
-//    ShutDown();
-//    t1.join();
-//  }
-//}
 
 SCENARIO("Sending and receiving ", "[contra][contra::ZMQTransport]") {
   GIVEN("a Server and a Client") {
@@ -141,9 +77,9 @@ SCENARIO("Sending and receiving ", "[contra][contra::ZMQTransport]") {
       server.Send(test_utilities::ANY_PACKET);
       server.Send(test_utilities::ANOTHER_PACKET);
       server.Send(test_utilities::THIRD_PACKET);
-      Sleep(100);
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
       auto received_packets{client.Receive()};
-      THEN("the same amount of packages is received") {
+      THEN("the same amount of packages is received within 1 second") {
         REQUIRE(received_packets.size() == 3);
       }
       THEN("the packets sent match the ones received") {

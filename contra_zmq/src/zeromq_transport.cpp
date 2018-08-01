@@ -29,7 +29,7 @@
 
 namespace contra {
 
-ZMQTransport::ZMQTransport(Type type, std::string adress)
+ZMQTransport::ZMQTransport(const Type type, const std::string adress)
     : context_(1), socket_(context_, ZMQ_DEALER) {
   if (type == ZMQTransport::Type::SERVER) {
     socket_.bind(adress);
