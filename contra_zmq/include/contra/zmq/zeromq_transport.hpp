@@ -36,7 +36,7 @@ class ZMQTransport {
 
   ZMQTransport(const Type t, const std::string adress);
   ZMQTransport(const ZMQTransport&) = delete;
-  ZMQTransport(ZMQTransport&&) = delete;
+  ZMQTransport(ZMQTransport&&) = default;
   ~ZMQTransport() = default;
   ZMQTransport& operator=(const ZMQTransport&) = delete;
   ZMQTransport& operator=(ZMQTransport&&) = delete;

@@ -40,7 +40,7 @@ class Relay {
   explicit Relay(ConstructorArguments&&... transport_arguments);
 
   Relay(const Relay&) = delete;
-  Relay(Relay&&) = delete;
+  Relay(Relay&&) = default;
   ~Relay() = default;
 
   Relay& operator=(const Relay&) = delete;

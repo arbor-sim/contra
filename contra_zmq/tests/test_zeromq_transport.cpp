@@ -45,6 +45,16 @@ SCENARIO("Server and client creation ", "[contra][contra::ZMQTransport]") {
   }
 }
 
+//SCENARIO("Sending before connecting ", "[contra][contra::ZMQTransport]") {
+//  GIVEN("a Server") {
+//    contra::ZMQTransport server(contra::ZMQTransport::Type::SERVER,
+//                                "tcp://*:5555");
+//
+//    contra::ZMQTransport client(contra::ZMQTransport::Type::CLIENT,
+//                                "tcp://localhost:5555");
+//  }
+//}
+
 SCENARIO("Sending and receiving ", "[contra][contra::ZMQTransport]") {
   GIVEN("a Server and a Client") {
     contra::ZMQTransport server(contra::ZMQTransport::Type::SERVER,
