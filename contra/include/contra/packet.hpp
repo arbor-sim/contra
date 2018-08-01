@@ -33,6 +33,9 @@ struct Packet {
   std::vector<uint8_t> data;
 };
 
+std::vector<uint8_t> SerializePacket(const Packet& packet);
+Packet SerializePacket(const std::vector<uint8_t>& data);
+
 }  // namespace contra
 
 #endif  // CONTRA_INCLUDE_CONTRA_PACKET_HPP_
