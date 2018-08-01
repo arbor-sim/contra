@@ -124,9 +124,35 @@ SCENARIO("Sending and receiving ", "[contra][contra::ZMQTransport]") {
     WHEN("a single packet is sent and received") {
       server.Send(test_utilities::ANY_PACKET);
       auto received_packets{client.Receive()};
+      while (received_packets.size() == 0) {
+        received_packets = client.Receive();
+      }
       THEN("the recieved packet matches the send one") {
         REQUIRE_THAT(received_packets.front(),
                      Equals(test_utilities::ANY_PACKET));
+      }
+      WHEN("Receive() is called again") {
+        THEN("no more packets are received") {
+          REQUIRE(client.Receive().size() == 0);
+        }
+      }
+    }
+    WHEN("a multiple packets are sent") {
+      server.Send(test_utilities::ANY_PACKET);
+      server.Send(test_utilities::ANOTHER_PACKET);
+      server.Send(test_utilities::THIRD_PACKET);
+      Sleep(100);
+      auto received_packets{client.Receive()};
+      THEN("the same amount of packages is received") {
+        REQUIRE(received_packets.size() == 3);
+      }
+      THEN("the packets sent match the ones received") {
+        REQUIRE_THAT(received_packets.front(),
+                     Equals(test_utilities::ANY_PACKET));
+        REQUIRE_THAT(received_packets.at(1),
+                     Equals(test_utilities::ANOTHER_PACKET));
+        REQUIRE_THAT(received_packets.back(),
+                     Equals(test_utilities::THIRD_PACKET));
       }
     }
   }
