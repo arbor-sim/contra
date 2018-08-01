@@ -21,5 +21,44 @@
 
 #include "contra/zmq/zeromq_transport.hpp"
 
+#include <iostream>
+#include <string>
+#include <vector>
 
-namespace contra {}  // namespace contra
+#include "zmq.hpp"
+
+namespace contra {
+
+ZMQTransport::ZMQTransport(Type type, std::string adress)
+    : context_(1), socket_(context_, ZMQ_DEALER) {
+  if (type == ZMQTransport::Type::SERVER) {
+    socket_.bind(adress);
+  } else if (type == ZMQTransport::Type::CLIENT) {
+    socket_.connect(adress);
+  }
+}
+
+void ZMQTransport::Send(const Packet& packet) {
+  zmq::message_t message(sizeof(packet));
+  memcpy(message.data(), &packet, sizeof(packet));
+  socket_.send(message);
+  std::cout << "Packet Send" << std::endl;
+}
+
+std::vector<Packet> ZMQTransport::Receive() {
+  std::vector<Packet> packets;
+  zmq::message_t received_message;
+
+  while (true) {
+    if (socket_.recv(&received_message, ZMQ_DONTWAIT)) {
+      packets.push_back(*static_cast<contra::Packet*>(received_message.data()));
+      received_message.rebuild();
+    } else {
+      break;
+    }
+  }
+
+  return packets;
+}
+
+}  // namespace contra

@@ -22,9 +22,33 @@
 #ifndef CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
 #define CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
 
+#include <string>
+#include <vector>
+
 #include "contra/packet.hpp"
 #include "zmq.hpp"
 
-namespace contra {}  // namespace contra
+namespace contra {
+
+class ZMQTransport {
+ public:
+  enum class Type { SERVER, CLIENT };
+
+  ZMQTransport(Type t, std::string adress);
+  ZMQTransport(const ZMQTransport&) = default;
+  ZMQTransport(ZMQTransport&&) = default;
+  ~ZMQTransport() = default;
+  ZMQTransport& operator=(const ZMQTransport&) = default;
+  ZMQTransport& operator=(ZMQTransport&&) = default;
+
+  void Send(const Packet& packet);
+  std::vector<Packet> Receive();
+
+ private:
+  zmq::context_t context_;
+  zmq::socket_t socket_;
+};
+
+}  // namespace contra
 
 #endif  // CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
