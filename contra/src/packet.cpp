@@ -21,6 +21,9 @@
 
 #include "contra/packet.hpp"
 
+#include <cstdint>
+#include <vector>
+
 namespace contra {
 
 std::vector<uint8_t> SerializePacket(const Packet&) { return {}; }
