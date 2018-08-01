@@ -34,7 +34,7 @@ struct Packet {
 };
 
 std::vector<uint8_t> SerializePacket(const Packet& packet);
-Packet SerializePacket(const std::vector<uint8_t>& data);
+Packet DeserializePacket(const std::vector<uint8_t>& data);
 
 }  // namespace contra
 
