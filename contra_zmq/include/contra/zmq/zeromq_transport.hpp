@@ -22,6 +22,7 @@
 #ifndef CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
 #define CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
 
+#include <queue>
 #include <string>
 #include <vector>
 
@@ -44,9 +45,14 @@ class ZMQTransport {
   void Send(const Packet& packet);
   std::vector<Packet> Receive();
 
+  void SetSendWithoutClient(const bool send_without_client);
+  bool GetSendWithoutClient() const;
+
  private:
   zmq::context_t context_;
   zmq::socket_t socket_;
+
+  bool send_without_client_ = true;
 };
 
 }  // namespace contra

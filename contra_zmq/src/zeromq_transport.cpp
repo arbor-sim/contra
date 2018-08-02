@@ -41,7 +41,13 @@ ZMQTransport::ZMQTransport(const Type type, const std::string adress)
 void ZMQTransport::Send(const Packet& packet) {
   zmq::message_t message(sizeof(packet));
   memcpy(message.data(), &packet, sizeof(packet));
-  socket_.send(message);
+  if (send_without_client_) {
+    if (!socket_.send(message, ZMQ_DONTWAIT)) {
+      std::cout << "WARNING: No client available! Data is Lost!" << std::endl;
+    }
+  } else {
+    socket_.send(message);
+  }
 }
 
 std::vector<Packet> ZMQTransport::Receive() {
@@ -52,8 +58,13 @@ std::vector<Packet> ZMQTransport::Receive() {
     packets.push_back(*static_cast<contra::Packet*>(received_message.data()));
     received_message.rebuild();
   }
-
   return packets;
 }
+
+void ZMQTransport::SetSendWithoutClient(const bool send_without_client) {
+  send_without_client_ = send_without_client;
+}
+
+bool ZMQTransport::GetSendWithoutClient() const { return send_without_client_; }
 
 }  // namespace contra
