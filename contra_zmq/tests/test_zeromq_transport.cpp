@@ -36,11 +36,17 @@
 
 SCENARIO("Server and client creation ", "[contra][contra::ZMQTransport]") {
   WHEN("the Client is created before the server") {
-    THEN("it does not throw an error") {
-      REQUIRE_NOTHROW(contra::ZMQTransport(contra::ZMQTransport::Type::CLIENT,
-                                           "tcp://localhost:5555"));
-      REQUIRE_NOTHROW(contra::ZMQTransport(contra::ZMQTransport::Type::SERVER,
-                                           "tcp://*:5555"));
+    contra::ZMQTransport client(contra::ZMQTransport::Type::CLIENT,
+                                "tcp://localhost:5555");
+    // Waiit to make sure server is created late enough
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    contra::ZMQTransport server(contra::ZMQTransport::Type::SERVER,
+                                "tcp://*:5555");
+    THEN("the connection is not established") {
+      server.Send(test_utilities::ANY_PACKET);
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+      auto received_packets{client.Receive()};
+      REQUIRE(received_packets.empty());
     }
   }
 }
