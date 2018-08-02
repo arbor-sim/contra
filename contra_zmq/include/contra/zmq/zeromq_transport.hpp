@@ -51,6 +51,7 @@ class ZMQTransport {
  private:
   zmq::context_t context_;
   zmq::socket_t socket_;
+  std::vector<uint8_t> serialized_packet_;
 
   bool send_without_client_ = true;
 };
