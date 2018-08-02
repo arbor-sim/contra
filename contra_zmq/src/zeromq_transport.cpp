@@ -29,8 +29,11 @@
 
 namespace contra {
 
-ZMQTransport::ZMQTransport(const Type type, const std::string adress)
-    : context_(1), socket_(context_, ZMQ_DEALER) {
+ZMQTransport::ZMQTransport(const Type type, const std::string adress,
+                           bool wait_for_messages)
+    : context_(1),
+      socket_(context_, ZMQ_DEALER),
+      wait_for_messages_(wait_for_messages) {
   if (type == ZMQTransport::Type::SERVER) {
     socket_.bind(adress);
   } else if (type == ZMQTransport::Type::CLIENT) {
@@ -39,27 +42,41 @@ ZMQTransport::ZMQTransport(const Type type, const std::string adress)
 }
 
 void ZMQTransport::Send(const Packet& packet) {
-  serialized_packet_ = SerializePacket(packet);
-  auto size = sizeof(std::vector<uint8_t>) +
-              (sizeof(uint8_t) * serialized_packet_.size());
+  serialized_buffer_.push_back(SerializePacket(packet));
+  auto size =
+      sizeof(std::vector<uint8_t>) +
+      (sizeof(uint8_t) * serialized_buffer_.at(next_to_be_sent_).size());
 
+  size = sizeof(serialized_buffer_.at(next_to_be_sent_));
   zmq::message_t message(size);
-  memcpy(message.data(), &serialized_packet_, size);
+  memcpy(message.data(), &serialized_buffer_.at(next_to_be_sent_), size);
 
-  if (send_without_client_) {
+  if (!wait_for_messages_) {
     if (!socket_.send(message, ZMQ_DONTWAIT)) {
       std::cout << "WARNING: No client available! Data is Lost!" << std::endl;
     }
   } else {
     socket_.send(message);
   }
+  if (serialized_buffer_.size() > 10) {
+    serialized_buffer_.erase(serialized_buffer_.begin());
+  } else {
+    next_to_be_sent_++;
+  }
 }
 
 std::vector<Packet> ZMQTransport::Receive() {
   std::vector<Packet> packets;
   zmq::message_t received_message;
-
-  while (socket_.recv(&received_message, ZMQ_DONTWAIT)) {
+  if (!wait_for_messages_) {
+    while (socket_.recv(&received_message, ZMQ_DONTWAIT)) {
+      auto message =
+          *static_cast<std::vector<uint8_t>*>(received_message.data());
+      packets.push_back(DeserializePacket(message));
+      received_message.rebuild();
+    }
+  } else {
+    socket_.recv(&received_message);
     auto message = *static_cast<std::vector<uint8_t>*>(received_message.data());
     packets.push_back(DeserializePacket(message));
     received_message.rebuild();
@@ -67,10 +84,10 @@ std::vector<Packet> ZMQTransport::Receive() {
   return packets;
 }
 
-void ZMQTransport::SetSendWithoutClient(const bool send_without_client) {
-  send_without_client_ = send_without_client;
+void ZMQTransport::SetWaitForMessages(const bool SetWaitForMessages) {
+  wait_for_messages_ = SetWaitForMessages;
 }
 
-bool ZMQTransport::GetSendWithoutClient() const { return send_without_client_; }
+bool ZMQTransport::GetWaitForMessages() const { return wait_for_messages_; }
 
 }  // namespace contra

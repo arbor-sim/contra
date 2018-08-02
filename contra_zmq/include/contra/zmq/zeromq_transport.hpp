@@ -22,7 +22,6 @@
 #ifndef CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
 #define CONTRA_ZMQ_INCLUDE_CONTRA_ZMQ_ZEROMQ_TRANSPORT_HPP_
 
-#include <queue>
 #include <string>
 #include <vector>
 
@@ -35,7 +34,8 @@ class ZMQTransport {
  public:
   enum class Type { SERVER, CLIENT };
 
-  ZMQTransport(const Type t, const std::string adress);
+  ZMQTransport(const Type t, const std::string adress,
+               bool wait_for_messages = false);
   ZMQTransport(const ZMQTransport&) = delete;
   ZMQTransport(ZMQTransport&&) = default;
   ~ZMQTransport() = default;
@@ -45,15 +45,22 @@ class ZMQTransport {
   void Send(const Packet& packet);
   std::vector<Packet> Receive();
 
-  void SetSendWithoutClient(const bool send_without_client);
-  bool GetSendWithoutClient() const;
+  void SetWaitForMessages(const bool send_without_client);
+  bool GetWaitForMessages() const;
 
  private:
   zmq::context_t context_;
   zmq::socket_t socket_;
-  std::vector<uint8_t> serialized_packet_;
 
-  bool send_without_client_ = true;
+  // The idea behind this is that we need to store the messages until they are
+  // sent. So far i dont know how to ask ZMQ if the data was sent. I store a
+  // random amount of messages to make sure the data is not deleted before
+  // sending
+  std::vector<std::vector<uint8_t>> serialized_buffer_;
+  unsigned int next_to_be_sent_ = 0;
+  unsigned int max_buffer_size = 10;
+
+  bool wait_for_messages_;
 };
 
 }  // namespace contra
