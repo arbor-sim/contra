@@ -2,9 +2,9 @@
 // contra -- a lightweigth transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
-// Virtual Reality & Immersive Visualisation Group.
+// Virtual Reality & Immersive Visualization Group.
 //------------------------------------------------------------------------------
-//                                 License
+//                                  License
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,23 +19,21 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#ifndef CONTRA_INCLUDE_CONTRA_PACKET_HPP_
-#define CONTRA_INCLUDE_CONTRA_PACKET_HPP_
-
-#include <cstdint>
 #include <string>
-#include <vector>
 
-namespace contra {
+#include "contra_tests/suppress_warnings.hpp"
+SUPPRESS_WARNINGS_BEGIN
+#include "catch/catch.hpp"
+SUPPRESS_WARNINGS_END
 
-struct Packet {
-  std::string schema;
-  std::vector<uint8_t> data;
-};
+#include "contra/contra.hpp"
+#include "contra/packet.hpp"
 
-std::vector<uint8_t> SerializePacket(const Packet& packet);
-Packet DeserializePacket(const std::vector<uint8_t>& data);
+#include "contra/test_utilities/packet_matcher.hpp"
+#include "contra/test_utilities/test_data.hpp"
 
-}  // namespace contra
-
-#endif  // CONTRA_INCLUDE_CONTRA_PACKET_HPP_
+SCENARIO("check Packet (de-)serialization", "[contra][Packet]") {
+  auto data = contra::SerializePacket(test_utilities::ANY_PACKET);
+  auto packet = contra::DeserializePacket(data);
+  REQUIRE_THAT(packet, Equals(test_utilities::ANY_PACKET));
+}
