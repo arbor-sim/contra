@@ -58,21 +58,29 @@ find_package(PythonLibs REQUIRED)
 include(py.test)
 include(python_module)
 
-conan_or_find_package(boost_interprocess REQUIRED)
+
 conan_or_find_package(boost_python REQUIRED)
 
-option(WITH_TRANSPORT_BOOST_SHARED_MEMORY "build with boost shared memory transport layer"
-       OFF)
+option(WITH_TRANSPORT_ZEROMQ "build with ZEROMQ transport layer" OFF)
+option(WITH_TRANSPORT_BOOST_SHARED_MEMORY 
+       "build with boost shared memory transport layer" OFF)
 
-add_subdirectory(contra)
+if (WITH_TRANSPORT_ZEROMQ)
+  conan_or_find_package(cppzmq REQUIRED)
+  add_definitions(-DWITH_ZEROMQ_TRANSPORT=1)
+  add_subdirectory(contra_zmq)
+endif()
+
 if (WITH_TRANSPORT_BOOST_SHARED_MEMORY)
-  add_definitions(-DWITH_BOOST_SHARED_MEMORY_TRANSPORT="true")
+  conan_or_find_package(boost_interprocess REQUIRED)
+  add_definitions(-DWITH_BOOST_SHARED_MEMORY_TRANSPORT=1)
   add_subdirectory(contra_boost-shmem)
   add_subdirectory(helper_apps)
 endif()
+
+add_subdirectory(contra)
 add_subdirectory(pycontra)
 add_subdirectory(test_utilities)
-
 
 get_property(ALL_SOURCES GLOBAL PROPERTY RWTHVR_ALL_SOURCES)
 get_property(ALL_HEADERS GLOBAL PROPERTY RWTHVR_ALL_HEADERS)

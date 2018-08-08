@@ -87,40 +87,40 @@ test:windows:msvc++14.1:
     - python .gitlab-ci.py test Windows "Visual Studio" 15
   <<: *artifacts_definition
 
-deliver:windows:msvc++14.1:
-  stage: deliver
-  tags:
-    - msvc++14.1
-    - opengl
-  dependencies:
-    - test:windows:msvc++14.1
-  script:
-    - python .gitlab-ci.py deliver Windows "Visual Studio" 15
-  <<: *artifacts_definition
-  only:
-    *delivery_branches
+#deliver:windows:msvc++14.1:
+#  stage: deliver
+#  tags:
+#    - msvc++14.1
+#    - opengl
+#  dependencies:
+#    - test:windows:msvc++14.1
+#  script:
+#    - python .gitlab-ci.py deliver Windows "Visual Studio" 15
+#  <<: *artifacts_definition
+#  only:
+#    *delivery_branches
 
 #-------------------------------------------------------------------------------
 #  Linux
 #-------------------------------------------------------------------------------
 
-conan:linux:gcc5.3.1:
-  stage: conan
-  tags:
-    - gcc5.3.1
-    - opengl
-  script:
-    - python .gitlab-ci.py conan Linux gcc 5.3
-  <<: *artifacts_definition
-    
-conan:linux:gcc6.3.1:
-  stage: conan
-  tags:
-    - gcc6.3.1
-    - opengl
-  script:
-    - python .gitlab-ci.py conan Linux gcc 6.3
-  <<: *artifacts_definition
+#conan:linux:gcc5.3.1:
+#  stage: conan
+#  tags:
+#    - gcc5.3.1
+#    - opengl
+#  script:
+#    - python .gitlab-ci.py conan Linux gcc 5.3
+#  <<: *artifacts_definition
+#    
+#conan:linux:gcc6.3.1:
+#  stage: conan
+#  tags:
+#    - gcc6.3.1
+#    - opengl
+#  script:
+#    - python .gitlab-ci.py conan Linux gcc 6.3
+#  <<: *artifacts_definition
   
 conan:linux:gcc7.3.1:
   stage: conan
@@ -131,27 +131,27 @@ conan:linux:gcc7.3.1:
     - python .gitlab-ci.py conan Linux gcc 7.3
   <<: *artifacts_definition
 
-cmake:linux:gcc5.3.1:
-  stage: cmake
-  tags:
-    - gcc5.3.1
-    - opengl
-  dependencies:
-    - conan:linux:gcc5.3.1
-  script:
-    - python .gitlab-ci.py cmake Linux gcc 5.3
-  <<: *artifacts_definition
-
-cmake:linux:gcc6.3.1:
-  stage: cmake
-  tags:
-    - gcc6.3.1
-    - opengl
-  dependencies:
-    - conan:linux:gcc6.3.1
-  script:
-    - python .gitlab-ci.py cmake Linux gcc 6.3
-  <<: *artifacts_definition
+#cmake:linux:gcc5.3.1:
+#  stage: cmake
+#  tags:
+#    - gcc5.3.1
+#    - opengl
+#  dependencies:
+#    - conan:linux:gcc5.3.1
+#  script:
+#    - python .gitlab-ci.py cmake Linux gcc 5.3
+#  <<: *artifacts_definition
+#
+#cmake:linux:gcc6.3.1:
+#  stage: cmake
+#  tags:
+#    - gcc6.3.1
+#    - opengl
+#  dependencies:
+#    - conan:linux:gcc6.3.1
+#  script:
+#    - python .gitlab-ci.py cmake Linux gcc 6.3
+#  <<: *artifacts_definition
   
 cmake:linux:gcc7.3.1:
   stage: cmake
@@ -164,27 +164,27 @@ cmake:linux:gcc7.3.1:
     - python .gitlab-ci.py cmake Linux gcc 7.3
   <<: *artifacts_definition
 
-build:linux:gcc5.3.1:
-  stage: build
-  tags:
-    - gcc5.3.1
-    - opengl
-  dependencies:
-    - cmake:linux:gcc5.3.1
-  script:
-    - python .gitlab-ci.py build Linux gcc 5.3
-  <<: *artifacts_definition
-
-build:linux:gcc6.3.1:
-  stage: build
-  tags:
-    - gcc6.3.1
-    - opengl
-  dependencies:
-    - cmake:linux:gcc6.3.1
-  script:
-    - python .gitlab-ci.py build Linux gcc 6.3
-  <<: *artifacts_definition
+#build:linux:gcc5.3.1:
+#  stage: build
+#  tags:
+#    - gcc5.3.1
+#    - opengl
+#  dependencies:
+#    - cmake:linux:gcc5.3.1
+#  script:
+#    - python .gitlab-ci.py build Linux gcc 5.3
+#  <<: *artifacts_definition
+#
+#build:linux:gcc6.3.1:
+#  stage: build
+#  tags:
+#    - gcc6.3.1
+#    - opengl
+#  dependencies:
+#    - cmake:linux:gcc6.3.1
+#  script:
+#    - python .gitlab-ci.py build Linux gcc 6.3
+#  <<: *artifacts_definition
   
 build:linux:gcc7.3.1:
   stage: build
@@ -197,27 +197,27 @@ build:linux:gcc7.3.1:
     - python .gitlab-ci.py build Linux gcc 7.3
   <<: *artifacts_definition
 
-test:linux:gcc5.3.1:
-  stage: test
-  tags:
-    - gcc5.3.1
-    - opengl
-  dependencies:
-    - build:linux:gcc5.3.1
-  script:
-    - python .gitlab-ci.py test Linux gcc 5.3
-  <<: *artifacts_definition
-
-test:linux:gcc6.3.1:
-  stage: test
-  tags:
-    - gcc6.3.1
-    - opengl
-  dependencies:
-    - build:linux:gcc6.3.1
-  script:
-    - python .gitlab-ci.py test Linux gcc 6.3
-  <<: *artifacts_definition
+#test:linux:gcc5.3.1:
+#  stage: test
+#  tags:
+#    - gcc5.3.1
+#    - opengl
+#  dependencies:
+#    - build:linux:gcc5.3.1
+#  script:
+#    - python .gitlab-ci.py test Linux gcc 5.3
+#  <<: *artifacts_definition
+#
+#test:linux:gcc6.3.1:
+#  stage: test
+#  tags:
+#    - gcc6.3.1
+#    - opengl
+#  dependencies:
+#    - build:linux:gcc6.3.1
+#  script:
+#    - python .gitlab-ci.py test Linux gcc 6.3
+#  <<: *artifacts_definition
 
 test:linux:gcc7.3.1:
   stage: test
@@ -230,44 +230,44 @@ test:linux:gcc7.3.1:
     - python .gitlab-ci.py test Linux gcc 7.3
   <<: *artifacts_definition
 
-deliver:linux:gcc5.3.1:
-  stage: deliver
-  tags:
-    - gcc5.3.1
-    - opengl
-  dependencies:
-    - test:linux:gcc5.3.1
-  script:
-    - python .gitlab-ci.py deliver Linux gcc 5.3
-  <<: *artifacts_definition
-  only:
-    *delivery_branches
-
-deliver:linux:gcc6.3.1:
-  stage: deliver
-  tags:
-    - gcc6.3.1
-    - opengl
-  dependencies:
-    - test:linux:gcc6.3.1
-  script:
-    - python .gitlab-ci.py deliver Linux gcc 6.3
-  <<: *artifacts_definition
-  only:
-    *delivery_branches
-    
-deliver:linux:gcc7.3.1:
-  stage: deliver
-  tags:
-    - gcc7.3.1
-    - opengl
-  dependencies:
-    - test:linux:gcc7.3.1
-  script:
-    - python .gitlab-ci.py deliver Linux gcc 7.3
-  <<: *artifacts_definition
-  only:
-    *delivery_branches
+#deliver:linux:gcc5.3.1:
+#  stage: deliver
+#  tags:
+#    - gcc5.3.1
+#    - opengl
+#  dependencies:
+#    - test:linux:gcc5.3.1
+#  script:
+#    - python .gitlab-ci.py deliver Linux gcc 5.3
+#  <<: *artifacts_definition
+#  only:
+#    *delivery_branches
+#
+#deliver:linux:gcc6.3.1:
+#  stage: deliver
+#  tags:
+#    - gcc6.3.1
+#    - opengl
+#  dependencies:
+#    - test:linux:gcc6.3.1
+#  script:
+#    - python .gitlab-ci.py deliver Linux gcc 6.3
+#  <<: *artifacts_definition
+#  only:
+#    *delivery_branches
+#    
+#deliver:linux:gcc7.3.1:
+#  stage: deliver
+#  tags:
+#    - gcc7.3.1
+#    - opengl
+#  dependencies:
+#    - test:linux:gcc7.3.1
+#  script:
+#    - python .gitlab-ci.py deliver Linux gcc 7.3
+#  <<: *artifacts_definition
+#  only:
+#    *delivery_branches
 
 #-------------------------------------------------------------------------------
 #  MacOS
@@ -311,14 +311,68 @@ test:mac:clang9.1:
     - python .gitlab-ci.py test macOS apple-clang 9.1
   <<: *artifacts_definition
 
-deliver:mac:clang9.1:
-  stage: deliver
-  tags:
-    - osx
-  dependencies:
-    - test:mac:clang9.1
-  script:
-    - python .gitlab-ci.py deliver macOS apple-clang 9.1
-  <<: *artifacts_definition
-  only:
-    *delivery_branches
+#deliver:mac:clang9.1:
+#  stage: deliver
+#  tags:
+#    - osx
+#  dependencies:
+#    - test:mac:clang9.1
+#  script:
+#    - python .gitlab-ci.py deliver macOS apple-clang 9.1
+#  <<: *artifacts_definition
+#  only:
+#    *delivery_branches
+#
+#deliver:mac:gcc5:
+#  stage: deliver
+#  tags:
+#    - osx
+#  only:
+#    - schedules
+#  dependencies:
+#    - test:mac:gcc5
+#  script:
+#    - python .gitlab-ci.py deliver macOS gcc 5
+#  <<: *artifacts_definition
+#  only:
+#    *delivery_branches
+#
+#deliver:mac:gcc6:
+#  stage: deliver
+#  tags:
+#    - osx
+#  only:
+#    - schedules
+#  dependencies:
+#    - test:mac:gcc6
+#  script:
+#    - python .gitlab-ci.py deliver macOS gcc 6
+#  <<: *artifacts_definition
+#  only:
+#    *delivery_branches
+#
+#deliver:mac:gcc7:
+#  stage: deliver
+#  tags:
+#    - osx
+#  only:
+#    - schedules
+#  dependencies:
+#    - test:mac:gcc7
+#  script:
+#    - python .gitlab-ci.py deliver macOS gcc 7
+#  <<: *artifacts_definition
+#  only:
+#    *delivery_branches
+#
+#deliver:mac:clang9.1:
+#  stage: deliver
+#  tags:
+#    - osx
+#  dependencies:
+#    - test:mac:clang9.1
+#  script:
+#    - python .gitlab-ci.py deliver macOS apple-clang 9.1
+#  <<: *artifacts_definition
+#  only:
+#    *delivery_branches
