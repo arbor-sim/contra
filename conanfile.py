@@ -25,16 +25,17 @@ from conans import ConanFile, CMake
 class contra(ConanFile):
     name = "contra"
     version = "18.07"
-    license = "Apache License, Version 2.0"
+    license = "Apache License, Version 2.0 if with_transport_zeromq=False, LGPL-3.0 otherwise"
     description = """Contra, a lightweight transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "*"
     url = "https://devhub.vr.rwth-aachen.de/VR-Group/contra"
-    options = {"with_transport_boost_shared_memory": [True, False], "with_transport_zeromq": [True, False]}
+    options = {"with_transport_boost_shared_memory": [
+        True, False], "with_transport_zeromq": [True, False]}
     default_options = "with_transport_boost_shared_memory=True", "with_transport_zeromq=True"
 
     generators = "cmake"
-    
+
     def requirements(self):
         self.requires("catch/1.12.0@RWTH-VR/thirdparty")
         self.requires("cpplint/e8ffd7c@RWTH-VR/thirdparty")
@@ -45,8 +46,7 @@ class contra(ConanFile):
             self.requires("boost_interprocess/1.66.0@bincrafters/testing")
         if (self.options.with_transport_zeromq):
             self.requires("cppzmq/4.2.2@bincrafters/stable")
-        
-         
+
     def configure(self):
         self.options["boost"].header_only = False
         self.options["boost"].shared = True
@@ -69,11 +69,14 @@ class contra(ConanFile):
     def build(self):
         cmake = CMake(self)
         if (self.options.with_transport_boost_shared_memory) and (self.options.with_transport_zeromq):
-            cmake.configure(defs='-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON -DWITH_TRANSPORT_ZEROMQ=ON', source_folder='.')
+            cmake.configure(
+                defs='-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON -DWITH_TRANSPORT_ZEROMQ=ON', source_folder='.')
         elif (self.options.with_transport_boost_shared_memory):
-            cmake.configure(defs='-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON', source_folder='.')
+            cmake.configure(
+                defs='-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON', source_folder='.')
         elif (self.options.with_transport_zeromq):
-            cmake.configure(defs='-DWITH_TRANSPORT_ZEROMQ=ON', source_folder='.')
+            cmake.configure(defs='-DWITH_TRANSPORT_ZEROMQ=ON',
+                            source_folder='.')
         else:
             cmake.configure(source_folder='.')
         cmake.build()
@@ -83,7 +86,8 @@ class contra(ConanFile):
         self.copy("*.hpp", dst="include", src="build/contra/include")
         if (self.options.with_transport_boost_shared_memory):
             self.copy("*.hpp", dst="include", src="contra_boost-shmem/include")
-            self.copy("*.hpp", dst="include", src="build/contra_boost-shmem/include")
+            self.copy("*.hpp", dst="include",
+                      src="build/contra_boost-shmem/include")
         if (self.options.with_transport_zeromq):
             self.copy("*.hpp", dst="include", src="contra_zmq/include")
             self.copy("*.hpp", dst="include", src="build/contra_zmq/include")
