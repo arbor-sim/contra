@@ -24,7 +24,7 @@ from conans import ConanFile, CMake
 
 class contra(ConanFile):
     name = "contra"
-    version = "18.07"
+    version = "18.22"
     license = "Apache License, Version 2.0"
     description = """Contra, a lightweight transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
@@ -69,13 +69,13 @@ class contra(ConanFile):
     def build(self):
         cmake = CMake(self)
         if (self.options.with_transport_boost_shared_memory) and (self.options.with_transport_zeromq):
-            cmake.configure(defs='-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON -DWITH_TRANSPORT_ZEROMQ=ON', source_folder='.')
+            cmake.definitions["WITH_TRANSPORT_BOOST_SHARED_MEMORY"] = True
+            cmake.definitions["WITH_TRANSPORT_ZEROMQ"] = True
         elif (self.options.with_transport_boost_shared_memory):
-            cmake.configure(defs='-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON', source_folder='.')
+            cmake.definitions["WITH_TRANSPORT_BOOST_SHARED_MEMORY"] = True
         elif (self.options.with_transport_zeromq):
-            cmake.configure(defs='-DWITH_TRANSPORT_ZEROMQ=ON', source_folder='.')
-        else:
-            cmake.configure(source_folder='.')
+            cmake.definitions["WITH_TRANSPORT_ZEROMQ"] = True
+        cmake.configure(source_folder='.')
         cmake.build()
 
     def package(self):
