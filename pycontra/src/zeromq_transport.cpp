@@ -19,7 +19,6 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-
 #include <string>
 
 #include "contra/zmq/zeromq_transport.hpp"
@@ -30,22 +29,25 @@ namespace pycontra {
 
 SUPPRESS_WARNINGS_BEGIN
 boost::python::list ZMQTransportReceive(
-  contra::ZMQTransport* contra_ZMQTransport) {
+    contra::ZMQTransport* contra_ZMQTransport) {
   boost::python::list ret_val;
-for (const auto& node : contra_ZMQTransport->Receive()) {
-  ret_val.append(node);
-}
-return ret_val;
+  for (const auto& node : contra_ZMQTransport->Receive()) {
+    ret_val.append(node);
+  }
+  return ret_val;
 }
 SUPPRESS_WARNINGS_END
 
-
 template <>
 void expose<contra::ZMQTransport>() {
+  enum_<contra::ZMQTransport::Type>("ZMQTransportType")
+      .value(ZMQTransport::Type::SERVER, "Server")
+      .value(ZMQTransport::Type::CLIENT, "Client");
+
   class_<contra::ZMQTransport, boost::noncopyable>(
-    "ZMQTransport", init<const std::string&>())
-    .def("Send", &contra::ZMQTransport::Send)
-    .def("Receive", &ZMQTransportReceive);
+      "ZMQTransport", init<ZMQTransport::Type, const std::string&, bool>())
+      .def("Send", &contra::ZMQTransport::Send)
+      .def("Receive", &ZMQTransportReceive);
 }
 
 }  // namespace pycontra
