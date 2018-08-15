@@ -52,6 +52,8 @@ else()
      INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
     LINK_LIBRARIES contra
       ${CONAN_OR_CMAKE_boost_python}
+    LINK_LIBRARIES contra_zmq
+      ${CONAN_OR_CMAKE_boost_python}
     OUTPUT_DIRECTORY ${PYCONTRA_OUTPUT_DIR}
     )
 endif()
