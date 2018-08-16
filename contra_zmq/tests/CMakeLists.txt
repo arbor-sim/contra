@@ -57,7 +57,7 @@ set(CONTRA_TEST_ARGUMENTS ""
 add_test(NAME contra_zmq_tests
   COMMAND contra_zmq_tests ${CONTRA_TESTS_ARGUMENTS}
   )
-set_tests_properties(contra_zmq_tests PROPERTIES TIMEOUT 2.0)
+set_tests_properties(contra_zmq_tests PROPERTIES TIMEOUT 10.0)
 
 target_link_libraries(contra_zmq_tests
   PRIVATE contra
