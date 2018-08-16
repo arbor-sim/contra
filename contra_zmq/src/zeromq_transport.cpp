@@ -60,13 +60,9 @@ ZMQTransport::ZMQTransport(const Type type, const std::string adress,
 
 void ZMQTransport::Send(const Packet& packet) {
   serialized_buffer_.push_back(SerializePacket(packet));
-  auto size =
-      sizeof(std::vector<uint8_t>) +
-      (sizeof(uint8_t) * serialized_buffer_.at(next_to_be_sent_).size());
-
-  size = sizeof(serialized_buffer_.at(next_to_be_sent_));
+  auto size = serialized_buffer_.at(next_to_be_sent_).size();
   zmq::message_t message(size);
-  memcpy(message.data(), &serialized_buffer_.at(next_to_be_sent_), size);
+  memcpy(message.data(), serialized_buffer_.at(next_to_be_sent_).data(), size);
 
   if (!wait_for_messages_) {
     if (!socket_.send(message, ZMQ_DONTWAIT)) {
@@ -87,14 +83,17 @@ std::vector<Packet> ZMQTransport::Receive() {
   zmq::message_t received_message;
   if (!wait_for_messages_) {
     while (socket_.recv(&received_message, ZMQ_DONTWAIT)) {
-      auto message =
-          *static_cast<std::vector<uint8_t>*>(received_message.data());
+      std::vector<uint8_t> message(received_message.size());
+      std::memcpy(message.data(), received_message.data(),
+                  received_message.size());
       packets.push_back(DeserializePacket(message));
       received_message.rebuild();
     }
   } else {
     socket_.recv(&received_message);
-    auto message = *static_cast<std::vector<uint8_t>*>(received_message.data());
+    std::vector<uint8_t> message(received_message.size());
+    std::memcpy(message.data(), received_message.data(),
+                received_message.size());
     packets.push_back(DeserializePacket(message));
     received_message.rebuild();
   }
