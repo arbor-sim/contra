@@ -45,8 +45,11 @@
 #include "contra/packet.hpp"
 #include "zmq.hpp"
 
+#include "contra/zmq/suppress_warnings.hpp"
+
 namespace contra {
 
+SUPPRESS_WARNINGS_BEGIN_PADDED
 class ZMQTransport {
  public:
   enum class Type { SERVER, CLIENT };
@@ -79,6 +82,7 @@ class ZMQTransport {
 
   bool wait_for_messages_;
 };
+SUPPRESS_WARNINGS_END
 
 }  // namespace contra
 
