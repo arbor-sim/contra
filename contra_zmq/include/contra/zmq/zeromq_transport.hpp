@@ -75,7 +75,7 @@ class ZMQTransport {
   // sending
   std::vector<std::vector<uint8_t>> serialized_buffer_;
   unsigned int next_to_be_sent_ = 0;
-  unsigned int max_buffer_size = 10;
+  unsigned int max_buffer_size_ = 10;
 
   bool wait_for_messages_;
 };

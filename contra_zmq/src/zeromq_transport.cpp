@@ -75,7 +75,7 @@ void ZMQTransport::Send(const Packet& packet) {
   } else {
     socket_.send(message);
   }
-  if (serialized_buffer_.size() > 10) {
+  if (serialized_buffer_.size() > max_buffer_size_) {
     serialized_buffer_.erase(serialized_buffer_.begin());
   } else {
     next_to_be_sent_++;
