@@ -54,7 +54,7 @@ class ZMQTransport {
  public:
   enum class Type { SERVER, CLIENT };
 
-  ZMQTransport(const Type t, const std::string adress,
+  ZMQTransport(const Type t, const std::string& address,
                bool wait_for_messages = false);
   ZMQTransport(const ZMQTransport&) = delete;
   ZMQTransport(ZMQTransport&&) = default;

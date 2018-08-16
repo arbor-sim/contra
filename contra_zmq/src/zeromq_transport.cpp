@@ -46,15 +46,15 @@
 
 namespace contra {
 
-ZMQTransport::ZMQTransport(const Type type, const std::string adress,
+ZMQTransport::ZMQTransport(const Type type, const std::string& address,
                            bool wait_for_messages)
     : context_(1),
       socket_(context_, ZMQ_DEALER),
       wait_for_messages_(wait_for_messages) {
   if (type == ZMQTransport::Type::SERVER) {
-    socket_.bind(adress);
+    socket_.bind(address);
   } else if (type == ZMQTransport::Type::CLIENT) {
-    socket_.connect(adress);
+    socket_.connect(address);
   }
 }
 
