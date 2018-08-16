@@ -45,12 +45,30 @@ SUPPRESS_WARNINGS_END
 
 #include "contra/contra.hpp"
 #include "contra/packet.hpp"
+#include "conduit/conduit_node.hpp"
 
 #include "contra/test_utilities/packet_matcher.hpp"
 #include "contra/test_utilities/test_data.hpp"
+#include "contra/test_utilities/conduit_data.hpp"
 
 SCENARIO("check Packet (de-)serialization", "[contra][Packet]") {
   auto data = contra::SerializePacket(test_utilities::ANY_PACKET);
   auto packet = contra::DeserializePacket(data);
   REQUIRE_THAT(packet, Equals(test_utilities::ANY_PACKET));
+}
+
+SCENARIO("check ANY_NODE (de-)serialization", "[contra][Packet]") {
+  contra::Packet source_packet;
+
+  const conduit::Node node = test_utilities::ANY_NODE;
+  const conduit::Schema schema{node.schema()};
+  conduit::Schema compact_schema;
+  schema.compact_to(compact_schema);
+  source_packet.schema = compact_schema.to_json();
+
+  node.serialize(source_packet.data);
+
+  auto data = contra::SerializePacket(source_packet);
+  auto packet = contra::DeserializePacket(data);
+  REQUIRE_THAT(packet, Equals(source_packet));
 }

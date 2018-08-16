@@ -62,8 +62,7 @@ std::vector<uint8_t> SerializePacket(const Packet& packet) {
   std::memcpy(message.data() + schema_offset, packet.schema.c_str(),
               schema_size);
   std::memcpy(message.data() + data_size_offset, &data_size, sizeof(data_size));
-  std::memcpy(message.data() + data_offset, packet.data.data(),
-              sizeof(data_size));
+  std::memcpy(message.data() + data_offset, packet.data.data(), data_size);
 
   return message;
 }
