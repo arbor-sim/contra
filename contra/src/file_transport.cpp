@@ -59,27 +59,16 @@ void FileTransport::Send(const Packet& packet) {
   std::ofstream stream(filename_, std::fstream::binary);
 
   stream.write(kSignature, kSignatureLength);
-  WriteSchema(packet.schema, &stream);
-  WriteData(packet.data, &stream);
-}
+  auto serialized_packet = SerializePacket(packet);
+  const std::size_t size = serialized_packet.size();
 
-void FileTransport::WriteSchema(const std::string& schema,
-                                std::ofstream* stream) const {
-  const std::size_t size = schema.size();
-  stream->write(reinterpret_cast<const char*>(&size), sizeof(size));
-  *stream << schema;
-}
-
-void FileTransport::WriteData(const std::vector<uint8_t>& data,
-                              std::ofstream* stream) const {
-  const std::size_t size = data.size();
-  stream->write(reinterpret_cast<const char*>(&size), sizeof(size));
-  stream->write(reinterpret_cast<const char*>(data.data()),
-                static_cast<std::streamsize>(data.size()));
+  stream.write(reinterpret_cast<const char*>(&size), sizeof(size));
+  stream.write(reinterpret_cast<const char*>(serialized_packet.data()),
+               static_cast<std::streamsize>(serialized_packet.size()));
 }
 
 std::vector<Packet> FileTransport::Receive() {
-  Packet return_packet;
+  std::vector<Packet> return_packets;
 
   std::ifstream stream(filename_, std::fstream::binary);
 
@@ -88,10 +77,15 @@ std::vector<Packet> FileTransport::Receive() {
     return {};
   }
 
-  return_packet.schema = ReadSchema(&stream);
-  return_packet.data = ReadData(&stream);
+  std::streamsize size = 0u;
+  stream.read(reinterpret_cast<char*>(&size), sizeof(size));
 
-  return {return_packet};
+  std::vector<uint8_t> serialized_packet(static_cast<std::size_t>(size), 0x00);
+  stream.read(reinterpret_cast<char*>(serialized_packet.data()), size);
+
+  return_packets.push_back(DeserializePacket(serialized_packet));
+
+  return return_packets;
 }
 
 bool FileTransport::ReadAndCheckSignature(std::ifstream* stream) const {
@@ -99,26 +93,6 @@ bool FileTransport::ReadAndCheckSignature(std::ifstream* stream) const {
   stream->read(signature_buffer.data(), kSignatureLength);
   return std::string(signature_buffer.data()) ==
          std::string(kSignature, kSignature + kSignatureLength);
-}
-
-std::string FileTransport::ReadSchema(std::ifstream* stream) const {
-  std::streamsize size = 0u;
-  stream->read(reinterpret_cast<char*>(&size), sizeof(size));
-
-  std::vector<char> schema(static_cast<std::size_t>(size + 1), 0x00);
-  stream->read(schema.data(), size);
-
-  return std::string(schema.data());
-}
-
-std::vector<uint8_t> FileTransport::ReadData(std::ifstream* stream) const {
-  std::streamsize size = 0u;
-  stream->read(reinterpret_cast<char*>(&size), sizeof(size));
-
-  std::vector<uint8_t> data(static_cast<std::size_t>(size), 0x00);
-  stream->read(reinterpret_cast<char*>(data.data()), size);
-
-  return data;
 }
 
 }  // namespace contra
