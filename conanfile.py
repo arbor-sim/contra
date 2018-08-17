@@ -112,6 +112,8 @@ class contra(ConanFile):
         self.copy("*.a", dst="lib", keep_path=False)
         self.copy("*.dylib", dst="lib", keep_path=False, symlinks=True)
 
+        self.copy("pycontra/pycontra/*", dst="pycontra", keep_path=False)
+
     def package_info(self):
         if (self.options.with_transport_boost_shared_memory) and (self.options.with_transport_zeromq):
             self.cpp_info.libs = ["contra", "contra_boost-shmem", "contra_zmq"]
