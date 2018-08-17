@@ -56,20 +56,25 @@ FileTransport::FileTransport(const std::string& filename)
     : filename_{filename} {}
 
 void FileTransport::Send(const Packet& packet) {
-  std::ofstream stream(filename_, std::fstream::binary);
+  std::ofstream stream;
+  if (first_time_sending_) {
+    stream.open(filename_, std::fstream::binary);
+    stream.write(kSignature, kSignatureLength);
+    first_time_sending_ = false;
+  } else {
+    stream.open(filename_, std::fstream::app | std::fstream::binary);
+  }
 
-  stream.write(kSignature, kSignatureLength);
   auto serialized_packet = SerializePacket(packet);
   const std::size_t size = serialized_packet.size();
-
   stream.write(reinterpret_cast<const char*>(&size), sizeof(size));
   stream.write(reinterpret_cast<const char*>(serialized_packet.data()),
                static_cast<std::streamsize>(serialized_packet.size()));
+  stream.close();
 }
 
 std::vector<Packet> FileTransport::Receive() {
   std::vector<Packet> return_packets;
-
   std::ifstream stream(filename_, std::fstream::binary);
 
   if (!ReadAndCheckSignature(&stream)) {
@@ -77,14 +82,20 @@ std::vector<Packet> FileTransport::Receive() {
     return {};
   }
 
-  std::streamsize size = 0u;
-  stream.read(reinterpret_cast<char*>(&size), sizeof(size));
+  while (!stream.eof()) {
+    std::streamsize size = 0u;
+    stream.read(reinterpret_cast<char*>(&size), sizeof(size));
 
-  std::vector<uint8_t> serialized_packet(static_cast<std::size_t>(size), 0x00);
-  stream.read(reinterpret_cast<char*>(serialized_packet.data()), size);
+    if (size == 0) {
+      break;
+    }
 
-  return_packets.push_back(DeserializePacket(serialized_packet));
+    std::vector<uint8_t> serialized_packet(static_cast<std::size_t>(size),
+                                           0x00);
+    stream.read(reinterpret_cast<char*>(serialized_packet.data()), size);
 
+    return_packets.push_back(DeserializePacket(serialized_packet));
+  }
   return return_packets;
 }
 

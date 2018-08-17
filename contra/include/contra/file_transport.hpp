@@ -64,6 +64,8 @@ class FileTransport {
 
   static const unsigned int kSignatureLength{6};
   static const char kSignature[kSignatureLength];
+
+  bool first_time_sending_ = true;
 };
 
 }  // namespace contra
