@@ -43,7 +43,9 @@
 #include <vector>
 
 #include "contra/packet.hpp"
+#include "contra/suppress_warnings.hpp"
 
+SUPPRESS_WARNINGS_BEGIN_PADDED
 namespace contra {
 
 class FileTransport {
@@ -67,6 +69,7 @@ class FileTransport {
 
   bool first_time_sending_ = true;
 };
+SUPPRESS_WARNINGS_END
 
 }  // namespace contra
 
