@@ -29,6 +29,10 @@
 #include "contra/boost-shmem/shared_memory_transport.hpp"
 #endif  // WITH_BOOST_SHARED_MEMORY_TRANSPORT
 
+#ifdef WITH_ZEROMQ_SHARED_MEMORY_TRANSPORT
+#include "contra/zmq/zeromq_transport.hpp"
+#endif  // WITH_ZEROMQ_SHARED_MEMORY_TRANSPORT
+
 #include "pycontra/suppress_warnings.hpp"
 
 namespace pycontra {
@@ -47,6 +51,9 @@ extern template void expose<contra::Relay<contra::FileTransport>>();
 #ifdef WITH_BOOST_SHARED_MEMORY_TRANSPORT
 extern template void expose<contra::Relay<contra::SharedMemoryTransport>>();
 #endif  // WITH_BOOST_SHARED_MEMORY_TRANSPORT
+#ifdef WITH_ZEROMQ_SHARED_MEMORY_TRANSPORT
+extern template void expose<contra::ZMQTransport>();
+#endif  // WITH_ZEROMQ_SHARED_MEMORY_TRANSPORT
 
 SUPPRESS_WARNINGS_BEGIN
 // cppcheck-suppress unusedFunction
