@@ -47,22 +47,22 @@
 #include "contra/test_utilities/conduit_node_matcher.hpp"
 
 template <typename Class, typename Tuple, std::size_t... Inds>
-Class help_make_SomeClass(Tuple&& tuple, std::index_sequence<Inds...>) {
+Class HelpGenerateClass(Tuple&& tuple, std::index_sequence<Inds...>) {
   return Class(std::get<Inds>(std::forward<Tuple>(tuple))...);
 }
 
 template <typename Class, typename Tuple>
-Class make_SomeClass(Tuple&& tuple) {
-  return help_make_SomeClass<Class>(
+Class GenerateClass(Tuple&& tuple) {
+  return HelpGenerateClass<Class>(
       std::forward<Tuple>(tuple),
       std::make_index_sequence<std::tuple_size<Tuple>::value>());
 }
 
 #define RELAY_TRANSPORT_TEST(transport_type, sender_params, receiver_params) \
   contra::Relay<transport_type> sender =                                     \
-      make_SomeClass<contra::Relay<transport_type>>(sender_params);          \
+      GenerateClass<contra::Relay<transport_type>>(sender_params);           \
   contra::Relay<transport_type> receiver =                                   \
-      make_SomeClass<contra::Relay<transport_type>>(receiver_params);        \
+      GenerateClass<contra::Relay<transport_type>>(receiver_params);         \
                                                                              \
   sender.Send(test_utilities::ANY_NODE);                                     \
   const auto received_nodes = receiver.Receive();                            \
