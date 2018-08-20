@@ -42,8 +42,8 @@
 #include <string>
 #include <vector>
 
-#include "contra/packet.hpp"
 #include "contra/boost-shmem/suppress_warnings.hpp"
+#include "contra/packet.hpp"
 
 #ifdef _WIN32
 #define BOOST_INTERPROCESS_SHARED_DIR_FUNC
@@ -91,7 +91,7 @@ class SharedMemoryTransport {
 
   explicit SharedMemoryTransport(const std::string& name = kDefaultName);
   SharedMemoryTransport(const SharedMemoryTransport&) = delete;
-  SharedMemoryTransport(SharedMemoryTransport&&) = delete;
+  SharedMemoryTransport(SharedMemoryTransport&&) = default;
   ~SharedMemoryTransport();
 
   static void Destroy(const std::string& name = kDefaultName);
