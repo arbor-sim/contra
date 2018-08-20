@@ -63,6 +63,9 @@ BOOST_PYTHON_MODULE(_pycontra) {
 #ifdef WITH_BOOST_SHARED_MEMORY_TRANSPORT
   expose<contra::Relay<contra::SharedMemoryTransport>>();
 #endif  // WITH_BOOST_SHARED_MEMORY_TRANSPORT
+#ifdef WITH_ZEROMQ_SHARED_MEMORY_TRANSPORT
+  expose<contra::ZMQTransport>();
+#endif  // WITH_ZEROMQ_SHARED_MEMORY_TRANSPORT
   def("AnyNode", &AnyNode);
   class_<conduit::Node>("Node").def("Update", &conduit::Node::update);
 }
