@@ -68,3 +68,27 @@ SCENARIO("a Packet can be transported", "[contra][contra::FileTransport]") {
     }
   }
 }
+
+SCENARIO("Multiple packets are transported",
+         "[contra][contra::FileTransport]") {
+  GIVEN("a file transport pair") {
+    contra::FileTransport sender("tmp.contra");
+    contra::FileTransport receiver("tmp.contra");
+
+    WHEN("Multiple packets are sent and received") {
+      sender.Send(test_utilities::ANY_PACKET);
+      sender.Send(test_utilities::ANOTHER_PACKET);
+      sender.Send(test_utilities::THIRD_PACKET);
+
+      const auto received_packets = receiver.Receive();
+
+      THEN("they arrive correctly") {
+        REQUIRE(received_packets.size() == 3);
+        REQUIRE_THAT(received_packets[0], Equals(test_utilities::ANY_PACKET));
+        REQUIRE_THAT(received_packets[1],
+                     Equals(test_utilities::ANOTHER_PACKET));
+        REQUIRE_THAT(received_packets[2], Equals(test_utilities::THIRD_PACKET));
+      }
+    }
+  }
+}
