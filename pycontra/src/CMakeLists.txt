@@ -27,6 +27,10 @@ if(NOT WITH_TRANSPORT_BOOST_SHARED_MEMORY)
   list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/shared_memory_transport_relay.cpp")
 endif()
 
+if(NOT WITH_TRANSPORT_ZEROMQ)
+  list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/zeromq_transport.cpp")
+endif()
+
 set(PYCONTRA_OUTPUT_DIR
   ${CMAKE_CURRENT_BINARY_DIR}/../pycontra
   CACHE PATH "Output path for pycontra python module"
