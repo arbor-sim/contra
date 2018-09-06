@@ -116,10 +116,10 @@ class contra(ConanFile):
 
     def package_info(self):
         if (self.options.with_transport_boost_shared_memory) and (self.options.with_transport_zeromq):
-            self.cpp_info.libs = ["contra", "contra_boost-shmem", "contra_zmq"]
+            self.cpp_info.libs = ["contra_zmq", "contra_boost-shmem", "contra"]
         elif not(self.options.with_transport_zeromq):
-            self.cpp_info.libs = ["contra",  "contra_boost-shmem"]
+            self.cpp_info.libs = [ "contra_boost-shmem", "contra"]
         elif not(self.options.with_transport_boost_shared_memory):
-            self.cpp_info.libs = ["contra",  "contra_zmq"]
+            self.cpp_info.libs = ["contra_zmq", "contra"]
         else:
             self.cpp_info.libs = ["contra"]
