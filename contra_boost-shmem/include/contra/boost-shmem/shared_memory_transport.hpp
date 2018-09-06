@@ -91,7 +91,7 @@ class SharedMemoryTransport {
 
   explicit SharedMemoryTransport(const std::string& name = kDefaultName);
   SharedMemoryTransport(const SharedMemoryTransport&) = delete;
-  SharedMemoryTransport(SharedMemoryTransport&&) = default;
+  SharedMemoryTransport(SharedMemoryTransport&&) = delete;
   ~SharedMemoryTransport();
 
   static void Destroy(const std::string& name = kDefaultName);

@@ -40,11 +40,10 @@
 
 #include "contra/boost-shmem/shared_memory_transport.hpp"
 #include "contra/relay.hpp"
-#include "contra/test_utilities/relay_test_macro.hpp"
+#include "contra/test_utilities/relay_test.hpp"
 
 SCENARIO("Data gets transported via SharedMemoryTransport",
          "[contra][contra::Relay]") {
-  RELAY_TRANSPORT_TEST(contra::SharedMemoryTransport,
-                       std::make_tuple("contraTestRelay"),
-                       std::make_tuple("contraTestRelay"));
+  test_utilities::TestTransportRelay<contra::SharedMemoryTransport>(
+      std::make_tuple(), std::make_tuple());
 }

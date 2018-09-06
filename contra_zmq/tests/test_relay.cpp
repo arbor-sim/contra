@@ -39,12 +39,11 @@
 #include "catch/catch.hpp"
 
 #include "contra/relay.hpp"
-#include "contra/test_utilities/relay_test_macro.hpp"
+#include "contra/test_utilities/relay_test.hpp"
 #include "contra/zmq/zeromq_transport.hpp"
 
 SCENARIO("Data gets transported via ZMQTransport", "[contra][contra::Relay]") {
-  RELAY_TRANSPORT_TEST(
-      contra::ZMQTransport,
+  test_utilities::TestTransportRelay<contra::ZMQTransport>(
       std::make_tuple(contra::ZMQTransport::Type::SERVER, "tcp://*:5555", true),
       std::make_tuple(contra::ZMQTransport::Type::CLIENT,
                       "tcp://localhost:5555", true));

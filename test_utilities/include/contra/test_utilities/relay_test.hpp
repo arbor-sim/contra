@@ -39,35 +39,51 @@
 #ifndef TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_RELAY_TEST_MACRO_HPP_
 #define TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_RELAY_TEST_MACRO_HPP_
 
+#include <memory>
 #include <utility>
 
 #include "catch/catch.hpp"
 
+#include "contra/relay.hpp"
 #include "contra/test_utilities/conduit_data.hpp"
 #include "contra/test_utilities/conduit_node_matcher.hpp"
 
-template <typename Class, typename Tuple, std::size_t... Inds>
-Class HelpGenerateClass(Tuple&& tuple, std::index_sequence<Inds...>) {
-  return Class(std::get<Inds>(std::forward<Tuple>(tuple))...);
+namespace test_utilities {
+template <typename T, typename ConstructorTuple,
+          std::size_t... CONSTRUCTOR_INDICES>
+std::unique_ptr<T> MakeUniqueFromTupleHelper(
+    ConstructorTuple&& constructor_arguments,
+    std::index_sequence<CONSTRUCTOR_INDICES...>) {
+  return std::make_unique<T>(
+      std::get<CONSTRUCTOR_INDICES>(constructor_arguments)...);
 }
 
-template <typename Class, typename Tuple>
-Class GenerateClass(Tuple&& tuple) {
-  return HelpGenerateClass<Class>(
-      std::forward<Tuple>(tuple),
-      std::make_index_sequence<std::tuple_size<Tuple>::value>());
+template <typename T, typename ConstructorTuple>
+std::unique_ptr<T> MakeUniqueFromTuple(
+    ConstructorTuple&& constructor_arguments) {
+  return MakeUniqueFromTupleHelper<T>(
+      std::forward<ConstructorTuple>(constructor_arguments),
+      std::make_index_sequence<std::tuple_size<ConstructorTuple>::value>());
 }
 
-#define RELAY_TRANSPORT_TEST(transport_type, sender_params, receiver_params) \
-  contra::Relay<transport_type> sender =                                     \
-      GenerateClass<contra::Relay<transport_type>>(sender_params);           \
-  contra::Relay<transport_type> receiver =                                   \
-      GenerateClass<contra::Relay<transport_type>>(receiver_params);         \
-                                                                             \
-  sender.Send(test_utilities::ANY_NODE);                                     \
-  const auto received_nodes = receiver.Receive();                            \
-                                                                             \
-  REQUIRE(received_nodes.size() == 1);                                       \
+template <typename SenderTransportType,
+          typename ReceiverTransportType = SenderTransportType,
+          typename SenderConstructorParameters,
+          typename ReceiverConstructorParameters>
+void TestTransportRelay(
+    SenderConstructorParameters&& sender_parameters = std::make_tuple(),
+    ReceiverConstructorParameters&& receiver_parameters = std::make_tuple()) {
+  auto sender = MakeUniqueFromTuple<contra::Relay<SenderTransportType>>(
+      std::forward<SenderConstructorParameters>(sender_parameters));
+  auto receiver = MakeUniqueFromTuple<contra::Relay<ReceiverTransportType>>(
+      std::forward<ReceiverConstructorParameters>(receiver_parameters));
+
+  sender->Send(test_utilities::ANY_NODE);
+  const auto received_nodes = receiver->Receive();
+
+  REQUIRE(received_nodes.size() == 1);
   REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
+}
+}  // namespace test_utilities
 
 #endif  // TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_RELAY_TEST_MACRO_HPP_

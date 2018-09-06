@@ -40,10 +40,10 @@
 
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
-#include "contra/test_utilities/relay_test_macro.hpp"
+#include "contra/test_utilities/relay_test.hpp"
 
 SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
-  RELAY_TRANSPORT_TEST(contra::FileTransport,
-                       std::make_tuple("relay_file_transport.contra"),
-                       std::make_tuple("relay_file_transport.contra"));
+  test_utilities::TestTransportRelay<contra::FileTransport>(
+      std::make_tuple("relay_file_transport.contra"),
+      std::make_tuple("relay_file_transport.contra"));
 }
