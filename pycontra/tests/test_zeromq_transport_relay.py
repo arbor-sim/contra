@@ -21,9 +21,9 @@
 
 import pycontra
 
-def test_zeromq_transport():
-    sender = pycontra.ZMQTransport()
-    receiver = pycontra.ZMQTransport()
+def test_zeromq_transport_relay():
+    sender = pycontra.ZMQTransportRelay()
+    receiver = pycontra.ZMQTransportRelay()
     sender.Send(pycontra.AnyNode())
     nodes = receiver.Receive()
     assert len(nodes) == 1
