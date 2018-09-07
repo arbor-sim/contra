@@ -36,8 +36,8 @@
 // along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 // -----------------------------------------------------------------------------
 
-#ifndef TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_RELAY_TEST_MACRO_HPP_
-#define TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_RELAY_TEST_MACRO_HPP_
+#ifndef TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_RELAY_TEST_HPP_
+#define TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_RELAY_TEST_HPP_
 
 #include <memory>
 #include <utility>
@@ -88,4 +88,4 @@ void TestTransportRelay(
 }
 }  // namespace test_utilities
 
-#endif  // TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_RELAY_TEST_MACRO_HPP_
+#endif  // TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_RELAY_TEST_HPP_
