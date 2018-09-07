@@ -21,8 +21,8 @@
 
 #include <string>
 
-#include "contra/zmq/zeromq_transport.hpp"
 #include "contra/relay.hpp"
+#include "contra/zmq/zeromq_transport.hpp"
 #include "pycontra.hpp"
 #include "pycontra/suppress_warnings.hpp"
 
@@ -46,7 +46,8 @@ void expose<contra::ZMQTransport>() {
       .value("Client", contra::ZMQTransport::Type::CLIENT);
 
   class_<contra::ZMQTransport, boost::noncopyable>(
-      "ZMQTransportRelay", init<contra::ZMQTransport::Type, const std::string&, bool>())
+      "ZMQTransportRelay",
+      init<contra::ZMQTransport::Type, const std::string&, bool>())
       .def("Send", &contra::ZMQTransport::Send)
       .def("Receive", &ZMQTransportRelayReceive);
 }
