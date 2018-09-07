@@ -53,6 +53,7 @@ using boost::python::args;
 using boost::python::bases;
 using boost::python::class_;
 using boost::python::def;
+using boost::python::enum_;
 using boost::python::init;
 using boost::python::no_init;
 using boost::python::pure_virtual;

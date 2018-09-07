@@ -36,40 +36,14 @@
 # along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 # ------------------------------------------------------------------------------
 
-file(GLOB SOURCES *.cpp)
-file(GLOB HEADERS *.hpp)
-file(GLOB PYTHON_SOURCES *.py)
+import pycontra
 
-if(NOT WITH_TRANSPORT_BOOST_SHARED_MEMORY)
-  list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/shared_memory_transport_relay.cpp")
-endif()
 
-if(NOT WITH_TRANSPORT_ZEROMQ)
-  list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/zeromq_transport_relay.cpp")
-endif()
-
-set(PYCONTRA_OUTPUT_DIR
-  ${CMAKE_CURRENT_BINARY_DIR}/../pycontra
-  CACHE PATH "Output path for pycontra python module"
-  )
-  
-set(LIBRARIES contra)
-
-if (WITH_TRANSPORT_BOOST_SHARED_MEMORY)
-set(LIBRARIES ${LIBRARIES} contra_boost-shmem)
-endif (WITH_TRANSPORT_BOOST_SHARED_MEMORY)
-
-if (WITH_TRANSPORT_ZEROMQ)
-set(LIBRARIES ${LIBRARIES} contra_zmq)
-endif (WITH_TRANSPORT_ZEROMQ)
-
-add_python_module(
-  NAME _pycontra
-  SOURCES ${SOURCES}
-  HEADERS ${HEADERS}
-  PYTHON_SOURCES ${PYTHON_SOURCES}
-  INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
-  LINK_LIBRARIES ${LIBRARIES}
-    ${CONAN_OR_CMAKE_boost_python}
-  OUTPUT_DIRECTORY ${PYCONTRA_OUTPUT_DIR}
-  )
+def test_zeromq_transport_relay():
+    sender = pycontra.ZMQTransportRelay(pycontra.ZMQTransportType.Server,
+                                        "tcp://*:5555", True)
+    receiver = pycontra.ZMQTransportRelay(pycontra.ZMQTransportType.Client,
+                                          "tcp://localhost:5555", True)
+    sender.Send(pycontra.AnyNode())
+    nodes = receiver.Receive()
+    assert len(nodes) == 1
