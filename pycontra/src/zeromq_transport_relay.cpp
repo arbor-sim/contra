@@ -42,11 +42,11 @@ SUPPRESS_WARNINGS_END
 template <>
 void expose<contra::ZMQTransport>() {
   enum_<contra::ZMQTransport::Type>("ZMQTransportType")
-      .value(ZMQTransport::Type::SERVER, "Server")
-      .value(ZMQTransport::Type::CLIENT, "Client");
+      .value("Server", contra::ZMQTransport::Type::SERVER)
+      .value("Client", contra::ZMQTransport::Type::CLIENT);
 
   class_<contra::ZMQTransport, boost::noncopyable>(
-      "ZMQTransportRelay", init<ZMQTransport::Type, const std::string&, bool>())
+      "ZMQTransportRelay", init<contra::ZMQTransport::Type, const std::string&, bool>())
       .def("Send", &contra::ZMQTransport::Send)
       .def("Receive", &ZMQTransportRelayReceive);
 }
