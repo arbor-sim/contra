@@ -54,6 +54,8 @@ template <typename T, typename ConstructorTuple,
 std::unique_ptr<T> MakeUniqueFromTupleHelper(
     ConstructorTuple&& constructor_arguments,
     std::index_sequence<CONSTRUCTOR_INDICES...>) {
+  (void)constructor_arguments;  // This is necessary, because otherwise MSVC
+                                // thinks that constructor_arguments is not used
   return std::make_unique<T>(
       std::get<CONSTRUCTOR_INDICES>(constructor_arguments)...);
 }
