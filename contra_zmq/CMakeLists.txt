@@ -60,8 +60,10 @@ target_link_libraries(contra_zmq
   PUBLIC ${CONAN_OR_CMAKE_conduit}
   )
 
-target_compile_options(contra_zmq
-  PRIVATE -fPIC
+if (NOT MSVC)
+  target_compile_options(contra_zmq
+    PRIVATE -fPIC
   )
+endif (NOT MSVC)
 
 add_subdirectory(tests)

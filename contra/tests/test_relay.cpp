@@ -40,21 +40,10 @@
 
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
-
-#include "contra/test_utilities/conduit_data.hpp"
-#include "contra/test_utilities/conduit_node_matcher.hpp"
-
-#define RELAY_TRANSPORT_TEST(transport_type, sender_params, receiver_params) \
-  contra::Relay<transport_type> sender{sender_params};                       \
-  contra::Relay<transport_type> receiver{receiver_params};                   \
-                                                                             \
-  sender.Send(test_utilities::ANY_NODE);                                     \
-  const auto received_nodes = receiver.Receive();                            \
-                                                                             \
-  REQUIRE(received_nodes.size() == 1);                                       \
-  REQUIRE_THAT(received_nodes[0], Equals(test_utilities::ANY_NODE));
+#include "contra/test_utilities/relay_test.hpp"
 
 SCENARIO("Data gets transported via FileTransport", "[contra][contra::Relay]") {
-  RELAY_TRANSPORT_TEST(contra::FileTransport, "relay_file_transport.contra",
-                       "relay_file_transport.contra");
+  test_utilities::TestTransportRelay<contra::FileTransport>(
+      std::make_tuple("relay_file_transport.contra"),
+      std::make_tuple("relay_file_transport.contra"));
 }
