@@ -45,10 +45,10 @@ void expose<contra::ZMQTransport>() {
       .value("Server", contra::ZMQTransport::Type::SERVER)
       .value("Client", contra::ZMQTransport::Type::CLIENT);
 
-  class_<contra::ZMQTransport, boost::noncopyable>(
+  class_<contra::Relay<contra::ZMQTransport>, boost::noncopyable>(
       "ZMQTransportRelay",
       init<contra::ZMQTransport::Type, const std::string&, bool>())
-      .def("Send", &contra::ZMQTransport::Send)
+      .def("Send", &contra::Relay<contra::ZMQTransport>::Send)
       .def("Receive", &ZMQTransportRelayReceive);
 }
 
