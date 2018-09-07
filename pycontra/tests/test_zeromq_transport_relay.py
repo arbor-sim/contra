@@ -40,8 +40,10 @@ import pycontra
 
 
 def test_zeromq_transport_relay():
-    sender = pycontra.ZMQTransportRelay()
-    receiver = pycontra.ZMQTransportRelay()
+    sender = pycontra.ZMQTransportRelay(pycontra.ZMQTransportType.Server,
+                                        "tcp://*:5555", True)
+    receiver = pycontra.ZMQTransportRelay(pycontra.ZMQTransportType.Client,
+                                          "tcp://localhost:5555", True)
     sender.Send(pycontra.AnyNode())
     nodes = receiver.Receive()
     assert len(nodes) == 1
