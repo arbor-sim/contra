@@ -22,16 +22,17 @@
 #include <string>
 
 #include "contra/zmq/zeromq_transport.hpp"
+#include "contra/relay.hpp"
 #include "pycontra.hpp"
 #include "pycontra/suppress_warnings.hpp"
 
 namespace pycontra {
 
 SUPPRESS_WARNINGS_BEGIN
-boost::python::list ZMQTransportReceive(
-    contra::ZMQTransport* contra_ZMQTransport) {
+boost::python::list ZMQTransportRelayReceive(
+    contra::Relay<contra::ZMQTransport>* relay) {
   boost::python::list ret_val;
-  for (const auto& node : contra_ZMQTransport->Receive()) {
+  for (const auto& node : relay->Receive()) {
     ret_val.append(node);
   }
   return ret_val;
@@ -45,9 +46,9 @@ void expose<contra::ZMQTransport>() {
       .value(ZMQTransport::Type::CLIENT, "Client");
 
   class_<contra::ZMQTransport, boost::noncopyable>(
-      "ZMQTransport", init<ZMQTransport::Type, const std::string&, bool>())
+      "ZMQTransportRelay", init<ZMQTransport::Type, const std::string&, bool>())
       .def("Send", &contra::ZMQTransport::Send)
-      .def("Receive", &ZMQTransportReceive);
+      .def("Receive", &ZMQTransportRelayReceive);
 }
 
 }  // namespace pycontra
