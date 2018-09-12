@@ -64,4 +64,12 @@ target_compile_options(contra_zmq
   PRIVATE -fPIC
   )
 
+install(
+  TARGETS contra_zmq
+  ARCHIVE DESTINATION lib)
+
+install(
+  FILES ${CONTRA_HEADERS}
+  DESTINATION "include/contra/zmq")
+
 add_subdirectory(tests)

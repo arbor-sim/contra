@@ -64,20 +64,20 @@ elseif(GCC)
 endif()
 
 function(ADD_TEST_CPPCHECK)
-  set(options)
-  set(oneValueArgs TARGET)
-  set(multiValueArgs)
-  cmake_parse_arguments(ARGS
-    "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-    get_target_property(SOURCES ${ARGS_TARGET} SOURCES)
-    get_target_include_directories(INCLUDE_DIRECTORIES TARGET ${ARGS_TARGET})
+  # set(options)
+  # set(oneValueArgs TARGET)
+  # set(multiValueArgs)
+  # cmake_parse_arguments(ARGS
+  #   "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+  #   get_target_property(SOURCES ${ARGS_TARGET} SOURCES)
+  #   get_target_include_directories(INCLUDE_DIRECTORIES TARGET ${ARGS_TARGET})
     
-    set(INCLUDE_DIRECTORIES_PARAMETERS "")
-    foreach(VAL ${INCLUDE_DIRECTORIES})
-      set(INCLUDE_DIRECTORIES_PARAMETERS ${INCLUDE_DIRECTORIES_PARAMETERS};-I;${VAL})
-    endforeach(VAL ${INCLUDE_DIRECTORIES})
+  #   set(INCLUDE_DIRECTORIES_PARAMETERS "")
+  #   foreach(VAL ${INCLUDE_DIRECTORIES})
+  #     set(INCLUDE_DIRECTORIES_PARAMETERS ${INCLUDE_DIRECTORIES_PARAMETERS};-I;${VAL})
+  #   endforeach(VAL ${INCLUDE_DIRECTORIES})
     
-  add_test(NAME "${ARGS_TARGET}--cppcheck"
-    COMMAND "${CPPCHECK_COMMAND}" ${CPPCHECK_ARGUMENTS} ${SOURCES} ${INCLUDE_DIRECTORIES_PARAMETERS})
-  set_tests_properties(${ARGS_NAME} PROPERTIES TIMEOUT 20.0)
+  # add_test(NAME "${ARGS_TARGET}--cppcheck"
+  #   COMMAND "${CPPCHECK_COMMAND}" ${CPPCHECK_ARGUMENTS} ${SOURCES} ${INCLUDE_DIRECTORIES_PARAMETERS})
+  # set_tests_properties(${ARGS_NAME} PROPERTIES TIMEOUT 20.0)
 endfunction()

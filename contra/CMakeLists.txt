@@ -70,4 +70,18 @@ if (NOT MSVC)
     )
 endif (NOT MSVC)
 
+install(
+  TARGETS contra
+  EXPORT contra
+  ARCHIVE DESTINATION lib)
+
+install(
+  EXPORT contra
+  FILE contra-config.cmake
+  DESTINATION lib/cmake)
+
+install(
+  FILES ${CONTRA_HEADERS}
+  DESTINATION "include/contra")
+
 add_subdirectory(tests)

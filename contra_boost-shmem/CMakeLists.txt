@@ -60,6 +60,14 @@ target_link_libraries(contra_boost-shmem
   PUBLIC ${CONAN_OR_CMAKE_conduit}
   )
 
+install(
+  TARGETS contra_boost-shmem
+  ARCHIVE DESTINATION lib)
+
+install(
+  FILES ${CONTRA_HEADERS}
+  DESTINATION "include/contra/boost-shmem")
+
 if (NOT MSVC)
   target_compile_options(contra_boost-shmem
     PRIVATE -fPIC
