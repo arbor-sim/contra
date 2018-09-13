@@ -73,7 +73,6 @@ install(
 
 install(
   EXPORT contra_zmq
-  FILE contra_zmq-config.cmake
   DESTINATION lib/cmake)
 
 install(

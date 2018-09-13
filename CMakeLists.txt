@@ -106,4 +106,6 @@ add_test_cpplint(NAME "contra-tests--cpplint"
     ${ALL_SOURCES} ${ALL_HEADERS}
   )
 
-  
+install(
+  FILES ${CMAKE_SOURCE_DIR}/cmake/contra-config.cmake
+  DESTINATION lib/cmake)

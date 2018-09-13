@@ -73,13 +73,12 @@ endif (NOT MSVC)
 
 install(
   TARGETS contra
-  EXPORT contra
+  EXPORT contra_core
   ARCHIVE DESTINATION lib
   COMPONENT core)
 
 install(
-  EXPORT contra
-  FILE contra-config.cmake
+  EXPORT contra_core
   DESTINATION lib/cmake)
 
 install(
