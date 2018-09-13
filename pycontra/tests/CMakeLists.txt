@@ -42,6 +42,10 @@ if(NOT WITH_TRANSPORT_BOOST_SHARED_MEMORY)
   list(REMOVE_ITEM PYCONTRA_TEST_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/test_shared_memory_transport_relay.py")
 endif()
 
+if(NOT WITH_TRANSPORT_ZEROMQ)
+  list(REMOVE_ITEM PYCONTRA_TEST_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/test_zeromq_transport_relay.py")
+endif()
+
 add_test_py_test(NAME test_pycontra
   ${PYCONTRA_TEST_SOURCES}
   PYTHONPATH "${PYCONTRA_OUTPUT_DIR}/.."
