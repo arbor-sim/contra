@@ -54,11 +54,12 @@ generate_export_header(contra
   EXPORT_FILE_NAME
   "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp"
   )
-  
-target_include_directories(contra
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-  PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
-  )
+
+target_include_directories(contra PUBLIC  
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
   
 target_link_libraries(contra
   PUBLIC ${CONAN_OR_CMAKE_conduit}
@@ -73,7 +74,8 @@ endif (NOT MSVC)
 install(
   TARGETS contra
   EXPORT contra
-  ARCHIVE DESTINATION lib)
+  ARCHIVE DESTINATION lib
+  COMPONENT core)
 
 install(
   EXPORT contra
@@ -81,7 +83,7 @@ install(
   DESTINATION lib/cmake)
 
 install(
-  FILES ${CONTRA_HEADERS}
+  FILES ${CONTRA_HEADERS} "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp" "${CMAKE_CURRENT_BINARY_DIR}/include/contra/suppress_warnings.hpp"
   DESTINATION "include/contra")
 
 add_subdirectory(tests)
