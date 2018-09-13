@@ -48,7 +48,7 @@ set(PYCONTRA_OUTPUT_DIR
   ${CMAKE_CURRENT_BINARY_DIR}/../pycontra
   CACHE PATH "Output path for pycontra python module"
   )
-  
+
 if(WITH_TRANSPORT_BOOST_SHARED_MEMORY)
   add_python_module(
     NAME _pycontra
@@ -57,7 +57,7 @@ if(WITH_TRANSPORT_BOOST_SHARED_MEMORY)
     PYTHON_SOURCES ${PYTHON_SOURCES}
      INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
     LINK_LIBRARIES contra contra_boost-shmem
-      ${CONAN_OR_CMAKE_boost_python}
+      ${boost_python_target}
     OUTPUT_DIRECTORY ${PYCONTRA_OUTPUT_DIR}
     )
 else()
@@ -68,7 +68,7 @@ else()
     PYTHON_SOURCES ${PYTHON_SOURCES}
      INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
     LINK_LIBRARIES contra
-      ${CONAN_OR_CMAKE_boost_python}
+      ${boost_python_target}
     OUTPUT_DIRECTORY ${PYCONTRA_OUTPUT_DIR}
     )
 endif()

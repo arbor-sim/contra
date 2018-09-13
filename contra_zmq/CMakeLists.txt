@@ -49,16 +49,16 @@ generate_export_header(contra_zmq
   "${CMAKE_CURRENT_BINARY_DIR}/include/contra/zmq/export.hpp"
   )
 
-target_include_directories(contra_zmq PUBLIC  
+target_include_directories(contra_zmq PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-  
+
 target_link_libraries(contra_zmq
   PUBLIC contra
-  PUBLIC ${CONAN_OR_CMAKE_cppzmq}
-  PUBLIC ${CONAN_OR_CMAKE_conduit}
+  PUBLIC ${cppzmq_target}
+  PUBLIC ${conduit_target}
   )
 
 target_compile_options(contra_zmq

@@ -60,9 +60,9 @@ target_include_directories(contra PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-  
+
 target_link_libraries(contra
-  PUBLIC ${CONAN_OR_CMAKE_conduit}
+  PUBLIC ${conduit_target}
   )
 
 if (NOT MSVC)

@@ -36,7 +36,7 @@
 // along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 // -----------------------------------------------------------------------------
 
-#include "catch/catch.hpp"
+#include "catch2/catch.hpp"
 
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"

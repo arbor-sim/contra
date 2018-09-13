@@ -36,12 +36,6 @@
 # along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 # ------------------------------------------------------------------------------
 
-include(conan)
-execute_process(COMMAND conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan False OUTPUT_QUIET)
-execute_process(COMMAND conan remote add rwth-vr https://api.bintray.com/conan/rwth-vr/conan False OUTPUT_QUIET)
-conan_cmake_run(CONANFILE conanfile.py
-                BUILD missing)
-
 find_file(CONAN_COMMAND
   NAMES conan conan.exe
   PATHS ENV PATH ENV CONAN_DIR
@@ -58,6 +52,14 @@ else()
     "          pip install conan\n"
     "      More info: https://conan.io"
   )
+endif()
+
+if(USE_CONAN)
+    include(conan)
+    execute_process(COMMAND ${CONAN_COMMAND} remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan False OUTPUT_QUIET)
+    execute_process(COMMAND ${CONAN_COMMAND} remote add rwth-vr https://api.bintray.com/conan/rwth-vr/conan False OUTPUT_QUIET)
+    conan_cmake_run(CONANFILE conanfile.py
+                    BUILD missing)
 endif()
 
 #we reset CONAN_BUILD_INFO, so it is searched everytime, e.g. if we want to change from multi to a specific config
@@ -102,33 +104,21 @@ if(USE_CONAN AND CONAN_BUILD_INFO)
   endforeach(LIB in ${CONAN_LIBS})
 endif()
 
-macro(CONAN_OR_FIND_PACKAGE package)
+macro(CONAN_FIND_PACKAGE target_name_var package)
   # parse arguments
   set(options)
-  set(oneValueArgs CONAN_NAME)
+  set(oneValueArgs)
   set(multiValueArgs)
-  cmake_parse_arguments(CONAN_OR_FIND_PACKAGE
+  cmake_parse_arguments(CONAN_FIND_PACKAGE
     "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-  string(REPLACE ";" " " ADDITIONAL_PARAMS "${CONAN_OR_FIND_PACKAGE_UNPARSED_ARGUMENTS}")
-
-  # set default conan target name if CONAN_NAME was not specified
-  if(CONAN_OR_FIND_PACKAGE_CONAN_NAME)
-    set(CONAN_PACKAGE_NAME CONAN_PKG::${CONAN_OR_FIND_PACKAGE_CONAN_NAME})
-  else()
-    set(CONAN_PACKAGE_NAME CONAN_PKG::${package})
-  endif()
 
   # set target variable to be used in target_link_libraries accordingly
   option(USE_CONAN_${package} "Use conan for dependency ${package}" ${USE_CONAN})
-  string(REPLACE "." "_"
-    package_underscored
-    ${package}
-    )
+
   if(USE_CONAN AND USE_CONAN_${package})
-    set(CONAN_OR_CMAKE_${package_underscored} ${CONAN_HELPER_LIBS})
+    set(${target_name_var} ${CONAN_HELPER_LIBS})
   else()
-    find_package(${package} ${ADDITIONAL_PARAMS})
-    set(CONAN_OR_CMAKE_${package_underscored} ${package})
+    set(${target_name_var})
   endif()
 endmacro()
 

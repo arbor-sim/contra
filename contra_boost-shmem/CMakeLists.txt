@@ -48,16 +48,16 @@ generate_export_header(contra_boost-shmem
   EXPORT_FILE_NAME
   "${CMAKE_CURRENT_BINARY_DIR}/include/contra/boost-shmem/export.hpp"
   )
-  
+
 target_include_directories(contra_boost-shmem
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
   )
-  
+
 target_link_libraries(contra_boost-shmem
   PUBLIC contra
-  PUBLIC ${CONAN_OR_CMAKE_boost_interprocess}
-  PUBLIC ${CONAN_OR_CMAKE_conduit}
+  PUBLIC ${boost_interprocess_target}
+  PUBLIC ${conduit_target}
   )
 
 install(
