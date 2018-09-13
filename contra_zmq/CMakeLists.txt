@@ -48,11 +48,12 @@ generate_export_header(contra_zmq
   EXPORT_FILE_NAME
   "${CMAKE_CURRENT_BINARY_DIR}/include/contra/zmq/export.hpp"
   )
-  
-target_include_directories(contra_zmq
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-  PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
-  )
+
+target_include_directories(contra_zmq PUBLIC  
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
   
 target_link_libraries(contra_zmq
   PUBLIC contra
@@ -66,10 +67,17 @@ target_compile_options(contra_zmq
 
 install(
   TARGETS contra_zmq
-  ARCHIVE DESTINATION lib)
+  EXPORT contra_zmq
+  ARCHIVE DESTINATION lib
+  COMPONENT zmq)
 
 install(
-  FILES ${CONTRA_HEADERS}
+  EXPORT contra_zmq
+  FILE contra_zmq-config.cmake
+  DESTINATION lib/cmake)
+
+install(
+  FILES ${CONTRA_HEADERS} "${CMAKE_CURRENT_BINARY_DIR}/include/contra/zmq/export.hpp" "${CMAKE_CURRENT_BINARY_DIR}/include/contra/zmq/suppress_warnings.hpp"
   DESTINATION "include/contra/zmq")
 
 add_subdirectory(tests)
