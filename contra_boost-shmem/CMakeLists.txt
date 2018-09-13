@@ -36,6 +36,9 @@
 # along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 # ------------------------------------------------------------------------------
 
+find_package(Threads REQUIRED)
+find_library(librt rt)
+
 file(GLOB CONTRA_SOURCES src/*.cpp)
 file(GLOB CONTRA_HEADERS include/contra/boost-shmem/*.hpp)
 
@@ -58,6 +61,8 @@ target_link_libraries(contra_boost-shmem
   PUBLIC contra
   PUBLIC ${boost_interprocess_target}
   PUBLIC ${conduit_target}
+  PUBLIC Threads::Threads
+  PUBLIC ${librt}
   )
 
 install(

@@ -101,7 +101,7 @@ if (NOT boost_python_target)
 endif()
 
 option(WITH_TRANSPORT_ZEROMQ "build with ZEROMQ transport layer" OFF)
-option(WITH_TRANSPORT_BOOST_SHARED_MEMORY 
+option(WITH_TRANSPORT_BOOST_SHARED_MEMORY
        "build with boost shared memory transport layer" OFF)
 
 if (WITH_TRANSPORT_ZEROMQ)
@@ -120,6 +120,7 @@ if (WITH_TRANSPORT_BOOST_SHARED_MEMORY)
     find_package(Boost REQUIRED)
     set(boost_interprocess_target Boost::boost)
   endif()
+
   add_definitions(-DWITH_BOOST_SHARED_MEMORY_TRANSPORT=1)
   add_subdirectory(contra_boost-shmem)
   add_subdirectory(helper_apps)
