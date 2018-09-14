@@ -53,9 +53,8 @@ if (MSVC)
   endforeach(flag_var)
 endif (MSVC)
 
-if(NOT CMAKE_BUILD_TYPE)
-  Message("-------------TEST--------------")
-  set(CMAKE_BUILD_TYPE=Release)
+if(UNIX AND NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
 endif()
 
 include(ConanHelpers)
