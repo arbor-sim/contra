@@ -42,14 +42,14 @@ from conans import ConanFile, CMake
 class contra(ConanFile):
     name = "contra"
     version = "18.07"
-    license = "Apache License, Version 2.0 if with_transport_zeromq=False, LGPL-3.0 otherwise"
+    license = "Apache License, Version 2.0 if with_zeromq=False, LGPL-3.0 otherwise"
     description = """Contra, a lightweight transport library for conduit data"""
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "*"
     url = "https://devhub.vr.rwth-aachen.de/VR-Group/contra"
-    options = {"with_transport_boost_shared_memory": [
-        True, False], "with_transport_zeromq": [True, False]}
-    default_options = "with_transport_boost_shared_memory=True", "with_transport_zeromq=True"
+    options = {"with_shared_memory": [
+        True, False], "with_zeromq": [True, False]}
+    default_options = "with_shared_memory=True", "with_zeromq=False"
 
     generators = "cmake"
 
@@ -59,9 +59,9 @@ class contra(ConanFile):
         self.requires("cppcheck/1.84@RWTH-VR/thirdparty")
         self.requires("conduit/0.3.1@RWTH-VR/thirdparty")
         self.requires("boost_python/1.66.0@bincrafters/testing")
-        if (self.options.with_transport_boost_shared_memory):
+        if (self.options.with_shared_memory):
             self.requires("boost_interprocess/1.66.0@bincrafters/testing")
-        if (self.options.with_transport_zeromq):
+        if (self.options.with_zeromq):
             self.requires("cppzmq/4.2.2@bincrafters/stable")
 
     def configure(self):
@@ -85,24 +85,24 @@ class contra(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        if (self.options.with_transport_boost_shared_memory) and (self.options.with_transport_zeromq):
-            cmake.definitions["WITH_TRANSPORT_BOOST_SHARED_MEMORY"] = True
-            cmake.definitions["WITH_TRANSPORT_ZEROMQ"] = True
-        elif (self.options.with_transport_boost_shared_memory):
-            cmake.definitions["WITH_TRANSPORT_BOOST_SHARED_MEMORY"] = True
-        elif (self.options.with_transport_zeromq):
-            cmake.definitions["WITH_TRANSPORT_ZEROMQ"] = True
+        if (self.options.with_shared_memory) and (self.options.with_zeromq):
+            cmake.definitions["with_shared_memory"] = True
+            cmake.definitions["with_zeromq"] = True
+        elif (self.options.with_shared_memory):
+            cmake.definitions["with_shared_memory"] = True
+        elif (self.options.with_zeromq):
+            cmake.definitions["with_zeromq"] = True
         cmake.configure(source_folder='.')
         cmake.build()
 
     def package(self):
         self.copy("*.hpp", dst="include", src="contra/include")
         self.copy("*.hpp", dst="include", src="build/contra/include")
-        if (self.options.with_transport_boost_shared_memory):
+        if (self.options.with_shared_memory):
             self.copy("*.hpp", dst="include", src="contra_boost-shmem/include")
             self.copy("*.hpp", dst="include",
                       src="build/contra_boost-shmem/include")
-        if (self.options.with_transport_zeromq):
+        if (self.options.with_zeromq):
             self.copy("*.hpp", dst="include", src="contra_zmq/include")
             self.copy("*.hpp", dst="include", src="build/contra_zmq/include")
 
@@ -115,11 +115,11 @@ class contra(ConanFile):
         self.copy("pycontra/pycontra/*", dst="pycontra", keep_path=False)
 
     def package_info(self):
-        if (self.options.with_transport_boost_shared_memory) and (self.options.with_transport_zeromq):
+        if (self.options.with_shared_memory) and (self.options.with_zeromq):
             self.cpp_info.libs = ["contra_zmq", "contra_boost-shmem", "contra"]
-        elif not(self.options.with_transport_zeromq):
+        elif not(self.options.with_zeromq):
             self.cpp_info.libs = [ "contra_boost-shmem", "contra"]
-        elif not(self.options.with_transport_boost_shared_memory):
+        elif not(self.options.with_shared_memory):
             self.cpp_info.libs = ["contra_zmq", "contra"]
         else:
             self.cpp_info.libs = ["contra"]

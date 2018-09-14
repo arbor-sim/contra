@@ -78,19 +78,19 @@ include(python_module)
 
 conan_or_find_package(boost_python REQUIRED)
 
-option(WITH_TRANSPORT_ZEROMQ "build with ZEROMQ transport layer" OFF)
-option(WITH_TRANSPORT_BOOST_SHARED_MEMORY 
+option(WITH_ZEROMQ "build with ZEROMQ transport layer" OFF)
+option(WITH_SHARED_MEMORY 
        "build with boost shared memory transport layer" OFF)
 
-if (WITH_TRANSPORT_ZEROMQ)
+if (WITH_ZEROMQ)
   conan_or_find_package(cppzmq REQUIRED)
-  add_definitions(-DWITH_ZEROMQ_TRANSPORT=1)
+  add_definitions(-DWITH_ZEROMQ=1)
   add_subdirectory(contra_zmq)
 endif()
 
-if (WITH_TRANSPORT_BOOST_SHARED_MEMORY)
+if (WITH_SHARED_MEMORY)
   conan_or_find_package(boost_interprocess REQUIRED)
-  add_definitions(-DWITH_BOOST_SHARED_MEMORY_TRANSPORT=1)
+  add_definitions(-DWITH_SHARED_MEMORY=1)
   add_subdirectory(contra_boost-shmem)
   add_subdirectory(helper_apps)
 endif()

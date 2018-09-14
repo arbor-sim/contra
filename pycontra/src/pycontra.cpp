@@ -65,24 +65,24 @@ conduit::Node AnyNode() {
 SUPPRESS_WARNINGS_END
 
 extern template void expose<contra::Relay<contra::FileTransport>>();
-#ifdef WITH_BOOST_SHARED_MEMORY_TRANSPORT
+#ifdef WITH_SHARED_MEMORY
 extern template void expose<contra::Relay<contra::SharedMemoryTransport>>();
-#endif  // WITH_BOOST_SHARED_MEMORY_TRANSPORT
-#ifdef WITH_ZEROMQ_TRANSPORT
+#endif  // WITH_SHARED_MEMORY
+#ifdef WITH_ZEROMQ
 extern template void expose<contra::ZMQTransport>();
-#endif  // WITH_ZEROMQ_TRANSPORT
+#endif  // WITH_ZEROMQ
 
 SUPPRESS_WARNINGS_BEGIN
 // cppcheck-suppress unusedFunction
 BOOST_PYTHON_MODULE(_pycontra) {
   def("Greet", contra::Greet);
   expose<contra::Relay<contra::FileTransport>>();
-#ifdef WITH_BOOST_SHARED_MEMORY_TRANSPORT
+#ifdef WITH_SHARED_MEMORY
   expose<contra::Relay<contra::SharedMemoryTransport>>();
-#endif  // WITH_BOOST_SHARED_MEMORY_TRANSPORT
-#ifdef WITH_ZEROMQ_TRANSPORT
+#endif  // WITH_SHARED_MEMORY
+#ifdef WITH_ZEROMQ
   expose<contra::ZMQTransport>();
-#endif  // WITH_ZEROMQ_TRANSPORT
+#endif  // WITH_ZEROMQ
   def("AnyNode", &AnyNode);
   class_<conduit::Node>("Node").def("Update", &conduit::Node::update);
 }
