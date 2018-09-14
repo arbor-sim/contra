@@ -86,12 +86,12 @@ class contra(ConanFile):
     def build(self):
         cmake = CMake(self)
         if (self.options.with_shared_memory) and (self.options.with_zeromq):
-            cmake.definitions["with_shared_memory"] = True
-            cmake.definitions["with_zeromq"] = True
+            cmake.definitions["WITH_SHARED_MEMORY"] = True
+            cmake.definitions["WITH_ZEROMQ"] = True
         elif (self.options.with_shared_memory):
-            cmake.definitions["with_shared_memory"] = True
+            cmake.definitions["WITH_SHARED_MEMORY"] = True
         elif (self.options.with_zeromq):
-            cmake.definitions["with_zeromq"] = True
+            cmake.definitions["WITH_ZEROMQ"] = True
         cmake.configure(source_folder='.')
         cmake.build()
 
