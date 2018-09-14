@@ -184,8 +184,8 @@ def main(argv):
         else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
         
-        cmake_flags.append('-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON')
-        cmake_flags.append('-DWITH_TRANSPORT_ZEROMQ=ON')
+        cmake_flags.append('-DWITH_SHARED_MEMORY=ON')
+        cmake_flags.append('-DWITH_ZEROMQ=ON')
         
         execute('cmake', cmake_flags)
 
