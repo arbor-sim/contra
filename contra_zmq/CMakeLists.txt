@@ -73,7 +73,7 @@ install(
 
 install(
   EXPORT contra_zmq
-  DESTINATION lib/cmake)
+  DESTINATION lib/contra/cmake)
 
 install(
   FILES ${CONTRA_HEADERS} "${CMAKE_CURRENT_BINARY_DIR}/include/contra/zmq/export.hpp" "${CMAKE_CURRENT_BINARY_DIR}/include/contra/zmq/suppress_warnings.hpp"

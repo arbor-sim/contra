@@ -55,7 +55,7 @@ generate_export_header(contra
   "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp"
   )
 
-target_include_directories(contra PUBLIC  
+target_include_directories(contra PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
   $<INSTALL_INTERFACE:include>
@@ -79,7 +79,7 @@ install(
 
 install(
   EXPORT contra_core
-  DESTINATION lib/cmake)
+  DESTINATION lib/contra/cmake)
 
 install(
   FILES ${CONTRA_HEADERS} "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp" "${CMAKE_CURRENT_BINARY_DIR}/include/contra/suppress_warnings.hpp"
