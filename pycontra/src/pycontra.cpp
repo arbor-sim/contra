@@ -42,13 +42,13 @@
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
 
-#ifdef WITH_BOOST_SHARED_MEMORY_TRANSPORT
+#ifdef WITH_SHARED_MEMORY
 #include "contra/boost-shmem/shared_memory_transport.hpp"
-#endif  // WITH_BOOST_SHARED_MEMORY_TRANSPORT
+#endif  // WITH_ZEROMQ
 
 #ifdef WITH_ZEROMQ_TRANSPORT
 #include "contra/zmq/zeromq_transport.hpp"
-#endif  // WITH_ZEROMQ_TRANSPORT
+#endif  // WITH_ZEROMQ
 
 #include "pycontra/suppress_warnings.hpp"
 
