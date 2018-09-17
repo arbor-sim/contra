@@ -53,6 +53,10 @@ if (MSVC)
   endforeach(flag_var)
 endif (MSVC)
 
+if(UNIX AND NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
 include(ConanHelpers)
 include(CTest)
 include(GenerateExportHeader)
