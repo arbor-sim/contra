@@ -1,4 +1,4 @@
-# contra -- a lightweight CONduit - TRAnsport library.
+# contra -- a lightweight transport library for conduit data
 
 ### License:
 ### Latest Version: https://devhub.vr.rwth-aachen.de/VR-Group/contra
@@ -24,16 +24,19 @@ Other compilers versions might work as well.
      
   - Shared Memory Transport
     - This library uses Boost.Interproces to enable IPC via shared memory.
-    - To build it add the option "WITH_SHARED_MEMORY" to true.
+    - To build it set the CMake option "WITH_SHARED_MEMORY" to true.
+
     ```
-        cmake -DWITH_SHARED_MEMORY=True
+    cmake -DWITH_SHARED_MEMORY=True
     ```      
   - ZeroMQ Transport
       - A TCP based transport relying on ZeroMQ for the Network Communication
-      - To build it add the option "WITH_ZEROMQ" to true.
+      - To build it set the CMake option "WITH_ZEROMQ" to true.
+
       ```
-        cmake -DWITH_ZEROMQ=True
+    cmake -DWITH_ZEROMQ=True
       ```
+
 # How to install contra
 
 ## REQUIREMENTS
@@ -47,23 +50,24 @@ We also recommend using Conan to simplify the installation process. If you decid
 
 Make sure that you are using a consistent python version for both Conan and Contra
 
-Use pip to install conan:
+Use pip to install pytest conan:
 ```
-  pip install conan
+pip install -U pytest
+pip install conan
 ```
-Configure conan to use packages which are (stil) provided by the VR-Group use:
+Configure conan to use packages which are (stil) provided by the VR-Group:
 ```
-  conan remote add rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
-  conan remote add bincrafters_public https://api.bintray.com/conan/bincrafters/public-conan
+conan remote add rwth-vr--bintray https://api.bintray.com/conan/rwth-vr/conan
+conan remote add bincrafters_public https://api.bintray.com/conan/bincrafters/public-conan
 ```  
 Once Conan is ready you can use CMake to configure and build contra:
 ```  
-  cmake
-  make
+cmake
+make
 ```  
 Afterwards change to your build directory and execute
 ```
-  ctest
+ctest
 ```
 to make sure contra has been properly installed.  
 
