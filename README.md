@@ -40,8 +40,8 @@ Other compilers versions might work as well.
 # How to install contra
 
 ## REQUIREMENTS
-  - Python
-  - CMake (v.3.6.0 or higher)
+  - [Python](https://www.python.org/)
+  - [CMake](https://cmake.org/) (v.3.6.0 or higher)
 
 contra is installed with CMake.
 We also recommend using Conan to simplify the installation process. If you decide to not use Conan please continue at "Installing contra without conan".
