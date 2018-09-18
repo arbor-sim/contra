@@ -89,6 +89,36 @@ Wehn building with ZeroMQ Transport you will also need:
 
 ## Using Contra
 
+Contra is designed to use Relays as communication nodes.
+In most cases you will have 2 relays Communicating which each other. For the ZeroMQ transport you can have multiple CLIENT relays though.
+A relay uses a Transport layer defined at construction e.g:
+```cpp
+contra::Relay<contra::SharedMemoryTransport> relay;
+```
+
+#### The constructor arguments for the different layers with examples:
+- File Transport:
+    - Filenename (String) The names of the two relays communicating have to match!
+
+```cpp
+contra::Relay<contra::FileTransport> relay("testfile.contra");
+```
+- Shared Memory Transport:
+    - Memory name(String) (Default = "contraShMemTransp")The names of the two relays communicating have to match!
+
+```cpp
+contra::Relay<contra::SharedMemoryTransport> relay;
+```
+- ZeroMQ Transport:
+    - Type (SERVER/CLIENT)
+    - TCP Address (String)
+    - Optional flag to indicate if you want the relay to wait for a connection to be established before sending Data (boolean)
+
+```cpp
+contra::Relay<contra::ZMQTransport> relay(contra::Relay<contra::ZMQTransport>(contra::ZMQTransport::Type::SERVER, "tcp://*:5555");
+```
+
+
 #### Sample sending relay:
 ```cpp
 #include <string>
