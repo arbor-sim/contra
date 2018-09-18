@@ -1,8 +1,10 @@
 # contra -- a lightweight transport library for conduit data
 
-### License:
-### Latest Version: https://devhub.vr.rwth-aachen.de/VR-Group/contra
+[License](https://devhub.vr.rwth-aachen.de/VR-Group/contra/blob/master/LICENSE)
 
+[Latest Version](https://devhub.vr.rwth-aachen.de/VR-Group/contra)
+
+![Build Status](https://devhub.vr.rwth-aachen.de/VR-Group/contra/badges/master/build.svg)
 
 # Introduction
 
