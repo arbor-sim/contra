@@ -88,3 +88,41 @@ Wehn building with ZeroMQ Transport you will also need:
 
 
 ## Using Contra
+
+#### Sample sending relay:
+```cpp
+#include <string>
+
+#include "contra/boost-shmem/shared_memory_transport.hpp"
+#include "contra/relay.hpp"
+
+int main() {
+  conduit::Node n;
+  n["foo/bar"] = 3.14;
+  contra::Relay<contra::SharedMemoryTransport> relay;
+  for (int i = 0; i < 5; ++i) {
+    relay.Send(n);
+  }
+  return EXIT_SUCCESS;
+}
+```
+#### Sample recieving relay:
+```cpp
+#include <string>
+#include <thread>
+#include "contra/boost-shmem/shared_memory_transport.hpp"
+#include "contra/relay.hpp"
+
+int main() {
+  contra::Relay<contra::SharedMemoryTransport> relay;
+  std::vector<conduit::Node> data;
+  do {
+    data = relay.Receive();
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+  } while (data.size() == 0);
+
+  std::cout << data[0]["foo/bar"].to_double();
+
+  return EXIT_SUCCESS;
+}
+```
