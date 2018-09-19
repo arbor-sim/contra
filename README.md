@@ -49,12 +49,8 @@ Other compilers versions might work as well.
   - [Conduit](https://github.com/LLNL/conduit)
   - [Cppcheck](https://sourceforge.net/projects/cppcheck/)
   - [Boost.Python](https://www.boost.org/users/download/)
-
-When building with Shared Memory Transport you will also need:
-- [Boost.Interprocess](https://www.boost.org/users/download/)
-
-When building with ZeroMQ Transport you will also need:
-- [cppzmq](https://github.com/zeromq/cppzmq)
+  - When building with Shared Memory Transport you will also need [Boost.Interprocess](https://www.boost.org/users/download/)
+  - When building with ZeroMQ Transport you will also need [cppzmq](https://github.com/zeromq/cppzmq)
 
 contra is installed with CMake.
 We also recommend using [Conan](https://conan.io/) to simplify the installation process. If you decide to not use Conan please continue at "Installing contra without conan".
@@ -62,7 +58,7 @@ We also recommend using [Conan](https://conan.io/) to simplify the installation 
 ## Installing contra using Conan
 
 When using conan the only requirements you need to provide by your own are Python, CMake and Conan.
-Make sure that you are using a consistent Python version for both Conan and Contra
+Make sure that you are using a consistent Python version for both Conan and Contra.
 Once you have Python installed, open a Terminal and follow the steps below.
 
 Use pip to install pytest conan:
@@ -88,9 +84,22 @@ to make sure contra has been properly installed.
 
 ## Installing contra without Conan
 
-If you do not use conan u will need the following prerequisites:
+At first install Python and CMake.
+All other dependencies can be installed in no particular order.
 
+After you have all that you need, run CMake and make sure that you provide all flags needed.
+CMake will automaticly check your path for needed requirements but if it can't find them, you have to provide their locations manually.
 
+#### CMake flags:
+
+```CMake
+-DPYTHON_LIBRARY="path/to/python/libray"
+-DPYTHON_INCLUDE_DIR="path/to/python/include"
+-DPYTHON_EXECUTABLE="path/to/python"
+
+-DCPPLINT_COMMAND="path/to/cpplint.py"
+-DCPPCHECK_COMMAND="path/to/cppcheck"
+```
 
 ## Using Contra
 
