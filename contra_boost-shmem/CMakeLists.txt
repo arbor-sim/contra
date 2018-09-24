@@ -48,11 +48,12 @@ generate_export_header(contra_boost-shmem
   EXPORT_FILE_NAME
   "${CMAKE_CURRENT_BINARY_DIR}/include/contra/boost-shmem/export.hpp"
   )
-  
-target_include_directories(contra_boost-shmem
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-  PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
-  )
+
+target_include_directories(contra_boost-shmem PUBLIC  
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
   
 target_link_libraries(contra_boost-shmem
   PUBLIC contra
@@ -66,6 +67,8 @@ install(
 
 install(
   FILES ${CONTRA_HEADERS}
+        "${CMAKE_CURRENT_BINARY_DIR}/include/contra/boost-shmem/export.hpp"
+        "${CMAKE_CURRENT_BINARY_DIR}/include/contra/boost-shmem/suppress_warnings.hpp"
   DESTINATION "include/contra/boost-shmem")
 
 if (NOT MSVC)
