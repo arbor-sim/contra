@@ -43,7 +43,10 @@
 #include <vector>
 
 #include "contra/packet.hpp"
+
+SUPPRESS_WARNINGS_BEGIN
 #include "zmq.hpp"
+SUPPRESS_WARNINGS_END
 
 #include "contra/zmq/suppress_warnings.hpp"
 
