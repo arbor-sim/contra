@@ -38,6 +38,8 @@
 
 #include <string>
 
+#include "boost/python.hpp"
+
 #include "contra/file_transport.hpp"
 #include "contra/relay.hpp"
 #include "pycontra.hpp"

@@ -21,6 +21,8 @@
 
 #include <string>
 
+#include "boost/python.hpp"
+
 #include "contra/relay.hpp"
 #include "contra/zmq/zeromq_transport.hpp"
 #include "pycontra.hpp"
