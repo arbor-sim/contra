@@ -19,9 +19,9 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
-#include <string>
+#include <pyconfig.h>
 
-#include "boost/python.hpp"
+#include <string>
 
 #include "contra/relay.hpp"
 #include "contra/zmq/zeromq_transport.hpp"

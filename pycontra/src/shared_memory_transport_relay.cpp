@@ -36,9 +36,9 @@
 // along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 // -----------------------------------------------------------------------------
 
-#include <string>
+#include <pyconfig.h>
 
-#include "boost/python.hpp"
+#include <string>
 
 #include "contra/boost-shmem/shared_memory_transport.hpp"
 #include "contra/relay.hpp"
