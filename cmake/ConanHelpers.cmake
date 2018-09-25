@@ -43,6 +43,7 @@ find_file(CONAN_COMMAND
 if(CONAN_COMMAND)
   option(USE_CONAN "Use conan for dependency managment." ON)
 else()
+  option(USE_CONAN "Use conan for dependency managment." OFF)
   message(STATUS
     " NOTICE:\n"
     "      This project can use conan for dependency management.\n"
