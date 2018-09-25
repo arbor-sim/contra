@@ -46,7 +46,7 @@
 #include "contra/boost-shmem/shared_memory_transport.hpp"
 #endif  // WITH_ZEROMQ
 
-#ifdef WITH_ZEROMQ_TRANSPORT
+#ifdef WITH_ZEROMQ
 #include "contra/zmq/zeromq_transport.hpp"
 #endif  // WITH_ZEROMQ
 
