@@ -156,8 +156,8 @@ def main(argv):
         conan_install_flags.extend(get_conan_flags(
             operating_system, compiler, compiler_version))
         conan_install_flags.append('..')
-        conan_install_flags.extend(['-o', 'contra::with_shared_memory=True'])
-        conan_install_flags.extend(['-o', 'contra::with_zeromq=True'])
+        conan_install_flags.extend(['-o', 'with_shared_memory=True'])
+        conan_install_flags.extend(['-o', 'with_zeromq=True'])
         execute('conan', conan_install_flags)
 
     elif stage == 'cmake':
