@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------------
+// -- /--------------------------------------------------------------------------
 // contra -- a lightweight transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
@@ -38,7 +38,7 @@
 
 #include <utility>
 
-#include "catch2/catch.hpp"
+#include "catch/catch.hpp"
 
 #include "contra/relay.hpp"
 #include "contra/test_utilities/relay_test.hpp"

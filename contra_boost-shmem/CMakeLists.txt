@@ -63,8 +63,13 @@ target_link_libraries(contra_boost-shmem
   PUBLIC ${boost_interprocess_target}
   PUBLIC ${conduit_target}
   PUBLIC Threads::Threads
-  PUBLIC ${librt}
   )
+
+if (librt)
+  target_link_libraries(contra_boost-shmem
+    PUBLIC ${librt}
+    )
+endif (librt)
 
 install(
   TARGETS contra_boost-shmem

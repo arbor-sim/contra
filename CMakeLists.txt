@@ -64,10 +64,10 @@ include(rwthvr)
 
 enable_testing()
 
-conan_find_package(catch2_target catch)
-if(NOT catch2_target)
-  find_package(Catch2 REQUIRED)
-  set(catch2_target Catch2::Catch2)
+conan_find_package(catch_target catch)
+if(NOT catch_target)
+  find_package(Catch REQUIRED)
+  set(catch_target Catch::Catch)
 endif()
 
 conan_find_package(conduit_target conduit)

@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------------
+// -- /--------------------------------------------------------------------------
 // contra -- a lightweight transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
@@ -44,7 +44,7 @@
 #include <sstream>
 #include <string>
 
-#include "catch2/catch.hpp"
+#include "catch/catch.hpp"
 
 #include "contra/packet.hpp"
 

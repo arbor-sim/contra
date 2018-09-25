@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------------
+// -- /--------------------------------------------------------------------------
 // contra -- a lightweight transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
@@ -39,5 +39,5 @@
 #include "contra_boost-shmem_tests/suppress_warnings.hpp"
 SUPPRESS_WARNINGS_BEGIN
 #define CATCH_CONFIG_MAIN
-#include "catch2/catch.hpp"
+#include "catch/catch.hpp"
 SUPPRESS_WARNINGS_END

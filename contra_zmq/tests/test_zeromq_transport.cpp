@@ -42,7 +42,7 @@
 #include <thread>
 #include <vector>
 
-#include "catch2/catch.hpp"
+#include "catch/catch.hpp"
 
 #include "contra/zmq/zeromq_transport.hpp"
 
