@@ -39,8 +39,18 @@
 include(conan)
 execute_process(COMMAND conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan False OUTPUT_QUIET)
 execute_process(COMMAND conan remote add rwth-vr https://api.bintray.com/conan/rwth-vr/conan False OUTPUT_QUIET)
+
+set(CONAN_OPTIONS)
+if (WITH_SHARED_MEMORY)
+  list(APPEND CONAN_OPTIONS "with_shared_memory=True")
+endif (WITH_SHARED_MEMORY)
+if (WITH_ZEROMQ)
+  list(APPEND CONAN_OPTIONS "with_zeromq=True")
+endif (WITH_ZEROMQ)
+
 conan_cmake_run(CONANFILE conanfile.py
-                BUILD missing)
+                BUILD missing
+                OPTIONS ${CONAN_OPTIONS})
 
 find_file(CONAN_COMMAND
   NAMES conan conan.exe

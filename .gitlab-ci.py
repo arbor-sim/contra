@@ -156,6 +156,8 @@ def main(argv):
         conan_install_flags.extend(get_conan_flags(
             operating_system, compiler, compiler_version))
         conan_install_flags.append('..')
+        conan_install_flags.extend(['-o', 'with_shared_memory=True'])
+        conan_install_flags.extend(['-o', 'with_zeromq=True'])
         execute('conan', conan_install_flags)
 
     elif stage == 'cmake':
@@ -184,8 +186,8 @@ def main(argv):
         else:
             cmake_flags.append('-DCMAKE_BUILD_TYPE=Release')
         
-        cmake_flags.append('-DWITH_TRANSPORT_BOOST_SHARED_MEMORY=ON')
-        cmake_flags.append('-DWITH_TRANSPORT_ZEROMQ=ON')
+        cmake_flags.append('-DWITH_SHARED_MEMORY=ON')
+        cmake_flags.append('-DWITH_ZEROMQ=ON')
         
         execute('cmake', cmake_flags)
 
