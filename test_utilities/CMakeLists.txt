@@ -48,13 +48,13 @@ generate_export_header(test_utilities
   EXPORT_FILE_NAME
   "${CMAKE_CURRENT_BINARY_DIR}/include/contra/test_utilities/export.hpp"
   )
-  
+
 target_include_directories(test_utilities
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
   )
 
 target_link_libraries(test_utilities
-  PUBLIC ${CONAN_OR_CMAKE_conduit}
-  PUBLIC ${CONAN_OR_CMAKE_catch}
+  PUBLIC ${conduit_target}
+  PUBLIC ${catch_target}
   )

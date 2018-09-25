@@ -41,7 +41,7 @@
 #include <thread>
 #include <vector>
 
-#include "catch/catch.hpp"
+#include "catch2/catch.hpp"
 
 #include "contra/boost-shmem/shared_memory_transport.hpp"
 

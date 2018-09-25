@@ -63,5 +63,5 @@ target_link_libraries(contra_zmq_tests
   PRIVATE contra
   PRIVATE contra_zmq
   PRIVATE test_utilities
-  PRIVATE ${CONAN_OR_CMAKE_catch}
+  PRIVATE ${catch_target}
   )

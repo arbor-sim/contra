@@ -36,6 +36,9 @@
 # along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 # ------------------------------------------------------------------------------
 
+find_package(Threads REQUIRED)
+find_library(librt rt)
+
 file(GLOB CONTRA_SOURCES src/*.cpp)
 file(GLOB CONTRA_HEADERS include/contra/boost-shmem/*.hpp)
 
@@ -50,15 +53,17 @@ generate_export_header(contra_boost-shmem
   )
 
 target_include_directories(contra_boost-shmem PUBLIC  
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
-  $<INSTALL_INTERFACE:include>
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+  PUBLIC $<INSTALL_INTERFACE:include>
 )
   
 target_link_libraries(contra_boost-shmem
   PUBLIC contra
-  PUBLIC ${CONAN_OR_CMAKE_boost_interprocess}
-  PUBLIC ${CONAN_OR_CMAKE_conduit}
+  PUBLIC ${boost_interprocess_target}
+  PUBLIC ${conduit_target}
+  PUBLIC Threads::Threads
+  PUBLIC ${librt}
   )
 
 install(
