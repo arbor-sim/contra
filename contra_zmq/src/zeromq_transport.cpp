@@ -59,22 +59,10 @@ ZMQTransport::ZMQTransport(const Type type, const std::string& address,
 }
 
 void ZMQTransport::Send(const Packet& packet) {
-  serialized_buffer_.push_back(SerializePacket(packet));
-  auto size = serialized_buffer_.at(next_to_be_sent_).size();
-  zmq::message_t message(size);
-  memcpy(message.data(), serialized_buffer_.at(next_to_be_sent_).data(), size);
-
-  if (!wait_for_messages_) {
-    if (!socket_.send(message, ZMQ_DONTWAIT)) {
-      std::cout << "WARNING: No client available! Data is Lost!" << std::endl;
-    }
-  } else {
-    socket_.send(message);
-  }
-  if (serialized_buffer_.size() > max_buffer_size_) {
-    serialized_buffer_.erase(serialized_buffer_.begin());
-  } else {
-    next_to_be_sent_++;
+  auto buffer = SerializePacket(packet);
+  if (!socket_.send(buffer.data(), buffer.size(),
+                    wait_for_messages_ ? 0 : ZMQ_DONTWAIT)) {
+    std::cout << "WARNING: No client available! Data is Lost!" << std::endl;
   }
 }
 

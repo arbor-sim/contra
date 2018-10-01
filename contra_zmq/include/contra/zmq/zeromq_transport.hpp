@@ -75,14 +75,6 @@ class ZMQTransport {
   zmq::context_t context_;
   zmq::socket_t socket_;
 
-  // The idea behind this is that we need to store the messages until they are
-  // sent. So far i dont know how to ask ZMQ if the data was sent. I store a
-  // random amount of messages to make sure the data is not deleted before
-  // sending
-  std::vector<std::vector<uint8_t>> serialized_buffer_;
-  unsigned int next_to_be_sent_ = 0;
-  unsigned int max_buffer_size_ = 10;
-
   bool wait_for_messages_;
 };
 SUPPRESS_WARNINGS_END
