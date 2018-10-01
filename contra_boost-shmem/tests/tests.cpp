@@ -1,4 +1,4 @@
-// -- /--------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // contra -- a lightweight transport library for conduit data
 //
 // Copyright (c) 2018 RWTH Aachen University, Germany,
