@@ -62,5 +62,5 @@ set_tests_properties(contra_tests PROPERTIES TIMEOUT 2.0)
 target_link_libraries(contra_tests
   PRIVATE contra
   PRIVATE test_utilities
-  PRIVATE ${CONAN_OR_CMAKE_catch}
+  PRIVATE ${catch_target}
   )

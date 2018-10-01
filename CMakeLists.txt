@@ -40,7 +40,7 @@ cmake_minimum_required(VERSION 3.6.0)
 
 project(contra)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_STANDARD 14)
 
 if (MSVC)
@@ -64,13 +64,32 @@ include(rwthvr)
 
 enable_testing()
 
-conan_or_find_package(catch REQUIRED)
-conan_or_find_package(conduit REQUIRED)
+conan_find_package(catch_target catch)
+if(NOT catch_target)
+  find_package(Catch REQUIRED)
+  set(catch_target Catch::Catch)
+endif()
 
-conan_or_find_package(cpplint REQUIRED)
-include(cpplint)
+conan_find_package(conduit_target conduit)
+if(NOT conduit_target)
+  find_package(conduit REQUIRED)
+  set(conduit_target conduit)
+endif()
 
-conan_or_find_package(cppcheck REQUIRED)
+conan_find_package(cpplint_target cpplint)
+if (NOT cpplint_target)
+  find_package(cpplint QUIET)
+  if(cpplint_FOUND)
+    set(cpplint_target cpplint)
+  endif()
+endif()
+if (NOT cpplint_target)
+  message(WARNING "cpplint package not found: disabling cpplint tests")
+else()
+  include(cpplint)
+endif()
+
+conan_find_package(cppcheck_target cppcheck)
 include(cppcheck)
 
 find_package(PythonInterp REQUIRED)
@@ -79,21 +98,33 @@ find_package(PythonLibs REQUIRED)
 include(py.test)
 include(python_module)
 
-
-conan_or_find_package(boost_python REQUIRED)
+conan_find_package(boost_python_target boost_python)
+if (NOT boost_python_target)
+  find_package(Boost REQUIRED COMPONENTS python)
+  set(boost_python_target Boost::python)
+endif()
 
 option(WITH_ZEROMQ "build with ZEROMQ transport layer" OFF)
-option(WITH_SHARED_MEMORY 
+option(WITH_SHARED_MEMORY
        "build with boost shared memory transport layer" OFF)
 
 if (WITH_ZEROMQ)
-  conan_or_find_package(cppzmq REQUIRED)
+  conan_find_package(cppzmq_target cppzmq)
+  if (NOT cppzmq_target)
+    find_package(cppzmq)
+    set(cppzmq_target cppzmq)
+  endif()
   add_definitions(-DWITH_ZEROMQ=1)
   add_subdirectory(contra_zmq)
 endif()
 
 if (WITH_SHARED_MEMORY)
-  conan_or_find_package(boost_interprocess REQUIRED)
+  conan_find_package(boost_interprocess_target boost_interprocess)
+  if (NOT boost_interprocess_target)
+    find_package(Boost REQUIRED)
+    set(boost_interprocess_target Boost::boost)
+  endif()
+
   add_definitions(-DWITH_SHARED_MEMORY=1)
   add_subdirectory(contra_boost-shmem)
   add_subdirectory(helper_apps)
@@ -106,7 +137,12 @@ add_subdirectory(test_utilities)
 get_property(ALL_SOURCES GLOBAL PROPERTY RWTHVR_ALL_SOURCES)
 get_property(ALL_HEADERS GLOBAL PROPERTY RWTHVR_ALL_HEADERS)
 
-add_test_cpplint(NAME "contra-tests--cpplint"
-    ${ALL_SOURCES} ${ALL_HEADERS}
-  )
+if (cpplint_target)
+  add_test_cpplint(NAME "contra-tests--cpplint"
+      ${ALL_SOURCES} ${ALL_HEADERS}
+    )
+endif()
 
+install(
+  FILES ${CMAKE_SOURCE_DIR}/cmake/contra-config.cmake
+  DESTINATION lib/cmake)

@@ -36,6 +36,8 @@
 // along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 // -----------------------------------------------------------------------------
 
+#include <pyconfig.h>
+
 #include "pycontra.hpp"
 
 #include "contra/contra.hpp"

@@ -36,6 +36,8 @@
 // along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 // -----------------------------------------------------------------------------
 
+#include <pyconfig.h>
+
 #include <string>
 
 #include "contra/file_transport.hpp"

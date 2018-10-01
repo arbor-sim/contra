@@ -36,53 +36,23 @@
 # along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 # ------------------------------------------------------------------------------
 
-file(GLOB CONTRA_SOURCES src/*.cpp)
-file(GLOB CONTRA_HEADERS include/contra/*.hpp)
+get_filename_component(CURRENT_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 
-rwthvr_add_library(NAME contra
-  SOURCES ${CONTRA_SOURCES}
-  HEADERS ${CONTRA_HEADERS}
-  SUPPRESS_WARNINGS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/include/contra/suppress_warnings.hpp"
-  )
+foreach(COMPONENT ${contra_FIND_COMPONENTS})
+    set(COMPONENT_CONFIG_FILE ${CURRENT_DIR}/contra_${COMPONENT}.cmake)
 
-if (CMAKE_C_COMPILER_ID MATCHES "GNU" AND
-    CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-  target_compile_options(contra PRIVATE "-fPIC")
-endif ()
+    if(EXISTS ${COMPONENT_CONFIG_FILE})
+        include(${COMPONENT_CONFIG_FILE})
+        if(NOT ${contra_FIND_QUIETLY})
+            message(STATUS "Found contra component: ${COMPONENT}")
+        endif(NOT ${contra_FIND_QUIETLY})
+    else()
+        if(contra_FIND_REQUIRED_${COMPONENT})
+            set(contra_FOUND FALSE)
+        endif()
 
-generate_export_header(contra
-  EXPORT_FILE_NAME
-  "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp"
-  )
-
-target_include_directories(contra PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
-
-target_link_libraries(contra
-  PUBLIC ${conduit_target}
-  )
-
-if (NOT MSVC)
-  target_compile_options(contra
-    PRIVATE -fPIC
-    )
-endif (NOT MSVC)
-
-install(
-  TARGETS contra
-  EXPORT contra_core
-  ARCHIVE DESTINATION lib
-  COMPONENT core)
-
-install(
-  EXPORT contra_core
-  DESTINATION lib/contra/cmake)
-
-install(
-  FILES ${CONTRA_HEADERS} "${CMAKE_CURRENT_BINARY_DIR}/include/contra/export.hpp" "${CMAKE_CURRENT_BINARY_DIR}/include/contra/suppress_warnings.hpp"
-  DESTINATION "include/contra")
-
-add_subdirectory(tests)
+        if(NOT ${contra_FIND_QUIETLY})
+            message(STATUS "Cannot find contra component: ${COMPONENT}")
+        endif(NOT ${contra_FIND_QUIETLY})
+    endif()
+endforeach()

@@ -36,6 +36,9 @@
 # along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 # ------------------------------------------------------------------------------
 
+find_package(Threads REQUIRED)
+find_library(librt rt)
+
 file(GLOB CONTRA_SOURCES src/*.cpp)
 file(GLOB CONTRA_HEADERS include/contra/boost-shmem/*.hpp)
 
@@ -48,17 +51,35 @@ generate_export_header(contra_boost-shmem
   EXPORT_FILE_NAME
   "${CMAKE_CURRENT_BINARY_DIR}/include/contra/boost-shmem/export.hpp"
   )
-  
-target_include_directories(contra_boost-shmem
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-  PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include
-  )
+
+target_include_directories(contra_boost-shmem PUBLIC  
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+  PUBLIC $<INSTALL_INTERFACE:include>
+)
   
 target_link_libraries(contra_boost-shmem
   PUBLIC contra
-  PUBLIC ${CONAN_OR_CMAKE_boost_interprocess}
-  PUBLIC ${CONAN_OR_CMAKE_conduit}
+  PUBLIC ${boost_interprocess_target}
+  PUBLIC ${conduit_target}
+  PUBLIC Threads::Threads
   )
+
+if (librt)
+  target_link_libraries(contra_boost-shmem
+    PUBLIC ${librt}
+    )
+endif (librt)
+
+install(
+  TARGETS contra_boost-shmem
+  ARCHIVE DESTINATION lib)
+
+install(
+  FILES ${CONTRA_HEADERS}
+        "${CMAKE_CURRENT_BINARY_DIR}/include/contra/boost-shmem/export.hpp"
+        "${CMAKE_CURRENT_BINARY_DIR}/include/contra/boost-shmem/suppress_warnings.hpp"
+  DESTINATION "include/contra/boost-shmem")
 
 if (NOT MSVC)
   target_compile_options(contra_boost-shmem

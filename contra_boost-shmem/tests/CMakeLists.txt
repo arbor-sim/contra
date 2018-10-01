@@ -63,5 +63,5 @@ target_link_libraries(contra_boost-shmem_tests
   PRIVATE contra
   PRIVATE contra_boost-shmem
   PRIVATE test_utilities
-  PRIVATE ${CONAN_OR_CMAKE_catch}
+  PRIVATE ${catch_target}
   )

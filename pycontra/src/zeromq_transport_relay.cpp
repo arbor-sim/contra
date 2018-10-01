@@ -19,6 +19,8 @@
 // limitations under the License.
 //------------------------------------------------------------------------------
 
+#include <pyconfig.h>
+
 #include <string>
 
 #include "contra/relay.hpp"
