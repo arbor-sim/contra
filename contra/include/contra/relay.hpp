@@ -44,7 +44,7 @@
 #include <utility>
 #include <vector>
 
-#include "conduit_node.hpp"
+#include "conduit/conduit_node.hpp"
 
 #include "contra/packet.hpp"
 

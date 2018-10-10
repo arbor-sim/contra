@@ -42,7 +42,7 @@
 
 #include "catch/catch.hpp"
 
-#include "conduit_node.hpp"
+#include "conduit/conduit_node.hpp"
 
 #include "contra/test_utilities/conduit_data.hpp"
 #include "contra/test_utilities/conduit_node_matcher.hpp"

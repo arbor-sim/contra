@@ -43,7 +43,7 @@
 
 #include "catch/catch.hpp"
 
-#include "conduit_node.hpp"
+#include "conduit/conduit_node.hpp"
 
 namespace Catch {
 template <>

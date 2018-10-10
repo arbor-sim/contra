@@ -39,7 +39,7 @@
 #ifndef TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_DATA_HPP_
 #define TEST_UTILITIES_INCLUDE_CONTRA_TEST_UTILITIES_CONDUIT_DATA_HPP_
 
-#include "conduit_node.hpp"
+#include "conduit/conduit_node.hpp"
 
 namespace test_utilities {
 
