@@ -66,8 +66,8 @@ enable_testing()
 
 conan_find_package(catch_target catch)
 if(NOT catch_target)
-  find_package(Catch REQUIRED)
-  set(catch_target Catch::Catch)
+  find_package(Catch2 REQUIRED)
+  set(catch_target Catch2::Catch2)
 endif()
 
 conan_find_package(conduit_target conduit)
