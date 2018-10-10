@@ -45,7 +45,7 @@ SUPPRESS_WARNINGS_END
 
 #include "contra/contra.hpp"
 #include "contra/packet.hpp"
-#include "conduit/conduit_node.hpp"
+#include "conduit_node.hpp"
 
 #include "contra/test_utilities/packet_matcher.hpp"
 #include "contra/test_utilities/test_data.hpp"
