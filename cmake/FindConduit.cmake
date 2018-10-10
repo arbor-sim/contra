@@ -83,7 +83,7 @@ include(${CONDUIT_DIR}/lib/cmake/conduit.cmake)
 # we found Conduit
 set(CONDUIT_FOUND TRUE)
 # provide location of the headers in CONDUIT_INCLUDE_DIRS
-set(CONDUIT_INCLUDE_DIRS ${CONDUIT_DIR}/include/conduit)
+set(CONDUIT_INCLUDE_DIRS ${CONDUIT_DIR}/include)
 
 
 
