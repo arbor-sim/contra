@@ -74,6 +74,8 @@ conan_find_package(conduit_target conduit)
 if(NOT conduit_target)
   find_package(conduit REQUIRED)
   set(conduit_target conduit)
+  set_target_properties(${conduit_target} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CONDUIT_INCLUDE_DIRS})
+  message(STATUS "CONDUIT_INCLUDE_DIRS ${CONDUIT_INCLUDE_DIRS}")
 endif()
 
 conan_find_package(cpplint_target cpplint)
