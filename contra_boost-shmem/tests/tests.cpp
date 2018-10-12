@@ -39,5 +39,5 @@
 #include "contra_boost-shmem_tests/suppress_warnings.hpp"
 SUPPRESS_WARNINGS_BEGIN
 #define CATCH_CONFIG_MAIN
-#include "catch/catch.hpp"
+#include "catch2/catch.hpp"
 SUPPRESS_WARNINGS_END

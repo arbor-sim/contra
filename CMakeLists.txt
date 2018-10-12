@@ -147,4 +147,4 @@ endif()
 
 install(
   FILES ${CMAKE_SOURCE_DIR}/cmake/contra-config.cmake
-  DESTINATION lib/cmake)
+  DESTINATION lib/contra/cmake)

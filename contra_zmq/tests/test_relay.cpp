@@ -38,7 +38,7 @@
 
 #include <utility>
 
-#include "catch/catch.hpp"
+#include "catch2/catch.hpp"
 
 #include "contra/relay.hpp"
 #include "contra/test_utilities/relay_test.hpp"

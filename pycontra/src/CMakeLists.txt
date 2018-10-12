@@ -73,3 +73,19 @@ add_python_module(
     ${boost_python_target}
   OUTPUT_DIRECTORY ${PYCONTRA_OUTPUT_DIR}
   )
+
+find_package(Python)
+if(Python_EXECUTABLE)
+    execute_process(
+        COMMAND ${Python_EXECUTABLE} -c "import distutils.sysconfig as s; print(s.get_python_lib(True,False,'${CMAKE_INSTALL_PREFIX}'))"
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        OUTPUT_VARIABLE python_lib_path)
+
+    if(python_lib_path)
+        install(
+            DIRECTORY "${PYCONTRA_OUTPUT_DIR}"
+            DESTINATION "${python_lib_path}"
+            USE_SOURCE_PERMISSIONS)
+    endif()
+endif()
+
