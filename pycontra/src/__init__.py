@@ -36,5 +36,5 @@
 # along with Contra.  If not, see <https://www.gnu.org/licenses/>.
 # ------------------------------------------------------------------------------
 
-from _pycontra import *
+from ._pycontra import *
 
